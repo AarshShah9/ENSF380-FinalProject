@@ -10,15 +10,22 @@ public class Task {
 
     public Task(int taskID, String description, Boolean volunteerNeeded, int duration, int maxWindow, String taskType)
             throws IllegalArgumentException {
-        // TODO implement constructor
-        // Change this up, it's just a placeholder to avoid final variable not
-        // initialized error
+        Boolean validType = false;
+        for (TaskType type : TaskType.values()) {
+            if (type.toString().toLowerCase().compareTo(taskType.toLowerCase()) == 0) {
+                validType = true;
+            }
+        }
+        if (validType == false) {
+            throw new IllegalArgumentException("Invalid task type");
+        } else {
+            this.TASK_TYPE = taskType.toUpperCase();
+        }
         this.TASK_ID = taskID;
         this.DESCRIPTION = description;
         this.BACKUP_VOLUNTEER_NEEDED = volunteerNeeded;
         this.DURATION = duration;
         this.MAX_WINDOW = maxWindow;
-        this.TASK_TYPE = taskType;
 
     }
 
