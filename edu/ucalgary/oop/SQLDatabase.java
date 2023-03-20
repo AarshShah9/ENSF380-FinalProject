@@ -6,7 +6,7 @@ public class SQLDatabase {
     private ArrayList<String> animals;
     private ArrayList<String> tasks;
 
-    public SQLDatabase(String fileName) {
+    public SQLDatabase(String fileName) throws IllegalArgumentException {
         animals = new ArrayList<String>();
         tasks = new ArrayList<String>();
     }
