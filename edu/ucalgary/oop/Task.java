@@ -8,7 +8,8 @@ public class Task {
     private final int MAX_WINDOW;
     private final String TASK_TYPE;
 
-    public Task(int taskID, String description, Boolean volunteerNeeded, int duration, int maxWindow, String taskType) {
+    public Task(int taskID, String description, Boolean volunteerNeeded, int duration, int maxWindow, String taskType)
+            throws IllegalArgumentException {
         // TODO implement constructor
         // Change this up, it's just a placeholder to avoid final variable not
         // initialized error
