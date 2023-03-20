@@ -9,7 +9,7 @@ public class DailySchedule {
     private final LocalDate DATE;
     private Boolean backupVolunteerPresent;
 
-    public DailySchedule(LocalDate day, String[] newAnimals, String[] newTasks) {
+    public DailySchedule(LocalDate day, String[] newAnimals, String[] newTasks) throws IllegalArgumentException {
         // TODO implement constructor
         // Change this up, it's just a placeholder to avoid final variable not
         // initialized error
