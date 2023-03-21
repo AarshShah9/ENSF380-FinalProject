@@ -7,17 +7,12 @@ public class SQLDatabase {
     private ArrayList<String> animals;
     private ArrayList<String> tasks;
 
-    private Connection dbConnect;
-
-    private String username;
-    private String password;
-    private String DBURL;
-
+    final private Connection DB_CONNECT;
 
     /**
      * Constructs a new SQLDatabase object with the given database name
      * initializes the animals and tasks ArrayLists
-     * Attempts to connect to the specified database using JDBC and the 'studnet' and 'ensf' for username and password
+     * Attempts to connect to the specified database using JDBC and the 'student' and 'ensf' for username and password
      * @param dbName the name of the database to connect to
      * @throws IllegalArgumentException
      * @throws SQLException if there is an error connecting to the database
@@ -27,7 +22,7 @@ public class SQLDatabase {
         this.tasks = new ArrayList<String>();
 
         try {
-            this.dbConnect = DriverManager.getConnection(String.format("jdbc:mysql://localhost/%s", dbName), "student", "ensf");
+            this.DB_CONNECT = DriverManager.getConnection(String.format("jdbc:mysql://localhost/%s", dbName), "student", "ensf");
         } catch (SQLException e) {
             e.printStackTrace();
             throw new IllegalArgumentException("Invalid Database Input");
@@ -79,6 +74,6 @@ public class SQLDatabase {
      * @return the connection object for the current database connection
      */
     public Connection getConnection() {
-        return this.dbConnect;
+        return this.DB_CONNECT;
     }
 }
