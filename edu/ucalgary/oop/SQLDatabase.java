@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.sql.*;
 
 public class SQLDatabase {
-    private ArrayList<String> animals;
-    private ArrayList<String> tasks;
+    private ArrayList<Animal> animals;
+    private ArrayList<Task> tasks;
 
     final private Connection DB_CONNECT;
 
@@ -18,8 +18,8 @@ public class SQLDatabase {
      * @throws SQLException if there is an error connecting to the database
      */
     public SQLDatabase(String dbName) throws IllegalArgumentException {
-        this.animals = new ArrayList<String>();
-        this.tasks = new ArrayList<String>();
+        this.animals = new ArrayList<Animal>();
+        this.tasks = new ArrayList<Task>();
 
         try {
             this.DB_CONNECT = DriverManager.getConnection(String.format("jdbc:mysql://localhost/%s", dbName), "student", "ensf");
@@ -30,26 +30,18 @@ public class SQLDatabase {
     }
 
     /**
-     * updates the database with new information read in from a text file
-     * @param fileName
-     */
-    public void updateDatabase(String fileName) {
-        // TODO implement method
-    }
-
-    /**
      * Returns the list of animals in the SQLDatabase object
      * @return Returns the list of animals in the SQLDatabase object.
      */
-    public ArrayList<String> getAnimals() {
-        return animals;
+    public ArrayList<Animal> getAnimals() {
+        return this.animals;
     }
 
     /**
      * Sets the list of animals in teh SQLDatabase object to the argument passed through
      * @param newAnimals the new ArrayList of animals to set in the Database
      */
-    public void setAnimals(ArrayList<String> newAnimals) {
+    public void setAnimals(ArrayList<Animal> newAnimals) {
         this.animals = newAnimals;
     }
 
@@ -57,15 +49,15 @@ public class SQLDatabase {
      * Returns the list of tasks in the SQLDatabase object
      * @return Returns the list of tasks in the SQLDatabase object.
      */
-    public ArrayList<String> getTasks() {
-        return tasks;
+    public ArrayList<Task> getTasks() {
+        return this.tasks;
     }
 
     /**
      * Sets the list of tasks in teh SQLDatabase object to the argument passed through
      * @param newTasks the new ArrayList of tasks to set in the Database
      */
-    public void setTasks(ArrayList<String> newTasks) {
+    public void setTasks(ArrayList<Task> newTasks) {
         this.tasks = newTasks;
     }
 
