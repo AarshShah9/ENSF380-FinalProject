@@ -7,7 +7,7 @@ public class Scheduler {
     private LocalDate currDate;
     private ArrayList<DailySchedule> schedules;
 
-    public Scheduler(String[] animals, String[] tasks) {
+    public Scheduler(String[] animals, String[] tasks) throws IllegalArgumentException {
         // TODO implement constructor
         // Change this up, it's just a placeholder to avoid final variable not
         // initialized error
