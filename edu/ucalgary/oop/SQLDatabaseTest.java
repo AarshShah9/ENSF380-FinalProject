@@ -7,11 +7,6 @@ import java.util.ArrayList;
 
 public class SQLDatabaseTest {
 
-    private static final String url = "jdbc:mysql://localhost";
-    private static final String user = "student";
-    private static final String password = "ensf";
-
-
 
     @Test
     public void testConstructorGoodInput() {
