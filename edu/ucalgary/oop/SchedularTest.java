@@ -10,7 +10,7 @@ public class SchedularTest {
 
     // Test the Task constructor with valid data
     @Test
-    public void testSchedularConstructor_GoodData() {
+    public void testSchedularConstructorValidData() {
         LocalDate date = LocalDate.now();
         ArrayList<Animal> animals = new ArrayList<>();
         ArrayList<Task> tasks = new ArrayList<>();
@@ -32,7 +32,7 @@ public class SchedularTest {
 
     // Test the getDate function
     @Test
-    public void testgetDate() {
+    public void testGetDate() {
         LocalDate expResult = LocalDate.now();
         ArrayList<Animal> animals = new ArrayList<>();
         ArrayList<Task> tasks = new ArrayList<>();
@@ -48,7 +48,7 @@ public class SchedularTest {
 
     // Test the getAnimals function
     @Test
-    public void testgetAnimals() {
+    public void testGetAnimals() {
         LocalDate date = LocalDate.now();
         ArrayList<Animal> animals = new ArrayList<>();
         ArrayList<Task> tasks = new ArrayList<>();
@@ -64,7 +64,7 @@ public class SchedularTest {
 
     // Test the setAnimals function
     @Test
-    public void testsetAnimals() {
+    public void testSetAnimals() {
         LocalDate date = LocalDate.now();
         ArrayList<Animal> animals = new ArrayList<>();
         ArrayList<Task> tasks = new ArrayList<>();
@@ -83,7 +83,7 @@ public class SchedularTest {
 
     // Test the getTasks function
     @Test
-    public void testgetTasks() {
+    public void testGetTasks() {
         LocalDate date = LocalDate.now();
         ArrayList<Animal> animals = new ArrayList<>();
         ArrayList<Task> tasks = new ArrayList<>();
@@ -99,7 +99,7 @@ public class SchedularTest {
 
     // Test the setTasks function
     @Test
-    public void testsetTasks() {
+    public void testSetTasks() {
         LocalDate date = LocalDate.now();
         ArrayList<Animal> animals = new ArrayList<>();
         ArrayList<Task> tasks = new ArrayList<>();
