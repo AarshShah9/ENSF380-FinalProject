@@ -109,8 +109,8 @@ public class SQLDatabaseTest {
     public void testSetTasks() {
         SQLDatabase db = new SQLDatabase("ewr");
         ArrayList<Task> tasks = new ArrayList<Task>();
-        Task task1 = new Task(1, "Feed Beaver", false, 30, 45, TaskType.FEEDING.toString());
-        Task task2 = new Task(2, "Treat Coyote", true, 60, 30, TaskType.MEDICAL.toString());
+        Task task1 = new Task(1, "Feed Beaver", 30, 45, TaskType.FEEDING.toString());
+        Task task2 = new Task(2, "Treat Coyote", 60, 30, TaskType.MEDICAL.toString());
         tasks.add(task1);
         tasks.add(task2);
         db.setTasks(tasks);
