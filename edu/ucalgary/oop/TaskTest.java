@@ -2,15 +2,16 @@ package edu.ucalgary.oop;
 
 // Importing required libraries for testing
 import org.junit.Test;
-import org.junit.Assert;
 import static org.junit.Assert.*;
-
-import java.beans.Transient;
 
 /**
  * The TaskTest class is designed to test the Task class by using a series of
  * test methods
  * to check the validity and correctness of the class's functionality.
+ * 
+ * @version 1.0
+ * @author Aarsh
+ * @date 2023-03-22
  */
 public class TaskTest {
     // Array of valid task types for testing purposes
