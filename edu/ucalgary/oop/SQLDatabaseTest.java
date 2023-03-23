@@ -6,6 +6,11 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 
 public class SQLDatabaseTest {
+    /**
+     * @version 1.0
+     * @author Aarsh @ Nick
+     * @date 2023-03-22
+     */
 
     /**
      * Test case for the SQLDatabase constructor with valid input.
@@ -31,6 +36,17 @@ public class SQLDatabaseTest {
     }
 
     /**
+     * Test case for the getConnection() method of the SQLDatabase class.
+     * Creates an instance of the SQLDatabase class with a valid database name and
+     * asserts that the connection is not null.
+     */
+    @Test
+    public void testGetConnection() {
+        SQLDatabase db = new SQLDatabase("ewr");
+        assertNotNull("Expected Database to exist", db.getConnection());
+    }
+
+    /**
      * Test case for the getAnimals() method of the SQLDatabase class.
      * Creates an instance of the SQLDatabase class, sets the list of animals, and
      * asserts that the list of animals contains the correct values.
@@ -53,10 +69,23 @@ public class SQLDatabaseTest {
 
     /**
      * Test case for the setAnimals() method of the SQLDatabase class.
-     * This test case is currently empty, and needs to be implemented.
+     * Creates an instance of the SQLDatabase class, sets the list of animals, and
+     * asserts that the list of animals contains the correct values.
      */
     @Test
     public void testSetAnimals() {
+        SQLDatabase db = new SQLDatabase("ewr");
+        ArrayList<Animal> animals = new ArrayList<Animal>();
+        Animal beaver = new Beaver(1, "John", AnimalType.COYOTE.toString(), FeedingType.CREPUSCULAR.toString(), false);
+        Animal coyote = new Coyote(2, "Tim", AnimalType.COYOTE.toString(), FeedingType.DIURNAL.toString(), false);
+        animals.add(beaver);
+        animals.add(coyote);
+        db.setAnimals(animals);
+
+        assertNotNull(animals);
+        assertEquals(2, db.getAnimals().size());
+        assertTrue(db.getAnimals().contains(beaver));
+        assertTrue(db.getAnimals().contains(coyote));
     }
 
     /**
