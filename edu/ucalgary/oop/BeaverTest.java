@@ -10,7 +10,7 @@ public class BeaverTest {
         Beaver beaver = new Beaver(1, "Benny", "BEAVER", "CREPUSCULAR", false);
         assertEquals(1, beaver.getAnimalID());
         assertEquals("Benny", beaver.getAnimalName());
-        assertEquals(AnimalType.BEAVER, beaver.getAnimalType());
+        assertEquals(AnimalType.COYOTE, beaver.getAnimalType());
         assertEquals(FeedingType.CREPUSCULAR, beaver.getAnimalFeedingType());
         assertFalse(beaver.getOrphaned());
     }
