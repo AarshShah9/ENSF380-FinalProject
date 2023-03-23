@@ -6,6 +6,12 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 
 public class SchedularTest {
+    /**
+     * @version 1.0
+     * @author Sarim
+     * @date 2023-03-21
+     * @description Tests the Schedular class
+     */
     private static final String[] TASK_TYPES = { "Feeding", "Cleaning", "Medical" };
 
     // Test the Task constructor with valid data
