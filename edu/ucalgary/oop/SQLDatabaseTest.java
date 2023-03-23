@@ -9,7 +9,8 @@ public class SQLDatabaseTest {
 
     /**
      * Test case for the SQLDatabase constructor with valid input.
-     * Creates an instance of the SQLDatabase class with a valid database name and asserts that the connection is not null.
+     * Creates an instance of the SQLDatabase class with a valid database name and
+     * asserts that the connection is not null.
      */
     @Test
     public void testConstructorGoodInput() {
@@ -19,7 +20,8 @@ public class SQLDatabaseTest {
 
     /**
      * Test case for the SQLDatabase constructor with invalid input.
-     * Creates an instance of the SQLDatabase class with an invalid database name and asserts that the connection is null.
+     * Creates an instance of the SQLDatabase class with an invalid database name
+     * and asserts that the connection is null.
      */
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorBadInput() {
@@ -30,7 +32,8 @@ public class SQLDatabaseTest {
 
     /**
      * Test case for the getAnimals() method of the SQLDatabase class.
-     * Creates an instance of the SQLDatabase class, sets the list of animals, and asserts that the list of animals contains the correct values.
+     * Creates an instance of the SQLDatabase class, sets the list of animals, and
+     * asserts that the list of animals contains the correct values.
      */
     @Test
     public void testGetAnimals() {
@@ -53,11 +56,13 @@ public class SQLDatabaseTest {
      * This test case is currently empty, and needs to be implemented.
      */
     @Test
-    public void testSetAnimals() {}
+    public void testSetAnimals() {
+    }
 
     /**
      * Test case for the getTasks() method of the SQLDatabase class.
-     * Creates an instance of the SQLDatabase class and asserts that the list of tasks is not null and has a size of 0.
+     * Creates an instance of the SQLDatabase class and asserts that the list of
+     * tasks is not null and has a size of 0.
      */
     @Test
     public void testGetTasks() {
@@ -68,7 +73,8 @@ public class SQLDatabaseTest {
 
     /**
      * Test case for the setTasks() method of the SQLDatabase class.
-     * Creates an instance of the SQLDatabase class, sets the list of tasks, and asserts that the list of tasks contains the correct values.
+     * Creates an instance of the SQLDatabase class, sets the list of tasks, and
+     * asserts that the list of tasks contains the correct values.
      */
     @Test
     public void testSetTasks() {
