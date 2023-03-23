@@ -31,30 +31,40 @@ public class FoxTest {
 
     @Test
     public void testGetAnimalID() {
+        // Test getAnimalID getter method by creating a new fox object and checking if
+        // the ID is correct
         Fox fox = new Fox(1, "Tony", "FOX", "NOCTURNAL", true);
         assertEquals(1, fox.getAnimalID());
     }
 
     @Test
     public void testGetAnimalName() {
+        // Test getAnimalName getter method by creating a new fox object and checking if
+        // the name is correct
         Fox fox = new Fox(1, "Tony", "FOX", "NOCTURNAL", true);
         assertEquals("Tony", fox.getAnimalName());
     }
 
     @Test
     public void testGetAnimalType() {
+        // Test getAnimalType getter method by creating a new fox object and checking if
+        // the type is correct
         Fox fox = new Fox(1, "Tony", "FOX", "NOCTURNAL", true);
         assertEquals(AnimalType.FOX, fox.getAnimalType());
     }
 
     @Test
     public void testGetAnimalFeedingType() {
+        // Test getAnimalFeedingType getter method by creating a new fox object and
+        // checking if the feeding type is correct
         Fox fox = new Fox(1, "Tony", "FOX", "NOCTURNAL", true);
         assertEquals(FeedingType.NOCTURNAL, fox.getAnimalFeedingType());
     }
 
     @Test
     public void testGetOrphaned() {
+        // Test getOrphaned getter method by creating a new fox object and checking if
+        // the orphaned status is correct
         Fox fox = new Fox(1, "Tony", "FOX", "NOCTURNAL", true);
         assertTrue(fox.getOrphaned());
     }
