@@ -11,6 +11,7 @@ public class DailyScheduleTest {
      * @version 1.0
      * @author Will
      * @date 2023-03-21
+     * @Description Tests the DailySchedule class
      */
 
     // Tests the constructor with good input
