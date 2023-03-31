@@ -3,23 +3,24 @@ package edu.ucalgary.oop;
 import java.time.LocalTime;
 
 public abstract class Animal {
-    private final int ANIMAL_ID;
-    private final String ANIMAL_NAME;
-    private final AnimalType ANIMAL_TYPE;
-    private final FeedingType ANIMAL_FEEDING_TYPE;
-    private final Boolean ORPHANED;
+    protected final int ANIMAL_ID;
+    protected final String ANIMAL_NAME;
+    protected final AnimalType ANIMAL_TYPE;
+    protected FeedingType ANIMAL_FEEDING_TYPE;
+    protected final Boolean ORPHANED;
     public static final LocalTime FEED_WINDOW = LocalTime.of(3, 0, 0);
 
-    public Animal(int id, String animalName, String animalType, String animalFeedingType, Boolean orphaned)
+    public Animal(int id, String animalName, String animalType)
             throws IllegalArgumentException {
-        // Implement this constructor
-        // Change this up, it's just a placeholder to avoid final variable not
-        // initialized error
         this.ANIMAL_ID = id;
         this.ANIMAL_NAME = animalName;
         this.ANIMAL_TYPE = AnimalType.valueOf(animalType);
-        this.ANIMAL_FEEDING_TYPE = FeedingType.valueOf(animalFeedingType);
-        this.ORPHANED = orphaned;
+
+        // TODO - add a regex check to see if the animal is orphaned or not
+        if (animalName.contains("Annie")) {
+            this.ORPHANED = true;
+        } else
+            this.ORPHANED = false;
 
     }
 

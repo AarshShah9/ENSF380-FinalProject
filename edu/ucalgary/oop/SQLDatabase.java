@@ -6,6 +6,7 @@ import java.sql.*;
 public class SQLDatabase {
     private ArrayList<Animal> animals;
     private ArrayList<Task> tasks;
+    private ArrayList<Treatment> treatments;
 
     final private Connection DB_CONNECT;
 
@@ -20,62 +21,109 @@ public class SQLDatabase {
      * @throws SQLException             if there is an error connecting to the
      *                                  database
      */
-    public SQLDatabase(String dbName) throws IllegalArgumentException {
-        this.animals = new ArrayList<Animal>();
-        this.tasks = new ArrayList<Task>();
+    public SQLDatabase(String dbName, ArrayList<Animal> animaList, ArrayList<Task> taskList,
+            ArrayList<Treatment> treatmentList) throws IllegalArgumentException {
+        this.animals = animaList;
+        this.tasks = taskList;
+        this.treatments = treatmentList;
 
         try {
             this.DB_CONNECT = DriverManager.getConnection(String.format("jdbc:mysql://localhost/%s", dbName), "student",
                     "ensf");
-
-            // Extract this to getAnimalsSQL() method
-            // ________________________________________________________
-            Statement stmt1 = this.DB_CONNECT.createStatement();
-            String query1 = "SELECT * FROM ANIMALS";
-            ResultSet rs1 = stmt1.executeQuery(query1);
-
-            while (rs1.next()) {
-                String name = rs1.getString("AnimalSpecies");
-                try {
-                    // or do something like this
-                    // switch (name) {
-                    // case "coyote":
-                    // animals.add(new Coyote());
-                    // break;
-                    // case "fox":
-                    // animals.add(new Fox());
-                    // break;
-                    // case "porcupine":
-                    // animals.add(new Porcupine());
-                    // break;
-                    // default:
-                    // System.out.println("Unknown animal: " + name);
-                    // }
-                    Class<?> cls = Class.forName(name.substring(0, 1).toUpperCase() + name.substring(1));
-                    Animal animal = (Animal) cls.newInstance();
-                    animals.add(animal);
-                } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-                    System.out.println("Unknown animal: " + name);
-                }
-                animals.add(null); // need to add new animal objects to the arraylist depending on the type of
-                                   // animal
-            }
-            // Extract this to getTasksSQL() method
-            // ________________________________________________________
-            Statement stmt2 = this.DB_CONNECT.createStatement();
-            String query2 = "SELECT * FROM TASKS";
-            ResultSet rs2 = stmt2.executeQuery(query2);
-
-            while (rs2.next()) {
-                Task newTask = new Task(rs2.getInt("TaskID"), rs2.getString("Description"),
-                        rs2.getInt("Duration"), rs2.getInt("MaxWindow"), "Non-Medical");
-                tasks.add(newTask);
-            }
+            addAnimalsSQL();
+            addTasksSQL();
 
         } catch (SQLException e) {
             e.printStackTrace();
             throw new IllegalArgumentException("Invalid Database Input");
         }
+    }
+
+    public void addAnimalsSQL() throws IllegalArgumentException {
+
+        try {
+            Statement stmt1 = this.DB_CONNECT.createStatement();
+            String query1 = "SELECT * FROM ANIMALS";
+            ResultSet rs = stmt1.executeQuery(query1);
+
+            while (rs.next()) {
+                String name = rs.getString("AnimalSpecies");
+                try {
+                    switch (name) {
+                        case "coyote":
+                            animals.add(new Coyote(rs.getInt("AnimalID"), rs.getString("AnimalNickname"),
+                                    rs.getString("AnimalSpecies")));
+                            break;
+                        case "fox":
+                            animals.add(new Fox(rs.getInt("AnimalID"), rs.getString("AnimalNickname"),
+                                    rs.getString("AnimalSpecies")));
+                            break;
+                        case "porcupine":
+                            animals.add(new Porcupine(rs.getInt("AnimalID"), rs.getString("AnimalNickname"),
+                                    rs.getString("AnimalSpecies")));
+                            break;
+                        case "beaver":
+                            animals.add(new Beaver(rs.getInt("AnimalID"), rs.getString("AnimalNickname"),
+                                    rs.getString("AnimalSpecies")));
+                            break;
+                        default:
+                            System.out.println("Unknown animal: " + name);
+                    }
+                    // Class<?> cls = Class.forName(name.substring(0, 1).toUpperCase() +
+                    // name.substring(1));
+                    // Animal animal = (Animal) cls.newInstance();
+                    // animals.add(animal);
+                } catch (Exception e) {
+                    throw new IllegalArgumentException("Invalid Animal Input");
+                }
+
+            }
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("Invalid Animal Input");
+
+        }
+    }
+
+    public void addTasksSQL() throws IllegalArgumentException {
+        try {
+            Statement stmt2 = this.DB_CONNECT.createStatement();
+            String query2 = "SELECT * FROM TASKS";
+            ResultSet rs = stmt2.executeQuery(query2);
+
+            while (rs.next()) {
+                Task newTask = new Task(rs.getInt("TaskID"), rs.getString("Description"),
+                        rs.getInt("Duration"), rs.getInt("MaxWindow"));
+                tasks.add(newTask);
+            }
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("Invalid Task Input");
+        }
+
+    }
+
+    public void addTreatmentSQL() {
+        try {
+            Statement stmt3 = this.DB_CONNECT.createStatement();
+            String query3 = "SELECT * FROM TREATMENTS";
+            ResultSet rs = stmt3.executeQuery(query3);
+
+            while (rs.next()) {
+                Treatment newTreatment = new Treatment(rs.getInt("AnimalID"), rs.getInt("TaskID"),
+                        rs.getInt("StartHour"));
+                treatments.add(newTreatment);
+            }
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("Invalid Treatment Input");
+        }
+    }
+
+    /**
+     * Returns the list of treatments in the SQLDatabase object
+     * 
+     * @return Returns the list of treatments in the SQLDatabase object.
+     */
+    public ArrayList<Treatment> getTreatments() {
+        return this.treatments;
     }
 
     /**
