@@ -21,13 +21,81 @@ public class DailySchedule {
         this.tasks = tasks;
 
         // Add inferred tasks
-        tasks.add(new Task(tasks.size() + 1, "Feeding - coyote", 5, 3));
-        tasks.add(new Task(tasks.size() + 1, "Feeding - fox", 5, 3));
-        tasks.add(new Task(tasks.size() + 1, "Feeding - raccoon", 5, 3));
-        tasks.add(new Task(tasks.size() + 1, "Feeding - beaver", 5, 3));
-        tasks.add(new Task(tasks.size() + 1, "Feeding - porcupine", 5, 3));
+        addInferredTasks();
+
+        // Add those to treatments
+        addInferredTreatments();
 
         this.SCHEDULED_TASKS = scheduleTasks();
+    }
+
+    private void addInferredTasks() {
+        tasks.add(new Task(tasks.size() + 1, "Feeding - coyote", 5, 3)); // size - 9
+        tasks.add(new Task(tasks.size() + 1, "Feeding - fox", 5, 3)); // size - 8
+        tasks.add(new Task(tasks.size() + 1, "Feeding - raccoon", 5, 3)); // size - 7
+        tasks.add(new Task(tasks.size() + 1, "Feeding - beaver", 5, 3)); // size - 6
+        tasks.add(new Task(tasks.size() + 1, "Feeding - porcupine", 5, 3)); // size - 5
+        tasks.add(new Task(tasks.size() + 1, "Cage cleaning - coyote", 5, 24)); // size - 4
+        tasks.add(new Task(tasks.size() + 1, "Cage cleaning - fox", 5, 24)); // size - 3
+        tasks.add(new Task(tasks.size() + 1, "Cage cleaning - raccoon", 5, 24)); // size - 2
+        tasks.add(new Task(tasks.size() + 1, "Cage cleaning - beaver", 5, 24)); // size - 1
+        tasks.add(new Task(tasks.size() + 1, "Cage cleaning - porcupine", 10, 24)); // size
+    }
+
+    private void addInferredTreatments() {
+        for (Animal animal : animals) {
+            if (animal.getAnimalType() == AnimalType.COYOTE) {
+                addCoyoteTreatments(animal);
+            } else if (animal.getAnimalType() == AnimalType.FOX) {
+                addFoxTreatments(animal);
+            } else if (animal.getAnimalType() == AnimalType.RACCOON) {
+                addRaccoonTreatments(animal);
+            } else if (animal.getAnimalType() == AnimalType.BEAVER) {
+                addBeaverTreatments(animal);
+            } else if (animal.getAnimalType() == AnimalType.PORCUPINE) {
+                addPorcupineTreatments(animal);
+            }
+        }
+    }
+
+    private void addCoyoteTreatments(Animal animal) {
+        if (!animal.getOrphaned()) {
+            treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 9,
+                    animal.getAnimalFeedingType().getFeedStartTime()));
+        }
+        treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 4, 0));
+    }
+
+    private void addFoxTreatments(Animal animal) {
+        if (!animal.getOrphaned()) {
+            treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 8,
+                    animal.getAnimalFeedingType().getFeedStartTime()));
+        }
+        treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 3, 0));
+    }
+
+    private void addRaccoonTreatments(Animal animal) {
+        if (!animal.getOrphaned()) {
+            treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 7,
+                    animal.getAnimalFeedingType().getFeedStartTime()));
+        }
+        treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 2, 0));
+    }
+
+    private void addBeaverTreatments(Animal animal) {
+        if (!animal.getOrphaned()) {
+            treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 6,
+                    animal.getAnimalFeedingType().getFeedStartTime()));
+        }
+        treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 1, 0));
+    }
+
+    private void addPorcupineTreatments(Animal animal) {
+        if (!animal.getOrphaned()) {
+            treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 5,
+                    animal.getAnimalFeedingType().getFeedStartTime()));
+        }
+        treatments.add(new Treatment(animal.getAnimalID(), tasks.size(), 0));
     }
 
     private ArrayList<String> scheduleTasks() {
