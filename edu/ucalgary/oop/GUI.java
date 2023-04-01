@@ -1,15 +1,14 @@
 package edu.ucalgary.oop;
 
 import javax.swing.*;
-import javax.swing.border.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+
+
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+
 
 public class GUI extends JFrame {
 
@@ -39,18 +38,23 @@ public class GUI extends JFrame {
         buildMenuBar();
 
         topHeader = new JLabel("EWR schedule manager");
+        
+        topHeader.setHorizontalAlignment(SwingConstants.CENTER);
+        topHeader.setVerticalAlignment(SwingConstants.CENTER);
+
         topPanel = new JPanel();
         topPanel.setLayout(new BorderLayout());
         
         topPanel.add(menuBar, BorderLayout.NORTH);
         topPanel.add(topHeader, BorderLayout.SOUTH);
-        topPanel.setPreferredSize(new Dimension(WIDTH, (int) (HEIGHT * ((double) 0.2))));
+        //topPanel.setPreferredSize(new Dimension(WIDTH, (int) (HEIGHT * ((double) 0.2))));
 
         
 
         buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new FlowLayout());
+        buttonsPanel.setLayout(new GridLayout(4, 1));
         buttonsPanel.setBorder(BorderFactory.createTitledBorder("Options"));
+        buttonsPanel.setPreferredSize(new Dimension((int) (WIDTH * ((double) 0.2)), (int) (HEIGHT * ((double) 0.6))));
 
         JButton createButton = new JButton();
         createButton.setText("Create Schedule");
@@ -59,21 +63,27 @@ public class GUI extends JFrame {
         JButton printButton = new JButton();
         printButton.setText("Print Schedule");
         printButton.addActionListener(printButtonEvent -> printSchedule());
+
+        JPanel volunteerPanel = new JPanel();
+        JLabel volunteerLabel = new JLabel("Volunteer requested:");
         volunteerCheck = new JCheckBoxMenuItem();
+
+        volunteerPanel.add(volunteerLabel);
+        volunteerPanel.add(volunteerCheck);
 
         buttonsPanel.add(createButton);
         buttonsPanel.add(manageButton);
         buttonsPanel.add(printButton);
-        buttonsPanel.add(volunteerCheck);
+        buttonsPanel.add(volunteerPanel);
 
 
         schedulePanel = new JPanel();
-        schedulePanel.setLayout(new BorderLayout());
+        schedulePanel.setLayout(new FlowLayout());
         schedulePanel.setBorder(BorderFactory.createTitledBorder("Schedule"));
-        schedulePanel.setPreferredSize(new Dimension(200, (int) (HEIGHT * ((double) 0.6))));
+        schedulePanel.setPreferredSize(new Dimension((int) (WIDTH * ((double) 0.8)), (int) (HEIGHT * ((double) 0.6))));
 
         this.add(topPanel, BorderLayout.NORTH);
-        this.add(schedulePanel, BorderLayout.WEST);
+        this.add(schedulePanel, BorderLayout.CENTER);
         this.add(buttonsPanel, BorderLayout.EAST);
 
     
@@ -83,14 +93,31 @@ public class GUI extends JFrame {
 
     public void getSchedule() {
 
+        JTextArea scheduleText = new JTextArea();;
+
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("schedule.txt"));
+            File file = new File("schedule.txt");
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            
+         
+            
             String line = reader.readLine();
-            String date = "";
-            JLabel lastTimeLabel = null;
+            while (line != null) {
+                scheduleText.append(line + "\n");
+                line = reader.readLine();
+            }
+            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        JScrollPane scrollPane = new JScrollPane(scheduleText);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setMaximumSize(new Dimension((int) (WIDTH * ((double) 0.8)), (int) (HEIGHT * ((double) 0.6))));
+        scrollPane.setPreferredSize(schedulePanel.getPreferredSize());
+
+        schedulePanel.add(scrollPane);
     }
 
     public void buildMenuBar() {
