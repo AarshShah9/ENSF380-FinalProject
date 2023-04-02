@@ -5,12 +5,12 @@ import java.time.LocalTime;
 public class Treatment {
     private final int ANIMAL_ID;
     private final int TASK_ID;
-    private final int START_HOUR;
+    private int startHour;
 
     public Treatment(int animalID, int taskID, int startHour) {
         this.ANIMAL_ID = animalID;
         this.TASK_ID = taskID;
-        this.START_HOUR = startHour;
+        this.startHour = startHour;
     }
 
     public int getAnimalID() {
@@ -22,6 +22,10 @@ public class Treatment {
     }
 
     public int getStartHour() {
-        return START_HOUR;
+        return startHour;
+    }
+
+    public void setStartHour(int hour) {
+        this.startHour = hour;
     }
 }
