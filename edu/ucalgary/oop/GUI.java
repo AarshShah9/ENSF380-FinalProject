@@ -22,11 +22,13 @@ import java.io.IOException;
  */
 public class GUI extends JFrame {
 
+    // Constants
     private static final int WIDTH = 1000;
     private static final int HEIGHT = 600;
 
+    // Variables
     private JLabel topHeader;
-
+    
     private JPanel topPanel;
     private JPanel schedulePanel;
     private JPanel buttonsPanel;
@@ -35,6 +37,14 @@ public class GUI extends JFrame {
 
     JCheckBoxMenuItem volunteerCheck;
 
+    /**
+     * @version 1.0.0
+     * @author Nicola Savino
+     * @since 2020-11-20
+     * 
+     * This is the main method for the EWR schedule manager. It creates a new GUI object and sets it visible.
+     * 
+     */
     public GUI() {
         super("EWR schedule manager");
         setupGUI();
@@ -47,6 +57,13 @@ public class GUI extends JFrame {
         
     }
 
+    /**
+     * @version 1.0.0
+     * @author Nicola Savino
+     * @since 2020-11-20
+     * 
+     * This method sets up the GUI by creating the menu bar, the top panel, the buttons panel and the schedule panel.
+     */
     public void setupGUI() {
         
         buildMenuBar();
@@ -108,6 +125,13 @@ public class GUI extends JFrame {
        
     }
 
+    /**
+     * @version 1.0.0
+     * @author Nicola Savino
+     * @since 2020-11-20
+     * 
+     * This method prints the schedule to the console.
+     */
     public void getSchedule() {
 
         JTextArea scheduleText = new JTextArea();
@@ -142,6 +166,15 @@ public class GUI extends JFrame {
         this.repaint();
     }
 
+    /**
+     * @version 1.0.0
+     * @author Nicola Savino
+     * @since 2020-11-20
+     * 
+     * This method prints the schedule to the console.
+     * 
+     * 
+     */
     public void buildMenuBar() {
         //construct menu bar items
         JMenu fileMenu = new JMenu ("File");
@@ -198,12 +231,16 @@ public class GUI extends JFrame {
         }
     }
 
-    public void createSchedule() {
-        //TODO
-    }
 
 
-
+    /**
+     * @version 1.0.0
+     * @author Nicola Savino
+     * @since 2020-11-20
+     * 
+     * @param args
+     * Main method
+     */
     public static void main(String[] args) {
 
         EventQueue.invokeLater(() -> {
