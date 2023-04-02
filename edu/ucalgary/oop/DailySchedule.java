@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.time.LocalTime;
 import java.util.Iterator;
+import java.util.Collections;
 
 public class DailySchedule {
     private final LocalDate CURR_DATE;
@@ -98,8 +99,41 @@ public class DailySchedule {
         treatments.add(new Treatment(animal.getAnimalID(), tasks.size(), 0));
     }
 
-    private ArrayList<String> scheduleTasks() {
+    private ArrayList<Integer> getMaxWindows() {
+        ArrayList<Integer> maxWindowArr = new ArrayList<>();
+        for (Task task : tasks) {
+            if (!maxWindowArr.contains(task.getMaxWindow())) {
+                maxWindowArr.add(task.getMaxWindow());
+            }
+        }
+        Collections.sort(maxWindowArr);
+        return maxWindowArr;
+    }
 
+    private ArrayList<String> scheduleTasks() {
+        HashMap<LocalTime, ArrayList<String>> scheduledTasks = new HashMap<LocalTime, ArrayList<String>>();
+        ArrayList<Integer> maxWindowArr = getMaxWindows();
+        int i = 0;
+        while (treatments.size() > 0) {
+            int maxWindow = maxWindowArr.get(i);
+            for (Treatment treatment : treatments) {
+                if (tasks.get(treatment.getTaskID() - 1).getMaxWindow() == maxWindow) {
+                    if (scheduledTasks.containsKey(treatment.getStartTime())) {
+                        scheduledTasks.get(treatment.getStartTime()).add(
+                                treatment.getAnimalID() + " " + tasks.get(treatment.getTaskID() - 1).getTaskName());
+                    } else {
+                        ArrayList<String> taskList = new ArrayList<>();
+                        taskList.add(
+                                treatment.getAnimalID() + " " + tasks.get(treatment.getTaskID() - 1).getTaskName());
+                        scheduledTasks.put(treatment.getStartTime(), taskList);
+                    }
+                    treatments.remove(treatment);
+                    break;
+                } else {
+                    continue;
+                }
+            }
+        }
     }
 
 }
