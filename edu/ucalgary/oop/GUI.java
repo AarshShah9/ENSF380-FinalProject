@@ -1,7 +1,7 @@
 package edu.ucalgary.oop;
 
 import javax.swing.*;
-
+import javax.swing.border.Border;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -9,7 +9,17 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-
+/**
+ * @name GUI
+ * @version 1.0.0
+ * @author Nicola Savino
+ * @since 2020-11-20
+ * 
+ * This class is the main GUI class for the EWR schedule manager. It contains the main method and the GUI constructor.
+ * 
+ * @extends JFrame
+ * 
+ */
 public class GUI extends JFrame {
 
     private static final int WIDTH = 1000;
@@ -28,9 +38,13 @@ public class GUI extends JFrame {
     public GUI() {
         super("EWR schedule manager");
         setupGUI();
-        
-        setSize(WIDTH,HEIGHT);
+        //setSize(WIDTH,HEIGHT);
+        setMinimumSize(new Dimension(400, 300));
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        pack();
+        System.out.println(getLayout());
+        
     }
 
     public void setupGUI() {
@@ -43,21 +57,23 @@ public class GUI extends JFrame {
         topHeader.setVerticalAlignment(SwingConstants.CENTER);
 
         topPanel = new JPanel();
+        menuBar.setBorder(null);
+        topPanel.setPreferredSize(new Dimension(WIDTH, 100));
         topPanel.setLayout(new BorderLayout());
-        
         topPanel.add(menuBar, BorderLayout.NORTH);
-        topPanel.add(topHeader, BorderLayout.SOUTH);
-        //topPanel.setPreferredSize(new Dimension(WIDTH, (int) (HEIGHT * ((double) 0.2))));
-
+        topPanel.add(topHeader, BorderLayout.CENTER);
+        
+        
         
 
         buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(4, 1));
         buttonsPanel.setBorder(BorderFactory.createTitledBorder("Options"));
-        buttonsPanel.setPreferredSize(new Dimension((int) (WIDTH * ((double) 0.2)), (int) (HEIGHT * ((double) 0.6))));
+        buttonsPanel.setPreferredSize(new Dimension((int) (WIDTH * ((double) 0.2)), (int) (HEIGHT * ((double) 0.8))));
 
         JButton createButton = new JButton();
         createButton.setText("Create Schedule");
+        createButton.addActionListener(createButtonEvent -> getSchedule());
         JButton manageButton = new JButton();
         manageButton.setText("Manage Schedule");
         JButton printButton = new JButton();
@@ -78,22 +94,23 @@ public class GUI extends JFrame {
 
 
         schedulePanel = new JPanel();
-        schedulePanel.setLayout(new FlowLayout());
+        
+        schedulePanel.setLayout(new BorderLayout());
         schedulePanel.setBorder(BorderFactory.createTitledBorder("Schedule"));
-        schedulePanel.setPreferredSize(new Dimension((int) (WIDTH * ((double) 0.8)), (int) (HEIGHT * ((double) 0.6))));
+        schedulePanel.setPreferredSize(new Dimension((int) (WIDTH * ((double) 0.8)), (int) (HEIGHT * ((double) 0.8))));
 
         this.add(topPanel, BorderLayout.NORTH);
         this.add(schedulePanel, BorderLayout.CENTER);
         this.add(buttonsPanel, BorderLayout.EAST);
 
+        this.setBackground(Color.WHITE);
     
-        getSchedule();
        
     }
 
     public void getSchedule() {
 
-        JTextArea scheduleText = new JTextArea();;
+        JTextArea scheduleText = new JTextArea();
 
         try {
             File file = new File("schedule.txt");
@@ -114,21 +131,31 @@ public class GUI extends JFrame {
         JScrollPane scrollPane = new JScrollPane(scheduleText);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setMaximumSize(new Dimension((int) (WIDTH * ((double) 0.8)), (int) (HEIGHT * ((double) 0.6))));
-        scrollPane.setPreferredSize(schedulePanel.getPreferredSize());
+        scrollPane.setMaximumSize(new Dimension((int) (schedulePanel.getWidth() * ((double) 0.5)), (int) (schedulePanel.getHeight() * ((double) 0.6))));
+        scrollPane.setPreferredSize(new Dimension((int) (WIDTH * ((double) 0.8)), (int) (HEIGHT * ((double) 0.6))));
+        
 
         schedulePanel.add(scrollPane);
+        
+        // Update the GUI
+        this.revalidate();
+        this.repaint();
     }
 
     public void buildMenuBar() {
         //construct menu bar items
         JMenu fileMenu = new JMenu ("File");
         JMenuItem print_scheduleItem = new JMenuItem ("Print Schedule");
+        print_scheduleItem.addActionListener(printButtonEvent -> printSchedule());
         fileMenu.add (print_scheduleItem);
         JMenuItem create_scheduleItem = new JMenuItem ("Create Schedule");
+        create_scheduleItem.addActionListener(createButtonEvent -> getSchedule());
         fileMenu.add (create_scheduleItem);
         JMenuItem exitItem = new JMenuItem ("Exit");
+        exitItem.addActionListener(exitButtonEvent -> this.dispose());
         fileMenu.add (exitItem);
+
+
         JMenu helpMenu = new JMenu ("Help");
         JMenuItem contentsItem = new JMenuItem ("Contents");
         helpMenu.add (contentsItem);
@@ -137,9 +164,17 @@ public class GUI extends JFrame {
 
         //construct menubar
         menuBar = new JMenuBar();
+
+        
+        menuBar.setPreferredSize(new Dimension(WIDTH, 30));
+
+        menuBar.setBorder(null);
+        menuBar.setLayout(new FlowLayout(FlowLayout.LEFT));
         menuBar.add (fileMenu);
         menuBar.add (helpMenu);
         this.setJMenuBar(menuBar);
+        System.out.println(getJMenuBar());
+        
     }
 
 
@@ -157,40 +192,9 @@ public class GUI extends JFrame {
 
         if (!volunteerCheck.isSelected()) {
 
-            JFrame volunteerConfirmation = new JFrame("Volunteer Confirmation");
-            volunteerConfirmation.setSize(300, 100);
-            volunteerConfirmation.setLocationRelativeTo(this);
-            volunteerConfirmation.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            volunteerConfirmation.setVisible(true);
-            volunteerConfirmation.setResizable(false);
-
-            
             JLabel volunteerLabel = new JLabel("Please confirm that a volunteer is present");
-            
-            volunteerLabel.setPreferredSize(new Dimension(300, 50));
-            //volunteerLabel.setHorizontalTextPosition(SwingConstants.CENTER);
             volunteerLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            volunteerConfirmation.add(volunteerLabel, BorderLayout.NORTH);
-
-            JButton closePopup = new JButton("Ok");
-            closePopup.setMaximumSize(new Dimension(100, 50));
-            closePopup.setMargin(new Insets(0, 10, 0, 10));;
-            closePopup.addActionListener(volunteerConfirmEvent -> volunteerConfirmation.dispose());
-            volunteerConfirmation.add(closePopup, BorderLayout.SOUTH);
-
-            // Disable the main frame
-            setEnabled(false);
-
-            // Add a window listener to the popup frame
-            volunteerConfirmation.addWindowListener(new java.awt.event.WindowAdapter() {
-                @Override
-                public void windowClosed(java.awt.event.WindowEvent windowEvent) {
-                    // Re-enable the main frame when the popup frame is closed
-                    setEnabled(true);
-                    setVisible(true);
-                }
-            });
-        
+            JOptionPane.showMessageDialog(this, volunteerLabel, getTitle(), JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -198,9 +202,6 @@ public class GUI extends JFrame {
         //TODO
     }
 
-    public void exit() {
-        //TODO
-    }
 
 
     public static void main(String[] args) {
@@ -208,6 +209,7 @@ public class GUI extends JFrame {
         EventQueue.invokeLater(() -> {
             new GUI().setVisible(true);
         });
+    
     }
 
 }
