@@ -13,7 +13,7 @@ public class CoyoteTest {
     @Test
     public void testConstructor() {
         // Test valid input
-        Coyote coyote = new Coyote(1, "Tony", "COYOTE", "CREPUSCULAR", true);
+        Coyote coyote = new Coyote(1, "Tony", "COYOTE");
         assertEquals(1, coyote.getAnimalID());
         assertEquals("Tony", coyote.getAnimalName());
         assertEquals(AnimalType.COYOTE, coyote.getAnimalType());
@@ -24,7 +24,7 @@ public class CoyoteTest {
     @Test
     public void testConstructorBadInput() {
         // Test invalid input - orphaned cannot be null, and incorrect feeding type
-        Coyote invalidBeaver = new Coyote(2, "Bobby", "COYOTE", "herbivore", null);
+        Coyote invalidBeaver = new Coyote(2, "Bobby", "COYOTE");
 
     }
 }

@@ -14,7 +14,7 @@ public class FoxTest {
     @Test
     public void testConstructorGoodData() {
         // Test valid input
-        Fox fox = new Fox(1, "Tony", "FOX", "NOCTURNAL", true);
+        Fox fox = new Fox(1, "Tony", "FOX");
         assertEquals(1, fox.getAnimalID());
         assertEquals("Tony", fox.getAnimalName());
         assertEquals(AnimalType.FOX, fox.getAnimalType());
@@ -25,7 +25,7 @@ public class FoxTest {
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorBadData() {
         // Test invalid input - feeding type not capitalized, incorrect animal type
-        Fox invalidCoyote = new Fox(2, "Bobby", "FOX", "random", null);
+        Fox invalidCoyote = new Fox(2, "Bobby", "FOX");
 
     }
 
@@ -33,7 +33,7 @@ public class FoxTest {
     public void testGetAnimalID() {
         // Test getAnimalID getter method by creating a new fox object and checking if
         // the ID is correct
-        Fox fox = new Fox(1, "Tony", "FOX", "NOCTURNAL", true);
+        Fox fox = new Fox(1, "Tony", "FOX");
         assertEquals(1, fox.getAnimalID());
     }
 
@@ -41,7 +41,7 @@ public class FoxTest {
     public void testGetAnimalName() {
         // Test getAnimalName getter method by creating a new fox object and checking if
         // the name is correct
-        Fox fox = new Fox(1, "Tony", "FOX", "NOCTURNAL", true);
+        Fox fox = new Fox(1, "Tony", "FOX");
         assertEquals("Tony", fox.getAnimalName());
     }
 
@@ -49,7 +49,7 @@ public class FoxTest {
     public void testGetAnimalType() {
         // Test getAnimalType getter method by creating a new fox object and checking if
         // the type is correct
-        Fox fox = new Fox(1, "Tony", "FOX", "NOCTURNAL", true);
+        Fox fox = new Fox(1, "Tony", "FOX");
         assertEquals(AnimalType.FOX, fox.getAnimalType());
     }
 
@@ -57,7 +57,7 @@ public class FoxTest {
     public void testGetAnimalFeedingType() {
         // Test getAnimalFeedingType getter method by creating a new fox object and
         // checking if the feeding type is correct
-        Fox fox = new Fox(1, "Tony", "FOX", "NOCTURNAL", true);
+        Fox fox = new Fox(1, "Tony", "FOX");
         assertEquals(FeedingType.NOCTURNAL, fox.getAnimalFeedingType());
     }
 
@@ -65,7 +65,7 @@ public class FoxTest {
     public void testGetOrphaned() {
         // Test getOrphaned getter method by creating a new fox object and checking if
         // the orphaned status is correct
-        Fox fox = new Fox(1, "Tony", "FOX", "NOCTURNAL", true);
+        Fox fox = new Fox(1, "Tony", "FOX");
         assertTrue(fox.getOrphaned());
     }
 
