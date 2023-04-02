@@ -24,6 +24,9 @@ public class Scheduler {
         catch(Exception e) {
             System.out.println("ImpossibleScheduleException caught: " + e.getMessage());
         }
+        finally {
+            return dailySchedule;
+        }
     }
 
     public LocalDate getDate() {
