@@ -22,7 +22,7 @@ public class Scheduler {
             this.dailySchedule = new DailySchedule(Animals, Tasks, Treatments, DATE);
         }
         catch(Exception e) {
-            
+            System.out.println("ImpossibleScheduleException caught: " + e.getMessage());
         }
     }
 
