@@ -28,6 +28,12 @@ public class DailySchedule {
         this.scheduledTasks = scheduleTasks();
     }
 
+    /**
+     * Adds the inferred tasks to the tasks ArrayList
+     * 
+     * @params none
+     * @return void
+     */
     private void addInferredTasks() {
         tasks.add(new Task(tasks.size() + 1, "Feeding - coyote", 5, 3)); // size - 9
         tasks.add(new Task(tasks.size() + 1, "Feeding - fox", 5, 3)); // size - 8
@@ -41,6 +47,12 @@ public class DailySchedule {
         tasks.add(new Task(tasks.size() + 1, "Cage cleaning - porcupine", 10, 24)); // size
     }
 
+    /**
+     * Adds the inferred treatments to the treatments ArrayList
+     * 
+     * @params none
+     * @return void
+     */
     private void addInferredTreatments() {
         for (Animal animal : animals) {
             if (animal.getAnimalType() == AnimalType.COYOTE) {
@@ -57,6 +69,12 @@ public class DailySchedule {
         }
     }
 
+    /**
+     * Adds the inferred treatments for a coyote to the treatments ArrayList
+     * 
+     * @param animal
+     * @return void
+     */
     private void addCoyoteTreatments(Animal animal) {
         if (!animal.getOrphaned()) {
             treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 9,
@@ -65,6 +83,12 @@ public class DailySchedule {
         treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 4, 0));
     }
 
+    /**
+     * Adds the inferred treatments for a fox to the treatments ArrayList
+     * 
+     * @param animal
+     * @return void
+     */
     private void addFoxTreatments(Animal animal) {
         if (!animal.getOrphaned()) {
             treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 8,
@@ -73,6 +97,12 @@ public class DailySchedule {
         treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 3, 0));
     }
 
+    /**
+     * Adds the inferred treatments for a raccoon to the treatments ArrayList
+     * 
+     * @param animal
+     * @return void
+     */
     private void addRaccoonTreatments(Animal animal) {
         if (!animal.getOrphaned()) {
             treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 7,
@@ -81,6 +111,12 @@ public class DailySchedule {
         treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 2, 0));
     }
 
+    /**
+     * Adds the inferred treatments for a beaver to the treatments ArrayList
+     * 
+     * @param animal
+     * @return void
+     */
     private void addBeaverTreatments(Animal animal) {
         if (!animal.getOrphaned()) {
             treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 6,
@@ -89,6 +125,12 @@ public class DailySchedule {
         treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 1, 0));
     }
 
+    /**
+     * Adds the inferred treatments for a porcupine to the treatments ArrayList
+     * 
+     * @param animal
+     * @return void
+     */
     private void addPorcupineTreatments(Animal animal) {
         if (!animal.getOrphaned()) {
             treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 5,
@@ -97,6 +139,14 @@ public class DailySchedule {
         treatments.add(new Treatment(animal.getAnimalID(), tasks.size(), 0));
     }
 
+    /**
+     * Returns an arraylist that contains all of the max windows for the tasks
+     * in ascending order
+     * Used to scehdule lowest max window tasks first
+     * 
+     * @params none
+     * @return ArrayList<ArrayList<Treatment>> scheduledTasks
+     */
     private ArrayList<Integer> getMaxWindows() {
         ArrayList<Integer> maxWindowArr = new ArrayList<>();
         for (Task task : tasks) {
@@ -108,6 +158,14 @@ public class DailySchedule {
         return maxWindowArr;
     }
 
+    /**
+     * Validates scheduling a treatment
+     * 
+     * @throws ImpossibleScheduleException if the treatment cannot be scheduled
+     * @params none
+     * @return true if the treatment can be scheduled with an extra volunteer
+     * @return false if the treatment can be scheduled without
+     */
     private boolean validateTreatmentAdd(Treatment treatment, int maxWindow) throws ImpossibleScheduleException {
         int timeTaken = 0;
         int addHour = 1;
@@ -152,7 +210,9 @@ public class DailySchedule {
             }
         }
 
-        // If the time taken for any start hour within the max window is > 120 minutes
+        // If the time taken for any start hour within the max window impossible
+        // even with an extra volunteer, throw an exception with a description of the
+        // issue
         throw new ImpossibleScheduleException("Impossible to schedule " +
                 tasks.get(treatment.getTaskID() - 1).getDescription() + " at hour: "
                 + treatment.getStartHour() +
