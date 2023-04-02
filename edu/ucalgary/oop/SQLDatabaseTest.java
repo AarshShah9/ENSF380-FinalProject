@@ -19,7 +19,7 @@ public class SQLDatabaseTest {
      */
     @Test
     public void testConstructorGoodInput() {
-        SQLDatabase db = new SQLDatabase("ewr");
+        SQLDatabase db = new SQLDatabase("ewr", new ArrayList<Animal>(), new ArrayList<Task>(), new ArrayList<Treatment>());
         assertNotNull("Expected Database to exist", db.getConnection());
     }
 
@@ -30,7 +30,7 @@ public class SQLDatabaseTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorBadInput() {
-        SQLDatabase db = new SQLDatabase("badName");
+        SQLDatabase db = new SQLDatabase("3badName", new ArrayList<Animal>(), new ArrayList<Task>(), new ArrayList<Treatment>());
         assertNull("Database should be null", db.getConnection());
 
     }
@@ -42,7 +42,7 @@ public class SQLDatabaseTest {
      */
     @Test
     public void testGetConnection() {
-        SQLDatabase db = new SQLDatabase("ewr");
+        SQLDatabase db = new SQLDatabase("ewr", new ArrayList<Animal>(), new ArrayList<Task>(), new ArrayList<Treatment>());
         assertNotNull("Expected Database to exist", db.getConnection());
     }
 
@@ -53,10 +53,10 @@ public class SQLDatabaseTest {
      */
     @Test
     public void testGetAnimals() {
-        SQLDatabase db = new SQLDatabase("ewr");
+        SQLDatabase db = new SQLDatabase("ewr", new ArrayList<Animal>(), new ArrayList<Task>(), new ArrayList<Treatment>());
         ArrayList<Animal> animals = new ArrayList<Animal>();
-        Animal beaver = new Beaver(1, "John", AnimalType.COYOTE.toString(), FeedingType.CREPUSCULAR.toString(), false);
-        Animal coyote = new Coyote(2, "Tim", AnimalType.COYOTE.toString(), FeedingType.DIURNAL.toString(), false);
+        Animal beaver = new Beaver(1, "John", AnimalType.COYOTE.toString());
+        Animal coyote = new Coyote(2, "Tim", AnimalType.COYOTE.toString());
 
         animals.add(beaver);
         animals.add(coyote);
@@ -74,10 +74,10 @@ public class SQLDatabaseTest {
      */
     @Test
     public void testSetAnimals() {
-        SQLDatabase db = new SQLDatabase("ewr");
+        SQLDatabase db = new SQLDatabase("ewr", new ArrayList<Animal>(), new ArrayList<Task>(), new ArrayList<Treatment>());
         ArrayList<Animal> animals = new ArrayList<Animal>();
-        Animal beaver = new Beaver(1, "John", AnimalType.COYOTE.toString(), FeedingType.CREPUSCULAR.toString(), false);
-        Animal coyote = new Coyote(2, "Tim", AnimalType.COYOTE.toString(), FeedingType.DIURNAL.toString(), false);
+        Animal beaver = new Beaver(1, "John", AnimalType.COYOTE.toString());
+        Animal coyote = new Coyote(2, "Tim", AnimalType.COYOTE.toString());
         animals.add(beaver);
         animals.add(coyote);
         db.setAnimals(animals);
@@ -95,9 +95,9 @@ public class SQLDatabaseTest {
      */
     @Test
     public void testGetTasks() {
-        SQLDatabase database = new SQLDatabase("ewr");
-        assertNotNull(database.getTasks());
-        assertEquals(0, database.getTasks().size());
+        SQLDatabase db = new SQLDatabase("ewr", new ArrayList<Animal>(), new ArrayList<Task>(), new ArrayList<Treatment>());
+        assertNotNull(db.getTasks());
+        assertEquals(0, db.getTasks().size());
     }
 
     /**
@@ -107,10 +107,10 @@ public class SQLDatabaseTest {
      */
     @Test
     public void testSetTasks() {
-        SQLDatabase db = new SQLDatabase("ewr");
+        SQLDatabase db = new SQLDatabase("ewr", new ArrayList<Animal>(), new ArrayList<Task>(), new ArrayList<Treatment>());
         ArrayList<Task> tasks = new ArrayList<Task>();
-        Task task1 = new Task(1, "Feed Beaver", 30, 45, TaskType.FEEDING.toString());
-        Task task2 = new Task(2, "Treat Coyote", 60, 30, TaskType.MEDICAL.toString());
+        Task task1 = new Task(1, "Feed Beaver", 30, 45);
+        Task task2 = new Task(2, "Treat Coyote", 60, 30);
         tasks.add(task1);
         tasks.add(task2);
         db.setTasks(tasks);

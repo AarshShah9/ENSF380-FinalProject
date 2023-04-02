@@ -26,7 +26,7 @@ public class DailySchedule {
         // Add those to treatments
         addInferredTreatments();
 
-        this.SCHEDULED_TASKS = scheduleTasks();
+        this.SCHEDULED_TASKS = new HashMap<>();
     }
 
     private void addInferredTasks() {
@@ -100,6 +100,7 @@ public class DailySchedule {
 
     private ArrayList<String> scheduleTasks() {
 
+        return new ArrayList<String>();
     }
 
 }

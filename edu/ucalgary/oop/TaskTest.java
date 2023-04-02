@@ -25,7 +25,7 @@ public class TaskTest {
     @Test
     public void testTaskConstructorGoodData() {
         // Creating a new Task object with valid data
-        Task task = new Task(1, "Test", 1, 1, TASK_TYPES[0]);
+        Task task = new Task(1, "Test", 1, 1);
 
         // Assertions to check if the Task object was created and the properties were
         // set correctly
@@ -33,8 +33,7 @@ public class TaskTest {
         assertEquals("Test", task.getDescription());
         assertEquals(1, task.getDuration());
         assertEquals(1, task.getMaxWindow());
-        assertEquals(TASK_TYPES[0], task.getTaskType());
-    }
+   }
 
     /**
      * Tests the Task constructor with bad data (invalid task type), expecting an
@@ -42,8 +41,9 @@ public class TaskTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testTaskConstructorBadData() {
+        //TODO: Add test for invalid task type
         // Creating a new Task object with invalid data (task type)
-        Task task = new Task(1, "Test", 1, 1, "Bad");
+        Task task = new Task(1, "Test", 1, 1);
     }
 
     /**
@@ -52,7 +52,7 @@ public class TaskTest {
     @Test
     public void testGetTaskID() {
         // Creating a new Task object with valid data
-        Task task = new Task(1, "Test", 1, 1, TASK_TYPES[0]);
+        Task task = new Task(1, "Test", 1, 1);
 
         // Asserting that the correct task ID is returned
         assertEquals(1, task.getTaskID());
@@ -65,7 +65,7 @@ public class TaskTest {
     @Test
     public void testGetDescription() {
         // Creating a new Task object with valid data
-        Task task = new Task(1, "Test", 1, 1, TASK_TYPES[0]);
+        Task task = new Task(1, "Test", 1, 1);
 
         // Asserting that the correct task description is returned
         assertEquals("Test", task.getDescription());
@@ -78,7 +78,7 @@ public class TaskTest {
     @Test
     public void testGetDuration() {
         // Creating a new Task object with valid data
-        Task task = new Task(1, "Test", 1, 1, TASK_TYPES[0]);
+        Task task = new Task(1, "Test", 1, 1);
 
         // Asserting that the correct task duration is returned
         assertEquals(1, task.getDuration());
@@ -92,23 +92,11 @@ public class TaskTest {
     @Test
     public void testGetMaxWindow() {
         // Creating a new Task object with valid data
-        Task task = new Task(1, "Test", 1, 1, TASK_TYPES[0]);
+        Task task = new Task(1, "Test", 1, 1);
 
         // Asserting that the correct max window value is returned
         assertEquals(1, task.getMaxWindow());
     }
 
-    /**
-     * 
-     * Tests the getTaskType() method to ensure it returns the correct task type.
-     */
-    @Test
-    public void testGetTaskType() {
-        // Creating a new Task object with valid data
-        Task task = new Task(1, "Test", 1, 1, TASK_TYPES[0]);
-
-        // Asserting that the correct task type is returned
-        assertEquals(TASK_TYPES[0], task.getTaskType());
-    }
-
+    
 }
