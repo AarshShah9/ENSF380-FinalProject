@@ -18,7 +18,12 @@ public class Scheduler {
     }
 
     public DailySchedule calculateSchedule() {
-
+        try {
+            this.dailySchedule = new DailySchedule(Animals, Tasks, Treatments, DATE);
+        }
+        catch(Exception e) {
+            
+        }
     }
 
     public LocalDate getDate() {
