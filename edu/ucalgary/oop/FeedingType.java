@@ -1,8 +1,5 @@
 package edu.ucalgary.oop;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 /**
  * The FeedingType enum represents a set of predefined feeding types,
  * specifically
@@ -24,8 +21,8 @@ public enum FeedingType {
          * @return an ArrayList of Integer values representing the start hours (in
          *         24-hour format) for feeding
          */
-        public ArrayList<Integer> getFeedStartTimes() {
-            return new ArrayList<Integer>(Arrays.asList(19));
+        public int getFeedStartTime() {
+            return 19;
 
         }
 
@@ -37,8 +34,8 @@ public enum FeedingType {
          * @return an ArrayList of Integer values representing the start hours (in
          *         24-hour format) for feeding
          */
-        public ArrayList<Integer> getFeedStartTimes() {
-            return new ArrayList<Integer>(Arrays.asList(12, 1, 2));
+        public int getFeedStartTime() {
+            return 0;
 
         }
 
@@ -50,8 +47,8 @@ public enum FeedingType {
          * @return an ArrayList of Integer values representing the start hours (in
          *         24-hour format) for feeding
          */
-        public ArrayList<Integer> getFeedStartTimes() {
-            return new ArrayList<Integer>(Arrays.asList(8));
+        public int getFeedStartTime() {
+            return 8;
         }
 
     };
@@ -63,5 +60,5 @@ public enum FeedingType {
      * @return an ArrayList of Integer values representing the start hours (in
      *         24-hour format) for feeding
      */
-    public abstract ArrayList<Integer> getFeedStartTimes();
+    public abstract int getFeedStartTime();
 }
