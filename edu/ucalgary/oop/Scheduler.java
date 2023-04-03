@@ -32,6 +32,14 @@ public class Scheduler {
         return dailySchedule;
     }
 
+    public void changeTreatmentStart(int animalID, int taskID, int newStartHour) {
+        for (Treatment treatment : treatments) {
+            if (treatment.getAnimalID() == animalID && treatment.getTaskID() == taskID) {
+                treatment.setStartHour(newStartHour);
+            }
+        }
+    }
+
     public LocalDate getDate() {
         return DATE;
     }
