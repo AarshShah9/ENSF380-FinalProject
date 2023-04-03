@@ -54,9 +54,10 @@ public class DailySchedule {
 
     private void addTreatments() {
         for (Treatment treatment : treatments) {
-            scheduleItems.add(new ScheduleItem(
-                    animals.get(treatment.getAnimalID() - 1).getAnimalName(),
-                    1, tasks.get(treatment.getTaskID() - 1).getDescription(),
+            ArrayList<String> name = new ArrayList<String>();
+            name.add(animals.get(treatment.getAnimalID() - 1).getAnimalName());
+            scheduleItems.add(new ScheduleItem(name, 1,
+                    tasks.get(treatment.getTaskID() - 1).getDescription(),
                     treatment.getStartHour(),
                     tasks.get(treatment.getTaskID()).getMaxWindow(),
                     tasks.get(treatment.getTaskID()).getDuration(),
@@ -80,38 +81,28 @@ public class DailySchedule {
     private void groupFeedings() {
         Iterator<ScheduleItem> it = scheduleItems.iterator();
         ScheduleItem previous = null;
-        int i = 0;
-        int j = 0;
         if (it.hasNext())
             previous = it.next();
-        while (it.hasNext() && i < numCoyotes) {
+        while (it.hasNext()) {
             ScheduleItem current = it.next();
-            if (current.getDescription() == "Feeding - coyote") {
-                current = new ScheduleItem(previous.getName() + ", " + current.getName(),
-                        previous.getQuantity() + 1, previous.getDescription(), previous.getStartHour(),
-                        previous.getMaxWindow(), previous.getDuration() + current.getDuration(),
-                        previous.getPrepTime());
-                scheduleItems.remove(previous);
-                previous = current;
-            } else if (current.getDescription() == "Feeding - fox" && j < numFoxes) {
-                current = new ScheduleItem(previous.getName() + ", " + current.getName(),
-                        previous.getQuantity() + 1, previous.getDescription(), previous.getStartHour(),
-                        previous.getMaxWindow(), previous.getDuration() + current.getDuration(),
-                        previous.getPrepTime());
-                scheduleItems.remove(previous);
-                previous = current;
-                j++;
+            if (previous.getDescription().equals(current.getDescription())) {
+                previous.addName(current.getName());
+                previous.addQuantity(current.getQuantity());
+                previous.addDuration(current.getDuration());
+                scheduleItems.remove(current);
             } else
                 continue;
         }
     }
 
     private void inferTaskFromAnimal(Animal animal) {
-        scheduleItems.add(new ScheduleItem(animal.getAnimalName(),
+        ArrayList<String> name = new ArrayList<String>();
+        name.add(animal.getAnimalName());
+        scheduleItems.add(new ScheduleItem(name,
                 1, "Cage cleaning - " + animal.getAnimalType().toString().toLowerCase(),
                 0, 24, animal.CLEAN_TIME, 0));
         if (!animal.getOrphaned())
-            scheduleItems.add(new ScheduleItem(animal.getAnimalName(),
+            scheduleItems.add(new ScheduleItem(name,
                     1, "Feeding - " + animal.getAnimalType().toString().toLowerCase(),
                     animal.ANIMAL_FEEDING_TYPE.getFeedStartTime(), animal.FEED_WINDOW,
                     animal.FEED_TIME, animal.FEED_PREP_TIME));
@@ -185,6 +176,18 @@ public class DailySchedule {
         throw new ImpossibleScheduleException(message);
     }
 
+    // MAKE THE NAME AN ARRAY LIST IT WILL BE BETTER
+    private void splitFeeding(ScheduleItem item) {
+        int numOne = item.getQuantity() / 2;
+        ScheduleItem item1 = new ScheduleItem(item.getName(), item.getQuantity(),
+                item.getDescription(), item.getStartHour(), item.getMaxWindow(),
+                item.getDuration() / 2, item.getPrepTime());
+
+        ScheduleItem item2 = new ScheduleItem(item.getName(), item.getQuantity(),
+                item.getDescription(), item.getStartHour() + item.getDuration() / 2,
+                item.getMaxWindow(), item.getDuration() / 2, item.getPrepTime());
+    }
+
     public void calculateSchedule() throws ImpossibleScheduleException {
         HashMap<Integer, ArrayList<ScheduleItem>> scheduledTasks = new HashMap<Integer, ArrayList<ScheduleItem>>();
         boolean[] bonusVolunteers = new boolean[24];
@@ -194,6 +197,15 @@ public class DailySchedule {
             int maxWindow = maxWindowArr.get(i);
             for (ScheduleItem item : scheduleItems) {
                 if (item.getMaxWindow() == maxWindow) {
+                    if (item.getDescription() == "Feeding - coyote" ||
+                            item.getDescription() == "Feeding - fox") {
+                        try {
+                            bonusVolunteers[item.getStartHour()] = validateAddition(item);
+                        } catch (ImpossibleScheduleException e) {
+                            splitFeeding(item);
+                            continue;
+                        }
+                    }
                     bonusVolunteers[item.getStartHour()] = validateAddition(item);
                     if (scheduledTasks.get(item.getStartHour()) == null) {
                         scheduledTasks.put(item.getStartHour(), new ArrayList<ScheduleItem>());
