@@ -48,13 +48,22 @@ public class DailySchedule {
         addInferredTasks();
 
         // groups the feeding that have prep times
-        groupFeedings();
+        combineTasks(scheduleItems, "Feeding - coyote");
+        combineTasks(scheduleItems, "Feeding - fox");
 
+        // schedules the tasks
         scheduleTasks();
 
+        // creates a text file containing the schedule
         printSchedule();
     }
 
+    /**
+     * adds all of the treatments to the scheduleItems array
+     * 
+     * @param none
+     * @return void
+     */
     private void addTreatments() {
         for (Treatment treatment : treatments) {
             ArrayList<String> name = new ArrayList<String>();
@@ -68,6 +77,12 @@ public class DailySchedule {
         }
     }
 
+    /**
+     * adds all of the inferred tasks to the scheduleItems array
+     * 
+     * @param none
+     * @return void
+     */
     private void addInferredTasks() {
         for (Animal animal : animals) {
             ArrayList<String> name = new ArrayList<String>();
@@ -83,20 +98,30 @@ public class DailySchedule {
         }
     }
 
-    private void groupFeedings() {
+    /**
+     * Groups the similar tasks together
+     * 
+     * @return void
+     * @params none
+     */
+    private void combineTasks(ArrayList<ScheduleItem> tasks, String description) {
         Iterator<ScheduleItem> it = scheduleItems.iterator();
         ScheduleItem previous = null;
         if (it.hasNext())
             previous = it.next();
         while (it.hasNext()) {
-            ScheduleItem current = it.next();
-            if (previous.getDescription().equals(current.getDescription())) {
-                previous.addName(current.getName());
-                previous.addQuantity(current.getQuantity());
-                previous.addDuration(current.getDuration());
-                scheduleItems.remove(current);
-            } else
-                continue;
+            if (previous.getDescription().equals(description)) {
+                ScheduleItem current = it.next();
+                if (previous.getDescription().equals(current.getDescription())) {
+                    previous.addName(current.getName());
+                    previous.addQuantity(current.getQuantity());
+                    previous.addDuration(current.getDuration());
+                    scheduleItems.remove(current);
+                } else
+                    continue;
+            } else {
+                previous = it.next();
+            }
         }
     }
 
@@ -168,6 +193,13 @@ public class DailySchedule {
         throw new ImpossibleScheduleException(message);
     }
 
+    /**
+     * Splits a feeding block into two feedings and appends them to the
+     * end of the scheduleItems list
+     * 
+     * @param ScheduleItem item
+     * @return void
+     */
     private void splitFeeding(ScheduleItem item) {
         int numOne = item.getQuantity() / 2;
         int numTwo = item.getQuantity() - numOne;
@@ -192,7 +224,19 @@ public class DailySchedule {
         scheduleItems.add(item2);
     }
 
-    public void scheduleTasks() throws ImpossibleScheduleException {
+    /**
+     * Schedules the tasks.
+     * This method will schedule the tasks in the scheduleItems arraylist into the
+     * scheduledTasks hashmap, with the hour as the key and the tasks as the value.
+     * 
+     * Schedules the tasks with the smallest window first
+     * If the grouped feedings (coyote and fox) are not able to be scheduled
+     * they will be split and then retried.
+     * 
+     * @throws ImpossibleScheduleException
+     * @returns void
+     */
+    private void scheduleTasks() throws ImpossibleScheduleException {
         HashMap<Integer, ArrayList<ScheduleItem>> scheduledTasks = new HashMap<Integer, ArrayList<ScheduleItem>>();
         ArrayList<Integer> maxWindowArr = getMaxWindows();
         int i = 0;
@@ -270,6 +314,7 @@ public class DailySchedule {
                 else
                     bw.write(LocalTime.of(i, 0).toString() + "\n");
                 for (ScheduleItem item : scheduledTasks.get(i)) {
+                    combineTasks(scheduledTasks.get(i), item.getDescription());
                     bw.write(String.format("* %s (%d %s)\n",
                             item.getDescription(), item.getQuantity(),
                             String.join(", ", item.getName())));
@@ -278,7 +323,5 @@ public class DailySchedule {
             }
         }
         bw.close();
-
     }
-
 }
