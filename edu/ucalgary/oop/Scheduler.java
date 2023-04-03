@@ -1,5 +1,6 @@
 package edu.ucalgary.oop;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -7,7 +8,7 @@ public class Scheduler {
     private ArrayList<Task> tasks;
     private ArrayList<Animal> animals;
     private ArrayList<Treatment> treatments;
-    private LocalDate DATE;
+    private final LocalDate DATE;
     private DailySchedule dailySchedule;
 
     public Scheduler(LocalDate day) {
@@ -23,13 +24,14 @@ public class Scheduler {
         }
     }
 
-    public DailySchedule calculateSchedule() {
+    public void calculateSchedule() {
         try {
             this.dailySchedule = new DailySchedule(animals, tasks, treatments, DATE);
-        } catch (Exception e) {
+        } catch (ImpossibleScheduleException e) {
             System.out.println("ImpossibleScheduleException caught: " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("IOException caught: " + e.getMessage());
         }
-        return dailySchedule;
     }
 
     public LocalDate getDate() {
