@@ -4,7 +4,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collections;
+import java.util.Iterator;
 
+/**
+ * The DailySchedule class represents a schedule for a given day
+ * 
+ * @author William Fraser
+ * @since 2023-03-30
+ * @version 1.0
+ */
 public class DailySchedule {
     private final LocalDate CURR_DATE;
     private HashMap<Integer, ArrayList<Treatment>> scheduledTasks;
@@ -12,6 +20,16 @@ public class DailySchedule {
     private ArrayList<Task> tasks;
     private ArrayList<Treatment> treatments;
 
+    /**
+     * Constructs a new DailySchedule object with the given ArrayLists of animals,
+     * tasks, and treatments
+     * 
+     * @param animals    the ArrayList of animals
+     * @param tasks      the ArrayList of tasks
+     * @param treatments the ArrayList of treatments
+     * @param date       the current date
+     * @throws ImpossibleScheduleException if the schedule is impossible to create
+     */
     public DailySchedule(ArrayList<Animal> animals, ArrayList<Task> tasks, ArrayList<Treatment> treatments,
             LocalDate date) throws ImpossibleScheduleException {
         this.CURR_DATE = date;
@@ -66,6 +84,7 @@ public class DailySchedule {
             } else if (animal.getAnimalType() == AnimalType.PORCUPINE) {
                 addPorcupineTreatments(animal);
             }
+
         }
     }
 
@@ -219,6 +238,16 @@ public class DailySchedule {
                 " because it would exceed the maximum time even with an extra volunteer.");
     }
 
+    private void addTreatmentWithPrepTime(Treatment treatment) {
+        // Determine if feedings must be split over multiple hourse or not
+        // if (scheduledTasks.containsValue(treatment.getTaskID()))
+        // if (!scheduledTasks.containsKey(treatment.getStartHour())) {
+        // tasks.get(treatment.getTaskID() - 1).setDuration(15);
+        // }
+        // int preptime;
+        // if (tasks.get(treatment))
+    }
+
     private HashMap<Integer, ArrayList<Treatment>> scheduleTasks() throws ImpossibleScheduleException {
         HashMap<Integer, ArrayList<Treatment>> scheduledTasks = new HashMap<Integer, ArrayList<Treatment>>();
         boolean[] bonusVolunteers = new boolean[24];
@@ -228,23 +257,27 @@ public class DailySchedule {
             int maxWindow = maxWindowArr.get(i);
             for (Treatment treatment : treatments) {
                 if (tasks.get(treatment.getTaskID() - 1).getMaxWindow() == maxWindow) {
-                    boolean bonusVolunteerNeeded = validateTreatmentAdd(treatment, maxWindow);
-                    if (bonusVolunteerNeeded) {
-                        bonusVolunteers[treatment.getStartHour()] = true;
-                    }
-                    if (scheduledTasks.containsKey(treatment.getStartHour())) {
-                        scheduledTasks.get(treatment.getStartHour()).add(treatment);
-                    } else {
-                        ArrayList<Treatment> taskList = new ArrayList<>();
-                        taskList.add(treatment);
-                        scheduledTasks.put(treatment.getStartHour(), taskList);
-                    }
-                    treatments.remove(treatment);
-                    break;
+                    if (treatment.getTaskID() != tasks.size() - 9 ||
+                            treatment.getTaskID() != tasks.size() - 8) {
+                        boolean bonusVolunteerNeeded = validateTreatmentAdd(treatment, maxWindow);
+                        if (bonusVolunteerNeeded) {
+                            bonusVolunteers[treatment.getStartHour()] = true;
+                        }
+                        if (scheduledTasks.containsKey(treatment.getStartHour())) {
+                            scheduledTasks.get(treatment.getStartHour()).add(treatment);
+                        } else {
+                            ArrayList<Treatment> taskList = new ArrayList<>();
+                            taskList.add(treatment);
+                            scheduledTasks.put(treatment.getStartHour(), taskList);
+                        }
+                        treatments.remove(treatment);
+                    } else
+                        continue;
                 } else {
-                    continue;
+                    addTreatmentWithPrepTime(treatment);
                 }
             }
+
         }
         return scheduledTasks;
     }
