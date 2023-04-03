@@ -176,16 +176,27 @@ public class DailySchedule {
         throw new ImpossibleScheduleException(message);
     }
 
-    // MAKE THE NAME AN ARRAY LIST IT WILL BE BETTER
-    private void splitFeeding(ScheduleItem item) {
+    private ScheduleItem splitFeeding(ScheduleItem item) {
         int numOne = item.getQuantity() / 2;
-        ScheduleItem item1 = new ScheduleItem(item.getName(), item.getQuantity(),
+        int numTwo = item.getQuantity() - numOne;
+        ArrayList<String> name1 = new ArrayList<String>();
+        ArrayList<String> name2 = new ArrayList<String>();
+        for (int i = 0; i < numOne; i++) {
+            name1.add(item.getName().get(i));
+        }
+        for (int i = numOne; i < item.getQuantity(); i++) {
+            name2.add(item.getName().get(i));
+        }
+        ScheduleItem item1 = new ScheduleItem(name1, numOne,
                 item.getDescription(), item.getStartHour(), item.getMaxWindow(),
                 item.getDuration() / 2, item.getPrepTime());
 
-        ScheduleItem item2 = new ScheduleItem(item.getName(), item.getQuantity(),
+        ScheduleItem item2 = new ScheduleItem(name2, numTwo,
                 item.getDescription(), item.getStartHour() + item.getDuration() / 2,
-                item.getMaxWindow(), item.getDuration() / 2, item.getPrepTime());
+                item.getMaxWindow(), item.getDuration() / 2 + item.getDuration() % 2,
+                item.getPrepTime());
+        scheduleItems.add(item2);
+        return item1;
     }
 
     public void calculateSchedule() throws ImpossibleScheduleException {
@@ -202,7 +213,7 @@ public class DailySchedule {
                         try {
                             bonusVolunteers[item.getStartHour()] = validateAddition(item);
                         } catch (ImpossibleScheduleException e) {
-                            splitFeeding(item);
+                            item = splitFeeding(item);
                             continue;
                         }
                     }
