@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -270,11 +271,83 @@ public class GUI extends JFrame {
     public void manageSchedule() {
         // TODO Auto-generated method stub
 
-        JFrame manageFrame = new JFrame("Manage Schedule");
+        JDialog manageFrame = new JDialog(this, "Manage Schedule", true);
+        manageFrame.setLayout(new BorderLayout());
         manageFrame.setLocationRelativeTo(this);
-        manageFrame.setSize(400, 400);
-        manageFrame.setVisible(true);
+        
 
+        JComboBox selectedTime = new JComboBox();
+        selectedTime.addItem("8:00 AM");
+        selectedTime.addItem("9:00 AM");
+        selectedTime.addItem("10:00 AM");
+        selectedTime.addItem("11:00 AM");
+        selectedTime.addItem("12:00 PM");
+        selectedTime.addItem("1:00 PM");
+        selectedTime.addItem("2:00 PM");
+
+        JComboBox newTime = new JComboBox();
+        newTime.addItem("8:00 AM");
+        newTime.addItem("9:00 AM");
+        newTime.addItem("10:00 AM");
+        newTime.addItem("11:00 AM");
+        newTime.addItem("12:00 PM");
+        newTime.addItem("1:00 PM");
+        newTime.addItem("2:00 PM");
+
+        
+        // selectedTime.addItemListener(e -> {
+        //     if (e.getStateChange() == ItemEvent.SELECTED) {
+        //         System.out.println(selectedTime.getSelectedItem());
+        //     }
+        // });
+
+        
+        // newTime.addItemListener(e -> {
+        //     if (e.getStateChange() == ItemEvent.SELECTED) {
+        //         System.out.println(newTime.getSelectedItem());
+        //     }
+        // });
+
+        
+        
+        
+
+        JPanel managePanel = new JPanel();
+       
+        JPanel currentTimePanel = new JPanel();
+
+        JLabel currentTimeLabel = new JLabel("Current Time: ");
+
+        currentTimePanel.add(currentTimeLabel);
+        currentTimePanel.add(selectedTime);
+
+        JPanel newTimePanel = new JPanel();
+
+        JLabel newTimeLabel = new JLabel("New Time: ");
+
+        newTimePanel.add(newTimeLabel);
+        newTimePanel.add(newTime);
+
+        managePanel.add(currentTimePanel);
+        managePanel.add(newTimePanel);
+
+
+
+        JButton confirmButton = new JButton("Confirm");
+        confirmButton.addActionListener(confirmButtonEvent -> {
+            // TODO Auto-generated method stub
+            System.out.println(selectedTime.getSelectedItem());
+            System.out.println(newTime.getSelectedItem());
+            manageFrame.dispose();
+        });
+        manageFrame.add(confirmButton, BorderLayout.SOUTH);
+
+        manageFrame.add(managePanel, BorderLayout.CENTER);
+
+        manageFrame.pack();
+        
+
+        manageFrame.setVisible(true);
 
     }
 
