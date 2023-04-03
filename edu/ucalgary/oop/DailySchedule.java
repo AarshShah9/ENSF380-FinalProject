@@ -176,7 +176,7 @@ public class DailySchedule {
         throw new ImpossibleScheduleException(message);
     }
 
-    private ScheduleItem splitFeeding(ScheduleItem item) {
+    private void splitFeeding(ScheduleItem item) {
         int numOne = item.getQuantity() / 2;
         int numTwo = item.getQuantity() - numOne;
         ArrayList<String> name1 = new ArrayList<String>();
@@ -195,8 +195,9 @@ public class DailySchedule {
                 item.getDescription(), item.getStartHour() + item.getDuration() / 2,
                 item.getMaxWindow(), item.getDuration() / 2 + item.getDuration() % 2,
                 item.getPrepTime());
+        scheduleItems.remove(item);
+        scheduleItems.add(item1);
         scheduleItems.add(item2);
-        return item1;
     }
 
     public void calculateSchedule() throws ImpossibleScheduleException {
@@ -212,8 +213,18 @@ public class DailySchedule {
                             item.getDescription() == "Feeding - fox") {
                         try {
                             bonusVolunteers[item.getStartHour()] = validateAddition(item);
+                            if (bonusVolunteers[item.getStartHour()])
+                                splitFeeding(item);
+                            else {
+                                if (scheduledTasks.get(item.getStartHour()) == null) {
+                                    scheduledTasks.put(item.getStartHour(), new ArrayList<ScheduleItem>());
+                                }
+                                scheduledTasks.get(item.getStartHour()).add(item);
+                                scheduleItems.remove(item);
+                                continue;
+                            }
                         } catch (ImpossibleScheduleException e) {
-                            item = splitFeeding(item);
+                            splitFeeding(item);
                             continue;
                         }
                     }
