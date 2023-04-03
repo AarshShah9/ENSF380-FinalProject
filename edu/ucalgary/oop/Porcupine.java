@@ -9,8 +9,7 @@ public class Porcupine extends Animal {
 
     public Porcupine(int id, String animalName, String animalType)
             throws IllegalArgumentException {
-        super(id, animalName, animalType);
-        this.ANIMAL_FEEDING_TYPE = FeedingType.CREPUSCULAR;
+        super(id, animalName, animalType, 5, 0, 10, FeedingType.CREPUSCULAR);
     }
 
 }
