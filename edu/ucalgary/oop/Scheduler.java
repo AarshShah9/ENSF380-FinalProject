@@ -31,17 +31,16 @@ public class Scheduler {
         } catch (Exception e) {
             System.out.println("ImpossibleScheduleException caught: " + e.getMessage());
         }
-        return dailySchedule;
     }
 
     public void changeTreatmentStart(int animalID, int taskID, int newStartHour) {
-        for (Treatment treatment : treatments) {
-            if (treatment.getAnimalID() == animalID && treatment.getTaskID() == taskID) {
-                treatment.setStartHour(newStartHour);
+        try {
+            for (Treatment treatment : treatments) {
+                if (treatment.getAnimalID() == animalID && treatment.getTaskID() == taskID) {
+                    treatment.setStartHour(newStartHour);
+                }
             }
-        } catch (ImpossibleScheduleException e) {
-            System.out.println("ImpossibleScheduleException caught: " + e.getMessage());
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("IOException caught: " + e.getMessage());
         }
     }
