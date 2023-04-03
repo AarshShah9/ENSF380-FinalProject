@@ -13,7 +13,7 @@ public class Task {
     // A brief description of the task
     private final String DESCRIPTION;
     // Duration of the task in minutes
-    private final int DURATION;
+    private int duration;
     // Maximum time window for completing the task in minutes
     private final int MAX_WINDOW;
 
@@ -33,7 +33,7 @@ public class Task {
         // Initialize the instance variables with the provided values
         this.TASK_ID = taskID;
         this.DESCRIPTION = description;
-        this.DURATION = duration;
+        this.duration = duration;
         this.MAX_WINDOW = maxWindow;
     }
 
@@ -52,7 +52,7 @@ public class Task {
      * @return The task duration
      */
     public int getDuration() {
-        return DURATION;
+        return duration;
     }
 
     /**
@@ -71,5 +71,14 @@ public class Task {
      */
     public int getTaskID() {
         return TASK_ID;
+    }
+
+    /**
+     * Sets the duration of the task in minutes.
+     * 
+     * @return null
+     */
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 }
