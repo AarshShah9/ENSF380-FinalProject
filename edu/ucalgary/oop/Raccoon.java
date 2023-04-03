@@ -9,8 +9,7 @@ public class Raccoon extends Animal {
 
     public Raccoon(int id, String animalName, String animalType)
             throws IllegalArgumentException {
-        super(id, animalName, animalType);
-        this.ANIMAL_FEEDING_TYPE = FeedingType.NOCTURNAL;
+        super(id, animalName, animalType, 5, 0, 5, FeedingType.NOCTURNAL);
     }
 
 }

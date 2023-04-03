@@ -1,106 +1,284 @@
 package edu.ucalgary.oop;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.time.LocalTime;
+import java.util.Collections;
 import java.util.Iterator;
+import java.io.*;
 
+/**
+ * The DailySchedule class represents a schedule for a given day
+ * 
+ * @author William Fraser
+ * @since 2023-03-30
+ * @version 1.0
+ */
 public class DailySchedule {
     private final LocalDate CURR_DATE;
-    private final HashMap<LocalTime, ArrayList<String>> SCHEDULED_TASKS;
+    private HashMap<Integer, ArrayList<ScheduleItem>> scheduledTasks;
     private ArrayList<Animal> animals;
     private ArrayList<Task> tasks;
     private ArrayList<Treatment> treatments;
+    boolean[] bonusVolunteers = new boolean[24];
+    private ArrayList<ScheduleItem> scheduleItems;
 
+    /**
+     * Constructs a new DailySchedule object with the given ArrayLists of animals,
+     * tasks, and treatments
+     * 
+     * @param animals    the ArrayList of animals
+     * @param tasks      the ArrayList of tasks
+     * @param treatments the ArrayList of treatments
+     * @param date       the current date
+     * @throws ImpossibleScheduleException if the schedule is impossible to create
+     */
     public DailySchedule(ArrayList<Animal> animals, ArrayList<Task> tasks, ArrayList<Treatment> treatments,
-            LocalDate date) {
+            LocalDate date) throws ImpossibleScheduleException, IOException {
         this.CURR_DATE = date;
         this.animals = animals;
         this.treatments = treatments;
         this.tasks = tasks;
 
-        // Add inferred tasks
+        // Add treatments to the scheduledItems array
+        addTreatments();
+
+        // Add inferred tasks to the scheduledItems array
         addInferredTasks();
 
-        // Add those to treatments
-        addInferredTreatments();
+        // groups the feeding that have prep times
+        groupFeedings();
 
-        this.SCHEDULED_TASKS = new HashMap<>();
+        scheduleTasks();
+
+        printSchedule();
+    }
+
+    private void addTreatments() {
+        for (Treatment treatment : treatments) {
+            ArrayList<String> name = new ArrayList<String>();
+            name.add(animals.get(treatment.getAnimalID() - 1).getAnimalName());
+            scheduleItems.add(new ScheduleItem(name, 1,
+                    tasks.get(treatment.getTaskID() - 1).getDescription(),
+                    treatment.getStartHour(),
+                    tasks.get(treatment.getTaskID()).getMaxWindow(),
+                    tasks.get(treatment.getTaskID()).getDuration(),
+                    0));
+        }
     }
 
     private void addInferredTasks() {
-        tasks.add(new Task(tasks.size() + 1, "Feeding - coyote", 5, 3)); // size - 9
-        tasks.add(new Task(tasks.size() + 1, "Feeding - fox", 5, 3)); // size - 8
-        tasks.add(new Task(tasks.size() + 1, "Feeding - raccoon", 5, 3)); // size - 7
-        tasks.add(new Task(tasks.size() + 1, "Feeding - beaver", 5, 3)); // size - 6
-        tasks.add(new Task(tasks.size() + 1, "Feeding - porcupine", 5, 3)); // size - 5
-        tasks.add(new Task(tasks.size() + 1, "Cage cleaning - coyote", 5, 24)); // size - 4
-        tasks.add(new Task(tasks.size() + 1, "Cage cleaning - fox", 5, 24)); // size - 3
-        tasks.add(new Task(tasks.size() + 1, "Cage cleaning - raccoon", 5, 24)); // size - 2
-        tasks.add(new Task(tasks.size() + 1, "Cage cleaning - beaver", 5, 24)); // size - 1
-        tasks.add(new Task(tasks.size() + 1, "Cage cleaning - porcupine", 10, 24)); // size
+        for (Animal animal : animals) {
+            ArrayList<String> name = new ArrayList<String>();
+            name.add(animal.getAnimalName());
+            scheduleItems.add(new ScheduleItem(name,
+                    1, "Cage cleaning - " + animal.getAnimalType().toString().toLowerCase(),
+                    0, 24, animal.CLEAN_TIME, 0));
+            if (!animal.getOrphaned())
+                scheduleItems.add(new ScheduleItem(name,
+                        1, "Feeding - " + animal.getAnimalType().toString().toLowerCase(),
+                        animal.ANIMAL_FEEDING_TYPE.getFeedStartTime(), animal.FEED_WINDOW,
+                        animal.FEED_TIME, animal.FEED_PREP_TIME));
+        }
     }
 
-    private void addInferredTreatments() {
-        for (Animal animal : animals) {
-            if (animal.getAnimalType() == AnimalType.COYOTE) {
-                addCoyoteTreatments(animal);
-            } else if (animal.getAnimalType() == AnimalType.FOX) {
-                addFoxTreatments(animal);
-            } else if (animal.getAnimalType() == AnimalType.RACCOON) {
-                addRaccoonTreatments(animal);
-            } else if (animal.getAnimalType() == AnimalType.BEAVER) {
-                addBeaverTreatments(animal);
-            } else if (animal.getAnimalType() == AnimalType.PORCUPINE) {
-                addPorcupineTreatments(animal);
+    private void groupFeedings() {
+        Iterator<ScheduleItem> it = scheduleItems.iterator();
+        ScheduleItem previous = null;
+        if (it.hasNext())
+            previous = it.next();
+        while (it.hasNext()) {
+            ScheduleItem current = it.next();
+            if (previous.getDescription().equals(current.getDescription())) {
+                previous.addName(current.getName());
+                previous.addQuantity(current.getQuantity());
+                previous.addDuration(current.getDuration());
+                scheduleItems.remove(current);
+            } else
+                continue;
+        }
+    }
+
+    /**
+     * Validates scheduling a treatment
+     * 
+     * @throws ImpossibleScheduleException if the treatment cannot be scheduled
+     * @params none
+     * @return true if the treatment can be scheduled with an extra volunteer
+     * @return false if the treatment can be scheduled without
+     */
+    private boolean validateAddition(ScheduleItem item) throws ImpossibleScheduleException {
+        int timeTaken = 0;
+        int addHour = 1;
+        int maxWindow = item.getMaxWindow();
+        for (ScheduleItem task : scheduledTasks.get(item.getStartHour())) {
+            timeTaken += task.getDuration() + task.getPrepTime();
+        }
+        int firstTimeTaken = timeTaken;
+        // loop tries to find a start hour within the max window that will not require
+        // an extra volunteer
+        while (addHour < maxWindow) {
+            // If the time taken is greater than 60 minutes, check the rest of the hours
+            // within the max window
+            if (timeTaken + item.getDuration() + item.getPrepTime() > 60) {
+                timeTaken = 0;
+                for (ScheduleItem task : scheduledTasks.get(item.getStartHour() + addHour)) {
+                    timeTaken += task.getDuration() + task.getPrepTime();
+                }
+                addHour++;
+            }
+            // If the time taken for any start hour within the max window is <= 60 minutes
+            // then return false to the treatment at that start hour with no extra volunteer
+            else if (timeTaken + item.getDuration() + item.getPrepTime() <= 60) {
+                item.setStartHour(item.getStartHour() + addHour);
+                return false;
             }
         }
-    }
-
-    private void addCoyoteTreatments(Animal animal) {
-        if (!animal.getOrphaned()) {
-            treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 9,
-                    animal.getAnimalFeedingType().getFeedStartTime()));
+        // Loop will now try to find a start hour within the max hour with an extra
+        // volunteer
+        addHour = 1;
+        timeTaken = firstTimeTaken;
+        while (addHour < maxWindow) {
+            if (timeTaken + item.getDuration() + item.getPrepTime() > 120) {
+                timeTaken = 0;
+                for (ScheduleItem task : scheduledTasks.get(item.getStartHour())) {
+                    timeTaken += task.getDuration() + task.getPrepTime();
+                }
+                addHour++;
+            } else if (timeTaken + item.getDuration() + item.getPrepTime() > 60 &&
+                    timeTaken + item.getDuration() + item.getPrepTime() <= 120) {
+                item.setStartHour(item.getStartHour() + addHour);
+                return true;
+            }
         }
-        treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 4, 0));
-    }
 
-    private void addFoxTreatments(Animal animal) {
-        if (!animal.getOrphaned()) {
-            treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 8,
-                    animal.getAnimalFeedingType().getFeedStartTime()));
+        // If the time taken for any start hour within the max window impossible
+        // even with an extra volunteer, throw an exception with a description of the
+        // issue
+        String message = "Impossible to schedule " +
+                item.getDescription() + " at hour: " + item.getStartHour() +
+                " because it would exceed the maximum time even with an extra volunteer.\n" +
+                "Try changing the start hour of ";
+        for (ScheduleItem task : scheduledTasks.get(item.getStartHour())) {
+            message += task.getDescription() + ", ";
         }
-        treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 3, 0));
+        message += "or " + item.getDescription();
+
+        throw new ImpossibleScheduleException(message);
     }
 
-    private void addRaccoonTreatments(Animal animal) {
-        if (!animal.getOrphaned()) {
-            treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 7,
-                    animal.getAnimalFeedingType().getFeedStartTime()));
+    private void splitFeeding(ScheduleItem item) {
+        int numOne = item.getQuantity() / 2;
+        int numTwo = item.getQuantity() - numOne;
+        ArrayList<String> name1 = new ArrayList<String>();
+        ArrayList<String> name2 = new ArrayList<String>();
+        for (int i = 0; i < numOne; i++) {
+            name1.add(item.getName().get(i));
         }
-        treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 2, 0));
-    }
-
-    private void addBeaverTreatments(Animal animal) {
-        if (!animal.getOrphaned()) {
-            treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 6,
-                    animal.getAnimalFeedingType().getFeedStartTime()));
+        for (int i = numOne; i < item.getQuantity(); i++) {
+            name2.add(item.getName().get(i));
         }
-        treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 1, 0));
+        ScheduleItem item1 = new ScheduleItem(name1, numOne,
+                item.getDescription(), item.getStartHour(), item.getMaxWindow(),
+                item.getDuration() / 2, item.getPrepTime());
+
+        ScheduleItem item2 = new ScheduleItem(name2, numTwo,
+                item.getDescription(), item.getStartHour() + item.getDuration() / 2,
+                item.getMaxWindow(), item.getDuration() / 2 + item.getDuration() % 2,
+                item.getPrepTime());
+        scheduleItems.remove(item);
+        scheduleItems.add(item1);
+        scheduleItems.add(item2);
     }
 
-    private void addPorcupineTreatments(Animal animal) {
-        if (!animal.getOrphaned()) {
-            treatments.add(new Treatment(animal.getAnimalID(), tasks.size() - 5,
-                    animal.getAnimalFeedingType().getFeedStartTime()));
+    public void scheduleTasks() throws ImpossibleScheduleException {
+        HashMap<Integer, ArrayList<ScheduleItem>> scheduledTasks = new HashMap<Integer, ArrayList<ScheduleItem>>();
+        ArrayList<Integer> maxWindowArr = getMaxWindows();
+        int i = 0;
+        while (scheduleItems.size() > 0) {
+            int maxWindow = maxWindowArr.get(i);
+            for (ScheduleItem item : scheduleItems) {
+                if (item.getMaxWindow() == maxWindow) {
+                    if (item.getDescription() == "Feeding - coyote" ||
+                            item.getDescription() == "Feeding - fox") {
+                        try {
+                            bonusVolunteers[item.getStartHour()] = validateAddition(item);
+                            if (bonusVolunteers[item.getStartHour()])
+                                splitFeeding(item);
+                            else {
+                                if (scheduledTasks.get(item.getStartHour()) == null) {
+                                    scheduledTasks.put(item.getStartHour(), new ArrayList<ScheduleItem>());
+                                }
+                                scheduledTasks.get(item.getStartHour()).add(item);
+                                scheduleItems.remove(item);
+                                continue;
+                            }
+                        } catch (ImpossibleScheduleException e) {
+                            splitFeeding(item);
+                            continue;
+                        }
+                    }
+                    bonusVolunteers[item.getStartHour()] = validateAddition(item);
+                    if (scheduledTasks.get(item.getStartHour()) == null) {
+                        scheduledTasks.put(item.getStartHour(), new ArrayList<ScheduleItem>());
+                    }
+                    scheduledTasks.get(item.getStartHour()).add(item);
+                    scheduleItems.remove(item);
+                } else
+                    continue;
+            }
+            i++;
         }
-        treatments.add(new Treatment(animal.getAnimalID(), tasks.size(), 0));
+
     }
 
-    private ArrayList<String> scheduleTasks() {
+    /**
+     * Returns an arraylist that contains all of the max windows for the tasks
+     * in ascending order
+     * Used to scehdule lowest max window tasks first
+     * 
+     * @params none
+     * @return ArrayList<ArrayList<Treatment>> scheduledTasks
+     */
+    private ArrayList<Integer> getMaxWindows() {
+        ArrayList<Integer> maxWindowArr = new ArrayList<>();
+        for (ScheduleItem item : scheduleItems) {
+            if (!maxWindowArr.contains(item.getMaxWindow())) {
+                maxWindowArr.add(item.getMaxWindow());
+            }
+        }
+        Collections.sort(maxWindowArr);
+        return maxWindowArr;
+    }
 
-        return new ArrayList<String>();
+    /**
+     * Creates a txt file that contains the schedule
+     * 
+     * @params none
+     * @return void
+     */
+    private void printSchedule() throws IOException {
+        File file = new File("schedule.txt");
+        FileWriter fw = new FileWriter(file);
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write("Schedule for " + CURR_DATE.toString() + "\n\n");
+        for (int i = 0; i < 24; i++) {
+            if (scheduledTasks.containsKey(i)) {
+                if (bonusVolunteers[i])
+                    bw.write(LocalTime.of(i, 0).toString() + "[+ Backup Volunteer]\n");
+                else
+                    bw.write(LocalTime.of(i, 0).toString() + "\n");
+                for (ScheduleItem item : scheduledTasks.get(i)) {
+                    bw.write(String.format("* %s (%d %s)\n",
+                            item.getDescription(), item.getQuantity(),
+                            String.join(", ", item.getName())));
+                }
+                bw.newLine();
+            }
+        }
+        bw.close();
+
     }
 
 }

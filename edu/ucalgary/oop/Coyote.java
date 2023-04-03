@@ -9,7 +9,7 @@ public class Coyote extends Animal {
 
     public Coyote(int id, String animalName, String animalType)
             throws IllegalArgumentException {
-        super(id, animalName, animalType);
+        super(id, animalName, animalType, 5, 10, 5, FeedingType.CREPUSCULAR);
     }
 
 }
