@@ -13,12 +13,13 @@ public abstract class Animal {
     protected final Integer FEED_PREP_TIME;
     protected final Integer CLEAN_TIME;
 
-    public Animal(int id, String animalName, String animalType, Integer feedTime, Integer feedPrepTime,
+
+    public Animal(int id, String animalName, AnimalType animalType, Integer feedTime, Integer feedPrepTime,
             Integer cleanTime, FeedingType feedingType)
             throws IllegalArgumentException {
         this.ANIMAL_ID = id;
         this.ANIMAL_NAME = animalName;
-        this.ANIMAL_TYPE = AnimalType.valueOf(animalType);
+        this.ANIMAL_TYPE = animalType;
         this.ANIMAL_FEEDING_TYPE = feedingType;
         this.FEED_TIME = feedTime;
         this.FEED_PREP_TIME = feedPrepTime;
