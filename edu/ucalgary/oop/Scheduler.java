@@ -10,13 +10,13 @@ public class Scheduler {
     private LocalDate DATE;
     private DailySchedule dailySchedule;
 
-    public Scheduler(LocalDate day) {
+    public Scheduler(LocalDate day, String user, String password) {
         this.DATE = day;
         this.animals = new ArrayList<Animal>();
         this.tasks = new ArrayList<Task>();
         this.treatments = new ArrayList<Treatment>();
         try {
-            SQLDatabase db = new SQLDatabase("EWR", animals, tasks, treatments);
+            SQLDatabase db = new SQLDatabase("EWR", user, password, animals, tasks, treatments);
         } catch (Exception e) {
             System.out.println("SQLDatabaseException caught: " + e.getMessage());
             throw new IllegalArgumentException(e);
