@@ -1,9 +1,13 @@
 package edu.ucalgary.oop;
 
+import javax.sound.midi.Soundbank;
+import javax.sound.midi.SoundbankResource;
+import javax.sound.sampled.AudioSystem;
 import javax.swing.*;
 import javax.swing.border.Border;
 
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -49,16 +53,77 @@ public class GUI extends JFrame {
      */
     public GUI() {
         super("EWR schedule manager");
+        login();
         setupGUI();
-        // setSize(WIDTH,HEIGHT);
-        setMinimumSize(new Dimension(400, 300));
+        //setSize(WIDTH,HEIGHT);
+        setMinimumSize(new Dimension(400, 400));
+        pack();
+
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        pack();
+        
         System.out.println(getLayout());
 
     }
 
+    public void login() {
+        JFrame loginFrame = new JFrame("Login");
+        loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        loginFrame.setResizable(false);
+        loginFrame.setLocationRelativeTo(null);
+        loginFrame.setVisible(true);
+
+        JPanel loginPanel = new JPanel();
+
+        loginPanel.setBorder(BorderFactory.createTitledBorder("Login"));
+
+        
+        
+        JPanel usernamePanel = new JPanel();
+        JLabel usernameLabel = new JLabel("Username:");
+        JTextField usernameField = new JTextField();
+        usernameField.setPreferredSize(new Dimension(100, 20));
+        usernamePanel.add(usernameLabel);
+        usernamePanel.add(usernameField);
+
+
+        JPanel passwordPanel = new JPanel();
+        JLabel passwordLabel = new JLabel("Password:");
+        JTextField passwordField = new JPasswordField();
+        passwordField.setPreferredSize(new Dimension(100, 20));
+        passwordPanel.add(passwordLabel);
+        passwordPanel.add(passwordField);
+
+
+
+        JButton loginButton = new JButton("Login");
+        loginButton.addActionListener(e -> {
+            String username = usernameField.getText();
+            String password = new String(passwordField.getText());
+            if (authenticate(username, password)) {
+                loginFrame.dispose();
+                this.setVisible(true);
+            }
+            else {
+                JOptionPane.showMessageDialog(loginFrame, "Invalid username or password");
+            }
+        });
+
+        
+
+        loginPanel.add(usernamePanel, BorderLayout.NORTH);
+        loginPanel.add(passwordPanel, BorderLayout.SOUTH);
+        
+        loginFrame.add(loginButton, BorderLayout.SOUTH);
+        loginFrame.add(loginPanel, BorderLayout.CENTER);
+
+        loginFrame.pack();
+    }
+
+        private boolean authenticate(String username, String password) {
+            
+            return true;
+        }
     /**
      * @version 1.0.0
      * @author Nicola Savino
@@ -77,22 +142,31 @@ public class GUI extends JFrame {
         topHeader.setVerticalAlignment(SwingConstants.CENTER);
 
         topPanel = new JPanel();
-        menuBar.setBorder(null);
+        menuBar.setBorder(BorderFactory.createEtchedBorder(Color.WHITE, Color.BLACK));
         topPanel.setPreferredSize(new Dimension(WIDTH, 100));
         topPanel.setLayout(new BorderLayout());
         topPanel.add(menuBar, BorderLayout.NORTH);
         topPanel.add(topHeader, BorderLayout.CENTER);
+
 
         buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(4, 1));
         buttonsPanel.setBorder(BorderFactory.createTitledBorder("Options"));
         buttonsPanel.setPreferredSize(new Dimension((int) (WIDTH * ((double) 0.2)), (int) (HEIGHT * ((double) 0.8))));
 
+
+        //options buttons
+        //create schedule
         JButton createButton = new JButton();
         createButton.setText("Create Schedule");
         createButton.addActionListener(createButtonEvent -> getSchedule());
+
+        //manage schedule
         JButton manageButton = new JButton();
         manageButton.setText("Manage Schedule");
+        manageButton.addActionListener(manageButtonEvent -> manageSchedule());
+
+        //print schedule
         JButton printButton = new JButton();
         printButton.setText("Print Schedule");
         printButton.addActionListener(printButtonEvent -> printSchedule());
@@ -103,6 +177,7 @@ public class GUI extends JFrame {
 
         volunteerPanel.add(volunteerLabel);
         volunteerPanel.add(volunteerCheck);
+
 
         buttonsPanel.add(createButton);
         buttonsPanel.add(manageButton);
@@ -118,6 +193,7 @@ public class GUI extends JFrame {
         this.add(topPanel, BorderLayout.NORTH);
         this.add(schedulePanel, BorderLayout.CENTER);
         this.add(buttonsPanel, BorderLayout.EAST);
+
 
         this.setBackground(Color.WHITE);
 
@@ -167,14 +243,17 @@ public class GUI extends JFrame {
      * @author Nicola Savino
      * @since 2020-11-20
      * 
-     *        This method prints the schedule to the console.
+
+     * This method builds the GUI menu bar
      * 
      * 
      */
     public void buildMenuBar() {
-        // construct menu bar items
-        JMenu fileMenu = new JMenu("File");
-        JMenuItem print_scheduleItem = new JMenuItem("Print Schedule");
+        //construct menu bar items
+
+        //construct file menu
+        JMenu fileMenu = new JMenu ("File");
+        JMenuItem print_scheduleItem = new JMenuItem ("Print Schedule");
         print_scheduleItem.addActionListener(printButtonEvent -> printSchedule());
         fileMenu.add(print_scheduleItem);
         JMenuItem create_scheduleItem = new JMenuItem("Create Schedule");
@@ -184,25 +263,42 @@ public class GUI extends JFrame {
         exitItem.addActionListener(exitButtonEvent -> this.dispose());
         fileMenu.add(exitItem);
 
-        JMenu helpMenu = new JMenu("Help");
-        JMenuItem contentsItem = new JMenuItem("Contents");
-        helpMenu.add(contentsItem);
-        JMenuItem aboutItem = new JMenuItem("About");
-        helpMenu.add(aboutItem);
+
+        //Construct help menu
+        JMenu helpMenu = new JMenu ("Help");
+        JMenuItem contentsItem = new JMenuItem ("Contents");
+        helpMenu.add (contentsItem);
+        
+        //about menu
+        JMenuItem aboutItem = new JMenuItem ("About");
+        aboutItem.addActionListener(aboutItemEvent -> {
+            JPanel aboutPanel = new JPanel();
+            aboutPanel.setLayout(new GridLayout(3, 1, 0, 10));
+
+            JLabel aboutTitle = new JLabel("EWR Schedule Manager v1.0.0");
+            JLabel aboutAuthors = new JLabel("Created by William Fraser, Nicola Savino, Aarsh Shah, Sarim Sheik");
+            JLabel aboutDescription = new JLabel("This program is used to create and manage the schedule for the EWR volunteer program.");
+            aboutTitle.setHorizontalAlignment(SwingConstants.CENTER);
+            aboutAuthors.setHorizontalAlignment(SwingConstants.CENTER);
+            aboutDescription.setHorizontalAlignment(SwingConstants.CENTER);
+            aboutPanel.add(aboutTitle);
+            aboutPanel.add(aboutAuthors);
+            aboutPanel.add(aboutDescription);
+            JOptionPane.showMessageDialog(this, aboutPanel, getTitle() + " - About", JOptionPane.INFORMATION_MESSAGE);
+        });
+        helpMenu.add (aboutItem);
 
         // construct menubar
         menuBar = new JMenuBar();
 
-        menuBar.setPreferredSize(new Dimension(WIDTH, 30));
-
-        menuBar.setBorder(null);
+        menuBar.setPreferredSize(new Dimension(WIDTH, 40));
         menuBar.setLayout(new FlowLayout(FlowLayout.LEFT));
         menuBar.add(fileMenu);
         menuBar.add(helpMenu);
-        this.setJMenuBar(menuBar);
-        System.out.println(getJMenuBar());
-
+        
     }
+
+    
 
     /**
      * @version 1.0.0
@@ -224,6 +320,100 @@ public class GUI extends JFrame {
         }
     }
 
+
+
+    /**
+     * @version 1.0.0
+     * @author Nicola Savino
+     * @since 2020-11-20
+     * 
+     * This method is called when the manage schedule button is pressed.
+     * It will open a new window where the user can manage the schedule.
+     */
+    public void manageSchedule() {
+        // TODO Auto-generated method stub
+
+        JDialog manageFrame = new JDialog(this, "Manage Schedule", true);
+        manageFrame.setLayout(new BorderLayout());
+        manageFrame.setLocationRelativeTo(this);
+        
+
+        JComboBox selectedTime = new JComboBox();
+        selectedTime.addItem("8:00 AM");
+        selectedTime.addItem("9:00 AM");
+        selectedTime.addItem("10:00 AM");
+        selectedTime.addItem("11:00 AM");
+        selectedTime.addItem("12:00 PM");
+        selectedTime.addItem("1:00 PM");
+        selectedTime.addItem("2:00 PM");
+
+        JComboBox newTime = new JComboBox();
+        newTime.addItem("8:00 AM");
+        newTime.addItem("9:00 AM");
+        newTime.addItem("10:00 AM");
+        newTime.addItem("11:00 AM");
+        newTime.addItem("12:00 PM");
+        newTime.addItem("1:00 PM");
+        newTime.addItem("2:00 PM");
+
+        
+        // selectedTime.addItemListener(e -> {
+        //     if (e.getStateChange() == ItemEvent.SELECTED) {
+        //         System.out.println(selectedTime.getSelectedItem());
+        //     }
+        // });
+
+        
+        // newTime.addItemListener(e -> {
+        //     if (e.getStateChange() == ItemEvent.SELECTED) {
+        //         System.out.println(newTime.getSelectedItem());
+        //     }
+        // });
+
+        
+        
+        
+
+        JPanel managePanel = new JPanel();
+       
+        JPanel currentTimePanel = new JPanel();
+
+        JLabel currentTimeLabel = new JLabel("Current Time: ");
+
+        currentTimePanel.add(currentTimeLabel);
+        currentTimePanel.add(selectedTime);
+
+        JPanel newTimePanel = new JPanel();
+
+        JLabel newTimeLabel = new JLabel("New Time: ");
+
+        newTimePanel.add(newTimeLabel);
+        newTimePanel.add(newTime);
+
+        managePanel.add(currentTimePanel);
+        managePanel.add(newTimePanel);
+
+
+
+        JButton confirmButton = new JButton("Confirm");
+        confirmButton.addActionListener(confirmButtonEvent -> {
+            // TODO Auto-generated method stub
+            System.out.println(selectedTime.getSelectedItem());
+            System.out.println(newTime.getSelectedItem());
+            manageFrame.dispose();
+        });
+        manageFrame.add(confirmButton, BorderLayout.SOUTH);
+
+        manageFrame.add(managePanel, BorderLayout.CENTER);
+
+        manageFrame.pack();
+        
+
+        manageFrame.setVisible(true);
+
+    }
+
+
     /**
      * @version 1.0.0
      * @author Nicola Savino
@@ -235,7 +425,7 @@ public class GUI extends JFrame {
     public static void main(String[] args) {
 
         EventQueue.invokeLater(() -> {
-            new GUI().setVisible(true);
+            new GUI();
         });
 
     }
