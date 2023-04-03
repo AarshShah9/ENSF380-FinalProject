@@ -19,6 +19,12 @@ public class DailySchedule {
     private ArrayList<Animal> animals;
     private ArrayList<Task> tasks;
     private ArrayList<Treatment> treatments;
+    private ArrayList<ScheduleItem> scheduleItems;
+    private int numCoyotes = 0;
+    private int numFoxes = 0;
+    private int numRaccoons = 0;
+    private int numBeavers = 0;
+    private int numPorcupines = 0;
 
     /**
      * Constructs a new DailySchedule object with the given ArrayLists of animals,
@@ -44,6 +50,70 @@ public class DailySchedule {
         addInferredTreatments();
 
         this.scheduledTasks = scheduleTasks();
+    }
+
+    private void addTreatments() {
+        for (Treatment treatment : treatments) {
+            scheduleItems.add(new ScheduleItem(
+                    animals.get(treatment.getAnimalID() - 1).getAnimalName(),
+                    1, tasks.get(treatment.getTaskID() - 1).getDescription(),
+                    treatment.getStartHour(),
+                    tasks.get(treatment.getTaskID()).getMaxWindow(),
+                    tasks.get(treatment.getTaskID()).getDuration(),
+                    0));
+        }
+    }
+
+    private void addInferredBullShit() {
+        for (Animal animal : animals) {
+            addInferredCrap(animal);
+            if (animal.getAnimalType() == AnimalType.COYOTE) {
+                if (!animal.getOrphaned())
+                    numCoyotes++;
+
+            } else if (animal.getAnimalType() == AnimalType.FOX) {
+                if (!animal.getOrphaned())
+                    numFoxes++;
+
+            } else if (animal.getAnimalType() == AnimalType.RACCOON) {
+                if (!animal.getOrphaned())
+                    numRaccoons++;
+
+            } else if (animal.getAnimalType() == AnimalType.BEAVER) {
+                if (!animal.getOrphaned())
+                    numBeavers++;
+
+            } else if (animal.getAnimalType() == AnimalType.PORCUPINE) {
+                if (!animal.getOrphaned())
+                    numPorcupines++;
+            }
+        }
+    }
+
+    private void addInferredCrap(Animal animal) {
+        scheduleItems.add(new ScheduleItem(animal.getAnimalName(),
+                1, "Cage cleaning - " + animal.getAnimalType().toString().toLowerCase(),
+                0, 24, animal.CLEAN_TIME, 0));
+        if (!animal.getOrphaned())
+            scheduleItems.add(new ScheduleItem(animal.getAnimalName(),
+                    1, "Feeding - " + animal.getAnimalType().toString().toLowerCase(),
+                    animal.ANIMAL_FEEDING_TYPE.getFeedStartTime(), animal.FEED_WINDOW,
+                    animal.FEED_TIME, animal.FEED_PREP_TIME));
+    }
+
+    private void addOrphanedCleaning(Animal animal) {
+        scheduleItems.add(new ScheduleItem(animal.getAnimalName(), 1,
+                "Cage cleaning - " + animal.getAnimalType().toString().toLowerCase(),
+                0, 24, animal.CLEAN_TIME, 0));
+    }
+
+    public void calculateSchedule() {
+        for (ScheduleItem : scheduleItems) {
+            if (scheduleItem.getTaskID() == 1) {
+                scheduleItem.setStartTime(0);
+                scheduleItem.setEndTime(24);
+            }
+        }
     }
 
     /**
