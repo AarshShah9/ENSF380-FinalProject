@@ -282,15 +282,4 @@ public class DailySchedule {
         return scheduledTasks;
     }
 
-    public void main(String[] args) {
-        ArrayList<Animal> animals = new ArrayList<Animal>();
-        ArrayList<Beaver> animals2 = new ArrayList<>();
-
-        animals.add(new Beaver(0, "Aarsh", "Beaver"));
-        for (Beaver animal : animals2) {
-            System.out.println(animal.FEED_TIME);
-        }
-
-    }
-
 }
