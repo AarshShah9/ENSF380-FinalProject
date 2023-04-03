@@ -1,5 +1,8 @@
 package edu.ucalgary.oop;
 
+import javax.sound.midi.Soundbank;
+import javax.sound.midi.SoundbankResource;
+import javax.sound.sampled.AudioSystem;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -49,10 +52,11 @@ public class GUI extends JFrame {
         super("EWR schedule manager");
         setupGUI();
         //setSize(WIDTH,HEIGHT);
-        setMinimumSize(new Dimension(400, 300));
+        setMinimumSize(new Dimension(400, 400));
+        pack();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        pack();
+        
         System.out.println(getLayout());
         
     }
@@ -74,13 +78,13 @@ public class GUI extends JFrame {
         topHeader.setVerticalAlignment(SwingConstants.CENTER);
 
         topPanel = new JPanel();
-        menuBar.setBorder(null);
+        menuBar.setBorder(BorderFactory.createEtchedBorder(Color.WHITE, Color.BLACK));
         topPanel.setPreferredSize(new Dimension(WIDTH, 100));
         topPanel.setLayout(new BorderLayout());
         topPanel.add(menuBar, BorderLayout.NORTH);
         topPanel.add(topHeader, BorderLayout.CENTER);
         
-        
+
         
 
         buttonsPanel = new JPanel();
@@ -88,11 +92,19 @@ public class GUI extends JFrame {
         buttonsPanel.setBorder(BorderFactory.createTitledBorder("Options"));
         buttonsPanel.setPreferredSize(new Dimension((int) (WIDTH * ((double) 0.2)), (int) (HEIGHT * ((double) 0.8))));
 
+
+        //options buttons
+        //create schedule
         JButton createButton = new JButton();
         createButton.setText("Create Schedule");
         createButton.addActionListener(createButtonEvent -> getSchedule());
+
+        //manage schedule
         JButton manageButton = new JButton();
         manageButton.setText("Manage Schedule");
+        manageButton.addActionListener(manageButtonEvent -> manageSchedule());
+
+        //print schedule
         JButton printButton = new JButton();
         printButton.setText("Print Schedule");
         printButton.addActionListener(printButtonEvent -> printSchedule());
@@ -103,6 +115,7 @@ public class GUI extends JFrame {
 
         volunteerPanel.add(volunteerLabel);
         volunteerPanel.add(volunteerCheck);
+
 
         buttonsPanel.add(createButton);
         buttonsPanel.add(manageButton);
@@ -119,6 +132,7 @@ public class GUI extends JFrame {
         this.add(topPanel, BorderLayout.NORTH);
         this.add(schedulePanel, BorderLayout.CENTER);
         this.add(buttonsPanel, BorderLayout.EAST);
+
 
         this.setBackground(Color.WHITE);
     
@@ -171,12 +185,14 @@ public class GUI extends JFrame {
      * @author Nicola Savino
      * @since 2020-11-20
      * 
-     * This method prints the schedule to the console.
+     * This method builds the GUI menu bar
      * 
      * 
      */
     public void buildMenuBar() {
         //construct menu bar items
+
+        //construct file menu
         JMenu fileMenu = new JMenu ("File");
         JMenuItem print_scheduleItem = new JMenuItem ("Print Schedule");
         print_scheduleItem.addActionListener(printButtonEvent -> printSchedule());
@@ -189,27 +205,38 @@ public class GUI extends JFrame {
         fileMenu.add (exitItem);
 
 
+        //Construct help menu
         JMenu helpMenu = new JMenu ("Help");
         JMenuItem contentsItem = new JMenuItem ("Contents");
         helpMenu.add (contentsItem);
+        
+        //about menu
         JMenuItem aboutItem = new JMenuItem ("About");
+        aboutItem.addActionListener(aboutItemEvent -> {
+            JPanel aboutPanel = new JPanel();
+            aboutPanel.setLayout(new GridLayout(3, 1, 0, 10));
+
+            JLabel aboutTitle = new JLabel("EWR Schedule Manager v1.0.0");
+            JLabel aboutAuthors = new JLabel("Created by William Fraser, Nicola Savino, Aarsh Shah, Sarim Sheik");
+            JLabel aboutDescription = new JLabel("This program is used to create and manage the schedule for the EWR volunteer program.");
+            aboutTitle.setHorizontalAlignment(SwingConstants.CENTER);
+            aboutAuthors.setHorizontalAlignment(SwingConstants.CENTER);
+            aboutDescription.setHorizontalAlignment(SwingConstants.CENTER);
+            aboutPanel.add(aboutTitle);
+            aboutPanel.add(aboutAuthors);
+            aboutPanel.add(aboutDescription);
+            JOptionPane.showMessageDialog(this, aboutPanel, getTitle() + " - About", JOptionPane.INFORMATION_MESSAGE);
+        });
         helpMenu.add (aboutItem);
 
         //construct menubar
         menuBar = new JMenuBar();
-
-        
-        menuBar.setPreferredSize(new Dimension(WIDTH, 30));
-
-        menuBar.setBorder(null);
+        menuBar.setPreferredSize(new Dimension(WIDTH, 40));
         menuBar.setLayout(new FlowLayout(FlowLayout.LEFT));
-        menuBar.add (fileMenu);
-        menuBar.add (helpMenu);
-        this.setJMenuBar(menuBar);
-        System.out.println(getJMenuBar());
+        menuBar.add(fileMenu);
+        menuBar.add(helpMenu);
         
     }
-
 
     
     /**
@@ -231,6 +258,25 @@ public class GUI extends JFrame {
         }
     }
 
+
+    /**
+     * @version 1.0.0
+     * @author Nicola Savino
+     * @since 2020-11-20
+     * 
+     * This method is called when the manage schedule button is pressed.
+     * It will open a new window where the user can manage the schedule.
+     */
+    public void manageSchedule() {
+        // TODO Auto-generated method stub
+
+        JFrame manageFrame = new JFrame("Manage Schedule");
+        manageFrame.setLocationRelativeTo(this);
+        manageFrame.setSize(400, 400);
+        manageFrame.setVisible(true);
+
+
+    }
 
 
     /**
