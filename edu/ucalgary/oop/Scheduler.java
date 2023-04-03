@@ -18,6 +18,9 @@ public class Scheduler {
         this.treatments = new ArrayList<Treatment>();
         try {
             SQLDatabase db = new SQLDatabase("EWR", animals, tasks, treatments);
+            setTasks(db.getTasks());
+            setAnimals(db.getAnimals());
+            setTreatments(db.getTreatments());
         } catch (Exception e) {
             System.out.println("SQLDatabaseException caught: " + e.getMessage());
             throw new IllegalArgumentException(e);

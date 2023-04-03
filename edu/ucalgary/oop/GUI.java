@@ -51,6 +51,7 @@ public class GUI extends JFrame {
      */
     public GUI() {
         super("EWR schedule manager");
+        login();
         setupGUI();
         //setSize(WIDTH,HEIGHT);
         setMinimumSize(new Dimension(400, 400));
@@ -62,6 +63,64 @@ public class GUI extends JFrame {
         
     }
 
+    public void login() {
+        JFrame loginFrame = new JFrame("Login");
+        loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        loginFrame.setResizable(false);
+        loginFrame.setLocationRelativeTo(null);
+        loginFrame.setVisible(true);
+
+        JPanel loginPanel = new JPanel();
+
+        loginPanel.setBorder(BorderFactory.createTitledBorder("Login"));
+
+        
+        
+        JPanel usernamePanel = new JPanel();
+        JLabel usernameLabel = new JLabel("Username:");
+        JTextField usernameField = new JTextField();
+        usernameField.setPreferredSize(new Dimension(100, 20));
+        usernamePanel.add(usernameLabel);
+        usernamePanel.add(usernameField);
+
+
+        JPanel passwordPanel = new JPanel();
+        JLabel passwordLabel = new JLabel("Password:");
+        JTextField passwordField = new JPasswordField();
+        passwordField.setPreferredSize(new Dimension(100, 20));
+        passwordPanel.add(passwordLabel);
+        passwordPanel.add(passwordField);
+
+
+
+        JButton loginButton = new JButton("Login");
+        loginButton.addActionListener(e -> {
+            String username = usernameField.getText();
+            String password = new String(passwordField.getText());
+            if (authenticate(username, password)) {
+                loginFrame.dispose();
+                this.setVisible(true);
+            }
+            else {
+                JOptionPane.showMessageDialog(loginFrame, "Invalid username or password");
+            }
+        });
+
+        
+
+        loginPanel.add(usernamePanel, BorderLayout.NORTH);
+        loginPanel.add(passwordPanel, BorderLayout.SOUTH);
+        
+        loginFrame.add(loginButton, BorderLayout.SOUTH);
+        loginFrame.add(loginPanel, BorderLayout.CENTER);
+
+        loginFrame.pack();
+    }
+
+        private boolean authenticate(String username, String password) {
+            
+            return true;
+        }
     /**
      * @version 1.0.0
      * @author Nicola Savino
@@ -363,7 +422,7 @@ public class GUI extends JFrame {
     public static void main(String[] args) {
 
         EventQueue.invokeLater(() -> {
-            new GUI().setVisible(true);
+            new GUI();
         });
     
     }
