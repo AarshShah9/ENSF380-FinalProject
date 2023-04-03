@@ -1,7 +1,9 @@
 package edu.ucalgary.oop;
 
+import java.util.ArrayList;
+
 public class ScheduleItem {
-    private String name;
+    private ArrayList<String> name;
     private int quantity;
     private final String DESCRIPTION;
     private int startHour;
@@ -9,7 +11,8 @@ public class ScheduleItem {
     private int duration;
     private int prepTime;
 
-    public ScheduleItem(String name, int quantity, String description, int startHour, int maxWindow, int duration,
+    public ScheduleItem(ArrayList<String> name, int quantity, String description, int startHour, int maxWindow,
+            int duration,
             int prepTime) {
         this.name = name;
         this.quantity = quantity;
@@ -20,7 +23,7 @@ public class ScheduleItem {
         this.prepTime = prepTime;
     }
 
-    public String getName() {
+    public ArrayList<String> getName() {
         return name;
     }
 
@@ -48,7 +51,7 @@ public class ScheduleItem {
         return prepTime;
     }
 
-    public void setName(String name) {
+    public void setName(ArrayList<String> name) {
         this.name = name;
     }
 
@@ -66,5 +69,17 @@ public class ScheduleItem {
 
     public void setPrepTime(int prepTime) {
         this.prepTime = prepTime;
+    }
+
+    public void addName(ArrayList<String> name) {
+        this.name.addAll(name);
+    }
+
+    public void addQuantity(int quantity) {
+        this.quantity += quantity;
+    }
+
+    public void addDuration(int duration) {
+        this.duration += duration;
     }
 }
