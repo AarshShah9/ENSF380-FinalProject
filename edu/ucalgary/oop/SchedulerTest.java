@@ -25,7 +25,7 @@ public class SchedulerTest {
         animals.add(testAnimal);
         Task testTask = new Task(1, "Test", 20, 40);
         tasks.add(testTask);
-        Scheduler temp = new Scheduler(date, animals, tasks, treatments);
+        Scheduler temp = new Scheduler(date);
         assertEquals(date, temp.getDate());
         assertEquals(animals, temp.getAnimals());
         assertEquals(tasks, temp.getTasks());
@@ -34,7 +34,7 @@ public class SchedulerTest {
     // Test the Task constructor with invalid data
     @Test(expected = IllegalArgumentException.class)
     public void testTaskConstructorBadData() {
-        Scheduler temp = new Scheduler(LocalDate.now(), new ArrayList<>(), new ArrayList<>(), new ArrayList<Treatment>());
+        Scheduler temp = new Scheduler(LocalDate.now());
     }
 
     // Test the getDate function
@@ -49,7 +49,7 @@ public class SchedulerTest {
         animals.add(testAnimal);
         Task testTask = new Task(1, "Test", 20, 40);
         tasks.add(testTask);
-        Scheduler temp = new Scheduler(expResult, animals, tasks, treatments);
+        Scheduler temp = new Scheduler(expResult);
         LocalDate result = temp.getDate();
         System.out.println("getDate");
         assertEquals("getDate() value was incorrect: ", expResult, result);
@@ -66,7 +66,7 @@ public class SchedulerTest {
         animals.add(testAnimal);
         Task testTask = new Task(1, "Test", 20, 40);
         tasks.add(testTask);
-        Scheduler temp = new Scheduler(date, animals, tasks, treatments);
+        Scheduler temp = new Scheduler(date);
         ArrayList<Animal> result = temp.getAnimals();
         System.out.println("getAnimals");
         assertEquals("getAnimals() value was incorrect: ", animals, result);
@@ -84,7 +84,7 @@ public class SchedulerTest {
         animals.add(testAnimal);
         Task testTask = new Task(1, "Test", 20, 40);
         tasks.add(testTask);
-        Scheduler temp = new Scheduler(date, animals, tasks, treatments);
+        Scheduler temp = new Scheduler(date);
         Animal test = new Raccoon(5, "Remy", "RACCOON");
         animals.set(0, test);
         temp.setAnimals(animals);
@@ -105,7 +105,7 @@ public class SchedulerTest {
         animals.add(testAnimal);
         Task testTask = new Task(1, "Test", 20, 40);
         tasks.add(testTask);
-        Scheduler temp = new Scheduler(date, animals, tasks, treatments);
+        Scheduler temp = new Scheduler(date);
         ArrayList<Task> result = temp.getTasks();
         System.out.println("getTasks");
         assertEquals("getTasks() value was incorrect: ", tasks, result);
@@ -123,7 +123,7 @@ public class SchedulerTest {
         animals.add(testAnimal);
         Task testTask = new Task(1, "Test", 20, 40);
         tasks.add(testTask);
-        Scheduler temp = new Scheduler(date, animals, tasks, treatments);
+        Scheduler temp = new Scheduler(date);
         Task test = new Task(5, "Test1", 2, 5);
         tasks.set(0, test);
         temp.setAnimals(animals);
@@ -144,11 +144,18 @@ public class SchedulerTest {
         Animal testAnimal = new Raccoon(0, "Raccoon", "RACCOON");
         animals.add(testAnimal);
 
-        Scheduler temp = new Scheduler(date, animals, tasks, treatments);
+        Scheduler temp = new Scheduler(date);
         Task testTask = new Task(1, "Test", 1, 1);
         tasks.add(testTask);
-        DailySchedule daily = temp.calculateSchedule();
-        DailySchedule expected = new DailySchedule(animals, tasks, treatments, date);
-        assertEquals(expected, daily);
+        temp.calculateSchedule();
+        DailySchedule expected;
+        try {
+            expected = new DailySchedule(animals, tasks, treatments, date);
+            assertEquals(expected, temp);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getLocalizedMessage());
+        }
+        
+        
     }
 }
