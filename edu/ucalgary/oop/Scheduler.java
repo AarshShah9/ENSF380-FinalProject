@@ -8,16 +8,17 @@ public class Scheduler {
     private ArrayList<Task> tasks;
     private ArrayList<Animal> animals;
     private ArrayList<Treatment> treatments;
-    private final LocalDate DATE;
+
+    private LocalDate DATE;
     private DailySchedule dailySchedule;
 
-    public Scheduler(LocalDate day) {
+    public Scheduler(LocalDate day, String user, String password) {
         this.DATE = day;
         this.animals = new ArrayList<Animal>();
         this.tasks = new ArrayList<Task>();
         this.treatments = new ArrayList<Treatment>();
         try {
-            SQLDatabase db = new SQLDatabase("EWR", animals, tasks, treatments);
+            SQLDatabase db = new SQLDatabase("EWR", user, password, animals, tasks, treatments);
         } catch (Exception e) {
             System.out.println("SQLDatabaseException caught: " + e.getMessage());
             throw new IllegalArgumentException(e);
@@ -27,6 +28,17 @@ public class Scheduler {
     public void calculateSchedule() {
         try {
             this.dailySchedule = new DailySchedule(animals, tasks, treatments, DATE);
+        } catch (Exception e) {
+            System.out.println("ImpossibleScheduleException caught: " + e.getMessage());
+        }
+        return dailySchedule;
+    }
+
+    public void changeTreatmentStart(int animalID, int taskID, int newStartHour) {
+        for (Treatment treatment : treatments) {
+            if (treatment.getAnimalID() == animalID && treatment.getTaskID() == taskID) {
+                treatment.setStartHour(newStartHour);
+            }
         } catch (ImpossibleScheduleException e) {
             System.out.println("ImpossibleScheduleException caught: " + e.getMessage());
         } catch (IOException e) {

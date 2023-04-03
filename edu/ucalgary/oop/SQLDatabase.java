@@ -21,17 +21,19 @@ public class SQLDatabase {
      * @throws SQLException             if there is an error connecting to the
      *                                  database
      */
-    public SQLDatabase(String dbName, ArrayList<Animal> animaList, ArrayList<Task> taskList,
+    public SQLDatabase(String dbName, String user, String password, ArrayList<Animal> animaList,
+            ArrayList<Task> taskList,
             ArrayList<Treatment> treatmentList) throws IllegalArgumentException {
         this.animals = animaList;
         this.tasks = taskList;
         this.treatments = treatmentList;
 
         try {
-            this.DB_CONNECT = DriverManager.getConnection(String.format("jdbc:mysql://localhost/%s", dbName), "student",
-                    "ensf");
+            this.DB_CONNECT = DriverManager.getConnection(String.format("jdbc:mysql://localhost/%s", dbName), user,
+                    password);
             addAnimalsSQL();
             addTasksSQL();
+            addTreatmentSQL();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -51,30 +53,22 @@ public class SQLDatabase {
                 try {
                     switch (name) {
                         case "coyote":
-                            animals.add(new Coyote(rs.getInt("AnimalID"), rs.getString("AnimalNickname"),
-                                    rs.getString("AnimalSpecies")));
+                            animals.add(new Coyote(rs.getInt("AnimalID"), rs.getString("AnimalNickname")));
                             break;
                         case "fox":
-                            animals.add(new Fox(rs.getInt("AnimalID"), rs.getString("AnimalNickname"),
-                                    rs.getString("AnimalSpecies")));
+                            animals.add(new Fox(rs.getInt("AnimalID"), rs.getString("AnimalNickname")));
                             break;
                         case "porcupine":
-                            animals.add(new Porcupine(rs.getInt("AnimalID"), rs.getString("AnimalNickname"),
-                                    rs.getString("AnimalSpecies")));
+                            animals.add(new Porcupine(rs.getInt("AnimalID"), rs.getString("AnimalNickname")));
                             break;
                         case "beaver":
-                            animals.add(new Beaver(rs.getInt("AnimalID"), rs.getString("AnimalNickname"),
-                                    rs.getString("AnimalSpecies")));
+                            animals.add(new Beaver(rs.getInt("AnimalID"), rs.getString("AnimalNickname")));
                             break;
                         default:
                             System.out.println("Unknown animal: " + name);
                     }
-                    // Class<?> cls = Class.forName(name.substring(0, 1).toUpperCase() +
-                    // name.substring(1));
-                    // Animal animal = (Animal) cls.newInstance();
-                    // animals.add(animal);
                 } catch (Exception e) {
-                    throw new IllegalArgumentException("Invalid Animal Input");
+                    throw new IllegalArgumentException("Invalid Animal Input" + e.getMessage());
                 }
 
             }
