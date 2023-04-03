@@ -19,7 +19,8 @@ import java.io.IOException;
  * @author Nicola Savino
  * @since 2020-11-20
  * 
- * This class is the main GUI class for the EWR schedule manager. It contains the main method and the GUI constructor.
+ *        This class is the main GUI class for the EWR schedule manager. It
+ *        contains the main method and the GUI constructor.
  * 
  * @extends JFrame
  * 
@@ -32,7 +33,7 @@ public class GUI extends JFrame {
 
     // Variables
     private JLabel topHeader;
-    
+
     private JPanel topPanel;
     private JPanel schedulePanel;
     private JPanel buttonsPanel;
@@ -46,7 +47,8 @@ public class GUI extends JFrame {
      * @author Nicola Savino
      * @since 2020-11-20
      * 
-     * This is the main method for the EWR schedule manager. It creates a new GUI object and sets it visible.
+     *        This is the main method for the EWR schedule manager. It creates a new
+     *        GUI object and sets it visible.
      * 
      */
     public GUI() {
@@ -56,11 +58,12 @@ public class GUI extends JFrame {
         //setSize(WIDTH,HEIGHT);
         setMinimumSize(new Dimension(400, 400));
         pack();
+
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         System.out.println(getLayout());
-        
+
     }
 
     public void login() {
@@ -126,14 +129,15 @@ public class GUI extends JFrame {
      * @author Nicola Savino
      * @since 2020-11-20
      * 
-     * This method sets up the GUI by creating the menu bar, the top panel, the buttons panel and the schedule panel.
+     *        This method sets up the GUI by creating the menu bar, the top panel,
+     *        the buttons panel and the schedule panel.
      */
     public void setupGUI() {
-        
+
         buildMenuBar();
 
         topHeader = new JLabel("EWR schedule manager");
-        
+
         topHeader.setHorizontalAlignment(SwingConstants.CENTER);
         topHeader.setVerticalAlignment(SwingConstants.CENTER);
 
@@ -143,9 +147,7 @@ public class GUI extends JFrame {
         topPanel.setLayout(new BorderLayout());
         topPanel.add(menuBar, BorderLayout.NORTH);
         topPanel.add(topHeader, BorderLayout.CENTER);
-        
 
-        
 
         buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(4, 1));
@@ -182,9 +184,8 @@ public class GUI extends JFrame {
         buttonsPanel.add(printButton);
         buttonsPanel.add(volunteerPanel);
 
-
         schedulePanel = new JPanel();
-        
+
         schedulePanel.setLayout(new BorderLayout());
         schedulePanel.setBorder(BorderFactory.createTitledBorder("Schedule"));
         schedulePanel.setPreferredSize(new Dimension((int) (WIDTH * ((double) 0.8)), (int) (HEIGHT * ((double) 0.8))));
@@ -195,8 +196,7 @@ public class GUI extends JFrame {
 
 
         this.setBackground(Color.WHITE);
-    
-       
+
     }
 
     /**
@@ -204,7 +204,7 @@ public class GUI extends JFrame {
      * @author Nicola Savino
      * @since 2020-11-20
      * 
-     * This method prints the schedule to the console.
+     *        This method prints the schedule to the console.
      */
     public void getSchedule() {
 
@@ -213,9 +213,7 @@ public class GUI extends JFrame {
         try {
             File file = new File("schedule.txt");
             BufferedReader reader = new BufferedReader(new FileReader(file));
-            
-         
-            
+
             String line = reader.readLine();
             while (line != null) {
                 scheduleText.append(line + "\n");
@@ -229,12 +227,12 @@ public class GUI extends JFrame {
         JScrollPane scrollPane = new JScrollPane(scheduleText);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setMaximumSize(new Dimension((int) (schedulePanel.getWidth() * ((double) 0.5)), (int) (schedulePanel.getHeight() * ((double) 0.6))));
+        scrollPane.setMaximumSize(new Dimension((int) (schedulePanel.getWidth() * ((double) 0.5)),
+                (int) (schedulePanel.getHeight() * ((double) 0.6))));
         scrollPane.setPreferredSize(new Dimension((int) (WIDTH * ((double) 0.8)), (int) (HEIGHT * ((double) 0.6))));
-        
 
         schedulePanel.add(scrollPane);
-        
+
         // Update the GUI
         this.revalidate();
         this.repaint();
@@ -245,6 +243,7 @@ public class GUI extends JFrame {
      * @author Nicola Savino
      * @since 2020-11-20
      * 
+
      * This method builds the GUI menu bar
      * 
      * 
@@ -256,13 +255,13 @@ public class GUI extends JFrame {
         JMenu fileMenu = new JMenu ("File");
         JMenuItem print_scheduleItem = new JMenuItem ("Print Schedule");
         print_scheduleItem.addActionListener(printButtonEvent -> printSchedule());
-        fileMenu.add (print_scheduleItem);
-        JMenuItem create_scheduleItem = new JMenuItem ("Create Schedule");
+        fileMenu.add(print_scheduleItem);
+        JMenuItem create_scheduleItem = new JMenuItem("Create Schedule");
         create_scheduleItem.addActionListener(createButtonEvent -> getSchedule());
-        fileMenu.add (create_scheduleItem);
-        JMenuItem exitItem = new JMenuItem ("Exit");
+        fileMenu.add(create_scheduleItem);
+        JMenuItem exitItem = new JMenuItem("Exit");
         exitItem.addActionListener(exitButtonEvent -> this.dispose());
-        fileMenu.add (exitItem);
+        fileMenu.add(exitItem);
 
 
         //Construct help menu
@@ -289,8 +288,9 @@ public class GUI extends JFrame {
         });
         helpMenu.add (aboutItem);
 
-        //construct menubar
+        // construct menubar
         menuBar = new JMenuBar();
+
         menuBar.setPreferredSize(new Dimension(WIDTH, 40));
         menuBar.setLayout(new FlowLayout(FlowLayout.LEFT));
         menuBar.add(fileMenu);
@@ -299,14 +299,16 @@ public class GUI extends JFrame {
     }
 
     
+
     /**
      * @version 1.0.0
      * @author Nicola Savino
      * @since 2020-11-20
      * 
-     * This method is called when the print schedule button is pressed. 
-     * It checks if the volunteer checkbox is checked, and if it is not, 
-     * it will display a popup window asking the user to confirm that a volunteer is present.
+     *        This method is called when the print schedule button is pressed.
+     *        It checks if the volunteer checkbox is checked, and if it is not,
+     *        it will display a popup window asking the user to confirm that a
+     *        volunteer is present.
      */
     public void printSchedule() {
 
@@ -317,6 +319,7 @@ public class GUI extends JFrame {
             JOptionPane.showMessageDialog(this, volunteerLabel, getTitle(), JOptionPane.WARNING_MESSAGE);
         }
     }
+
 
 
     /**
@@ -417,15 +420,14 @@ public class GUI extends JFrame {
      * @since 2020-11-20
      * 
      * @param args
-     * Main method
+     *             Main method
      */
     public static void main(String[] args) {
 
         EventQueue.invokeLater(() -> {
             new GUI();
         });
-    
+
     }
 
 }
-
