@@ -24,7 +24,7 @@ public class DailySchedule {
     private ArrayList<Treatment> treatments;
 
     private boolean[] bonusVolunteers = new boolean[24];
-    
+
     private ArrayList<ScheduleItem> scheduleItems = new ArrayList<ScheduleItem>();
 
     /**
@@ -67,7 +67,7 @@ public class DailySchedule {
             // TODO: handle exception
             e.printStackTrace();
         }
-        
+
     }
 
     public boolean[] getVolunteersNeeded() {
