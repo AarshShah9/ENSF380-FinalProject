@@ -12,8 +12,7 @@ public class ScheduleItem {
     private int prepTime;
 
     public ScheduleItem(ArrayList<String> name, int quantity, String description, int startHour, int maxWindow,
-            int duration,
-            int prepTime) {
+            int duration, int prepTime) {
         this.name = name;
         this.quantity = quantity;
         this.DESCRIPTION = description;
