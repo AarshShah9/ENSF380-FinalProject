@@ -99,7 +99,7 @@ public class SchedulerTest {
         tasks.add(testTask);
         Treatment testTreatment = new Treatment(1, 1, 1);
         treatments.add(testTreatment);
-        
+
         Scheduler temp = new Scheduler(date, tasks, treatments, animals);
 
         Animal test = new Raccoon(5, "Remy");
@@ -148,7 +148,7 @@ public class SchedulerTest {
         treatments.add(testTreatment);
 
         Scheduler temp = new Scheduler(date, tasks, treatments, animals);
-        
+
         Task test = new Task(5, "Test1", 2, 0);
         tasks.set(0, test);
         temp.setTasks(tasks);
@@ -157,7 +157,7 @@ public class SchedulerTest {
         System.out.println("setTasks");
         assertEquals("setTasks() value was incorrect: ", tasks, result);
     }
-    
+
     // Test the getTreatments function
     @Test
     public void testGetTreatments() {
@@ -227,5 +227,36 @@ public class SchedulerTest {
         } catch (Exception e) {
             System.out.println("Error: " + e.getLocalizedMessage());
         }
+    }
+
+    @Test
+    public void testGetFromSQL() {
+        ArrayList<Task> tasks = new ArrayList<Task>();
+        ArrayList<Treatment> treatments = new ArrayList<Treatment>();
+        ArrayList<Animal> animals = new ArrayList<Animal>();
+        Scheduler scheduler = new Scheduler(LocalDate.now(), tasks, treatments, animals);
+        scheduler.getFromSQL();
+
+        assertNotNull(scheduler.getAnimals());
+        assertNotNull(scheduler.getTasks());
+        assertNotNull(scheduler.getTreatments());
+    }
+
+    @Test
+    public void testChangeTreatmentStart() {
+        ArrayList<Task> tasks = new ArrayList<Task>();
+        ArrayList<Treatment> treatments = new ArrayList<Treatment>();
+        treatments.add(new Treatment(1, 1, 3));
+        ArrayList<Animal> animals = new ArrayList<Animal>();
+        Scheduler scheduler = new Scheduler(LocalDate.now(), tasks, treatments, animals);
+
+        Treatment treatment = scheduler.getTreatments().get(0);
+
+        scheduler.changeTreatmentStart(1, 1, 2);
+        assertEquals(2, scheduler.getTreatments().get(0).getStartHour());
+
+        scheduler.changeTreatmentStart(1, 2, 10);
+        assertEquals(2, scheduler.getTreatments().get(0).getStartHour());
+
     }
 }
