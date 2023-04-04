@@ -9,10 +9,17 @@ public class Scheduler {
     private ArrayList<Animal> animals;
     private ArrayList<Treatment> treatments;
 
-    private LocalDate DATE;
+    private final LocalDate DATE;
     private DailySchedule dailySchedule;
 
-    public Scheduler(LocalDate day, String user, String password) {
+    public static void main(String[] args) {
+        Scheduler newSceduleObj = new Scheduler(LocalDate.now(), "root", "password");
+
+        // System.out.println(newSceduleObj.getAnimals().get(0).getAnimalName());
+        newSceduleObj.calculateSchedule();
+    }
+
+    public Scheduler(LocalDate day, String user, String password) throws IllegalArgumentException {
         this.DATE = day;
         this.animals = new ArrayList<Animal>();
         this.tasks = new ArrayList<Task>();
@@ -28,8 +35,10 @@ public class Scheduler {
     public void calculateSchedule() {
         try {
             this.dailySchedule = new DailySchedule(animals, tasks, treatments, DATE);
-        } catch (Exception e) {
-            System.out.println("ImpossibleScheduleException caught: " + e.getMessage());
+        } catch (ImpossibleScheduleException e) {
+            System.out.println("ImpossibleScheduleException caught: " + e);
+        } catch (IOException e) {
+            System.out.println("IOException caught: " + e);
         }
     }
 

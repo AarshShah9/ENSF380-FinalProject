@@ -20,16 +20,12 @@ public class Task {
     /**
      * Constructs a new Task object with the specified properties.
      *
-     * @param taskID          Unique identifier for the task
-     * @param description     Brief description of the task
-     * @param volunteerNeeded Indicates whether a backup volunteer is needed
-     * @param duration        Duration of the task in minutes
-     * @param maxWindow       Maximum time window for completing the task in minutes
-     * @param taskType        Type of task
-     * @throws IllegalArgumentException If the specified task type is invalid
+     * @param taskID      Unique identifier for the task
+     * @param description Brief description of the task
+     * @param duration    Duration of the task in minutes
+     * @param maxWindow   Maximum time window for completing the task in minutes
      */
-    public Task(int taskID, String description, int duration, int maxWindow)
-            throws IllegalArgumentException {
+    public Task(int taskID, String description, int duration, int maxWindow) {
         // Initialize the instance variables with the provided values
         this.TASK_ID = taskID;
         this.DESCRIPTION = description;
