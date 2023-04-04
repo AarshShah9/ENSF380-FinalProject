@@ -143,16 +143,21 @@ public class DailySchedule {
         int timeTaken = 0;
         int addHour = 1;
         int maxWindow = item.getMaxWindow();
+        // If the start hour is not in the scheduledTasks HashMap, return false
         if (!scheduledTasks.containsKey(item.getStartHour()))
             return false;
+        // If the start hour is in the scheduledTasks HashMap, check if the time taken
+        // of that hour
         for (ScheduleItem task : scheduledTasks.get(item.getStartHour())) {
             timeTaken += task.getDuration() + task.getPrepTime();
         }
+        // If the time taken is <= 60 minutes, return false
         if (timeTaken + item.getDuration() + item.getPrepTime() <= 60)
             return false;
-        int firstTimeTaken = timeTaken;
+
         // loop tries to find a start hour within the max window that will not require
         // an extra volunteer
+        int firstTimeTaken = timeTaken;
         while (addHour < maxWindow) {
             // If the time taken is greater than 60 minutes, check the rest of the hours
             // within the max window
@@ -172,6 +177,10 @@ public class DailySchedule {
                 return false;
             } else
                 continue;
+        }
+        // Check if it can be done with a bonus volunteer at original start hour.
+        if (item.getDuration() + item.getPrepTime() + firstTimeTaken <= 120) {
+            return true;
         }
         // Loop will now try to find a start hour within the max hour with an extra
         // volunteer
@@ -199,13 +208,16 @@ public class DailySchedule {
         // even with an extra volunteer, throw an exception with a description of the
         // issue
         String message = "Impossible to schedule " +
-                item.getDescription() + " at hour: " + item.getStartHour() +
+                item.getDescription() + " - " + item.getName().toString() +
+                " at hour: " + item.getStartHour() +
                 " because it would exceed the maximum time even with an extra volunteer.\n" +
                 "Try changing the start hour of ";
         for (ScheduleItem task : scheduledTasks.get(item.getStartHour())) {
-            message += task.getDescription() + ", ";
+            message += task.getDescription() + " - " +
+                    task.getName().toString() + ", ";
         }
-        message += "or " + item.getDescription();
+        message += "or " + item.getDescription() + " - " +
+                item.getName().toString() + ".";
 
         throw new ImpossibleScheduleException(message);
     }
