@@ -13,7 +13,9 @@ public class Scheduler {
     private DailySchedule dailySchedule;
 
     public static void main(String[] args) {
-        Scheduler newSceduleObj = new Scheduler(LocalDate.now(), "root", "password");
+        Scheduler newSceduleObj = new Scheduler(LocalDate.now(), new ArrayList<Task>(),
+                new ArrayList<Treatment>(), new ArrayList<Animal>());
+        newSceduleObj.getFromSQL(LocalDate.now(), "root", "password");
 
         // System.out.println(newSceduleObj.getAnimals().get(0).getAnimalName());
         newSceduleObj.calculateSchedule();
