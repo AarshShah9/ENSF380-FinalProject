@@ -15,7 +15,7 @@ public class SchedulerTest {
 
     private static final String[] TASK_TYPES = { "Feeding", "Cleaning", "Medical" };
 
-    // Test the Task constructor with valid data
+    // Test the Schedular constructor with valid data
     @Test
     public void testSchedulerConstructorValidData() {
         LocalDate date = LocalDate.now();
@@ -37,7 +37,7 @@ public class SchedulerTest {
         assertEquals(treatments, temp.getTreatments());
     }
 
-    // Test the Task constructor with invalid data
+    // Test the Schedular constructor with invalid data
     @Test(expected = IllegalArgumentException.class)
     public void testTaskConstructorBadData() {
         Scheduler temp = new Scheduler(LocalDate.now());
