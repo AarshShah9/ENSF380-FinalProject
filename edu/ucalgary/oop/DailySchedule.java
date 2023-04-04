@@ -157,10 +157,11 @@ public class DailySchedule {
             }
             // If the time taken for any start hour within the max window is <= 60 minutes
             // then return false to the treatment at that start hour with no extra volunteer
-            else if (timeTaken + item.getDuration() + item.getPrepTime() <= 60) {
+            if (timeTaken + item.getDuration() + item.getPrepTime() <= 60) {
                 item.setStartHour(item.getStartHour() + addHour);
                 return false;
-            }
+            } else
+                continue;
         }
         // Loop will now try to find a start hour within the max hour with an extra
         // volunteer
@@ -173,11 +174,13 @@ public class DailySchedule {
                     timeTaken += task.getDuration() + task.getPrepTime();
                 }
                 addHour++;
-            } else if (timeTaken + item.getDuration() + item.getPrepTime() > 60 &&
+            }
+            if (timeTaken + item.getDuration() + item.getPrepTime() > 60 &&
                     timeTaken + item.getDuration() + item.getPrepTime() <= 120) {
                 item.setStartHour(item.getStartHour() + addHour);
                 return true;
-            }
+            } else
+                continue;
         }
 
         // If the time taken for any start hour within the max window impossible
