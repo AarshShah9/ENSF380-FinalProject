@@ -39,22 +39,22 @@ public class DailyScheduleTest {
     // Even with an extra volunteer, this is not possible
     // @Test(expected = ImpossibleScheduleException.class)
     // public void testConstructorBadInput() {
-    //     LocalDate date = LocalDate.now();
-    //     ArrayList<Animal> animals = new ArrayList<Animal>();
-    //     animals.add(new Coyote(5, "Eraser1", "coyote", "CREPUSCULAR", false));
-    //     animals.add(new Coyote(5, "Eraser2", "coyote", "CREPUSCULAR", false));
-    //     animals.add(new Coyote(5, "Eraser3", "coyote", "CREPUSCULAR", false));
-    //     animals.add(new Coyote(5, "Eraser4", "coyote", "CREPUSCULAR", false));
-    //     animals.add(new Coyote(5, "Eraser5", "coyote", "CREPUSCULAR", false));
-    //     animals.add(new Coyote(5, "Eraser6", "coyote", "CREPUSCULAR", false));
-    //     ArrayList<Task> tasks = new ArrayList<Task>();
-    //     tasks.add(new Task(5, "Flush neck wound", 25, 1, "MEDICAL"));
-    //     tasks.add(new Task(5, "Flush neck wound", 25, 1, "MEDICAL"));
-    //     tasks.add(new Task(5, "Flush neck wound", 25, 1, "MEDICAL"));
-    //     tasks.add(new Task(5, "Flush neck wound", 25, 1, "MEDICAL"));
-    //     tasks.add(new Task(5, "Flush neck wound", 25, 1, "MEDICAL"));
-    //     tasks.add(new Task(5, "Flush neck wound", 25, 1, "MEDICAL"));
-    //     DailySchedule schedule = new DailySchedule(animals, tasks, LocalDate.now());
+    // LocalDate date = LocalDate.now();
+    // ArrayList<Animal> animals = new ArrayList<Animal>();
+    // animals.add(new Coyote(5, "Eraser1", "coyote", "CREPUSCULAR", false));
+    // animals.add(new Coyote(5, "Eraser2", "coyote", "CREPUSCULAR", false));
+    // animals.add(new Coyote(5, "Eraser3", "coyote", "CREPUSCULAR", false));
+    // animals.add(new Coyote(5, "Eraser4", "coyote", "CREPUSCULAR", false));
+    // animals.add(new Coyote(5, "Eraser5", "coyote", "CREPUSCULAR", false));
+    // animals.add(new Coyote(5, "Eraser6", "coyote", "CREPUSCULAR", false));
+    // ArrayList<Task> tasks = new ArrayList<Task>();
+    // tasks.add(new Task(5, "Flush neck wound", 25, 1, "MEDICAL"));
+    // tasks.add(new Task(5, "Flush neck wound", 25, 1, "MEDICAL"));
+    // tasks.add(new Task(5, "Flush neck wound", 25, 1, "MEDICAL"));
+    // tasks.add(new Task(5, "Flush neck wound", 25, 1, "MEDICAL"));
+    // tasks.add(new Task(5, "Flush neck wound", 25, 1, "MEDICAL"));
+    // tasks.add(new Task(5, "Flush neck wound", 25, 1, "MEDICAL"));
+    // DailySchedule schedule = new DailySchedule(animals, tasks, LocalDate.now());
     // }
 
     // Tests the getter for the current date

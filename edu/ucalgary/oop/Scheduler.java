@@ -15,7 +15,7 @@ public class Scheduler {
     public static void main(String[] args) {
         Scheduler newSceduleObj = new Scheduler(LocalDate.now(), new ArrayList<Task>(),
                 new ArrayList<Treatment>(), new ArrayList<Animal>());
-        newSceduleObj.getFromSQL("root", "password");
+        newSceduleObj.getFromSQL();
 
         // System.out.println(newSceduleObj.getAnimals().get(0).getAnimalName());
         newSceduleObj.calculateSchedule();
@@ -28,15 +28,9 @@ public class Scheduler {
         this.treatments = treatments;
     }
 
-    public void getFromSQL(String user, String password) throws IllegalArgumentException {
-        this.animals = new ArrayList<Animal>();
-        this.tasks = new ArrayList<Task>();
-        this.treatments = new ArrayList<Treatment>();
+    public void getFromSQL() throws IllegalArgumentException {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", user, password, animals, tasks, treatments);
-            db.addAnimalsSQL();
-            db.addTasksSQL();
-            db.addTreatmentSQL();
+            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", animals, tasks, treatments);
         } catch (Exception e) {
             System.out.println("SQLDatabaseException caught: " + e.getMessage());
             throw new IllegalArgumentException(e);
