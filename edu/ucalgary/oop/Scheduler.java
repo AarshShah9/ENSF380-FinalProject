@@ -35,8 +35,10 @@ public class Scheduler {
     public void calculateSchedule() {
         try {
             this.dailySchedule = new DailySchedule(animals, tasks, treatments, DATE);
-        } catch (Exception e) {
+        } catch (ImpossibleScheduleException e) {
             System.out.println("ImpossibleScheduleException caught: " + e);
+        } catch (IOException e) {
+            System.out.println("IOException caught: " + e);
         }
     }
 

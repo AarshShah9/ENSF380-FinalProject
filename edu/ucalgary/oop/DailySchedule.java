@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Collections;
 import java.util.Iterator;
 import java.io.*;
+import java.util.Arrays;
 
 /**
  * The DailySchedule class represents a schedule for a given day
@@ -48,11 +49,14 @@ public class DailySchedule {
         addInferredTasks();
 
         // groups the feeding that have prep times
-        combineTasks(scheduleItems, "Feeding - coyote");
-        combineTasks(scheduleItems, "Feeding - fox");
+        combineFeedings(scheduleItems, "Feeding - coyote");
+        combineFeedings(scheduleItems, "Feeding - fox");
 
         // schedules the tasks
         scheduleTasks();
+
+        // groups the tasks that have the same name
+        groupLikeTasks();
 
         // creates a text file containing the schedule
         printSchedule();
@@ -85,13 +89,11 @@ public class DailySchedule {
      */
     private void addInferredTasks() {
         for (Animal animal : animals) {
-            ArrayList<String> name = new ArrayList<String>();
-            name.add(animal.getAnimalName());
-            scheduleItems.add(new ScheduleItem(name,
+            scheduleItems.add(new ScheduleItem(new ArrayList<String>(Arrays.asList(animal.getAnimalName())),
                     1, "Cage cleaning - " + animal.getAnimalType().toString().toLowerCase(),
                     0, 24, animal.CLEAN_TIME, 0));
             if (!animal.getOrphaned())
-                scheduleItems.add(new ScheduleItem(name,
+                scheduleItems.add(new ScheduleItem(new ArrayList<String>(Arrays.asList(animal.getAnimalName())),
                         1, "Feeding - " + animal.getAnimalType().toString().toLowerCase(),
                         animal.ANIMAL_FEEDING_TYPE.getFeedStartTime(), animal.FEED_WINDOW,
                         animal.FEED_TIME, animal.FEED_PREP_TIME));
@@ -104,8 +106,8 @@ public class DailySchedule {
      * @return void
      * @params none
      */
-    private void combineTasks(ArrayList<ScheduleItem> tasks, String description) {
-        Iterator<ScheduleItem> it = scheduleItems.iterator();
+    private void combineFeedings(ArrayList<ScheduleItem> tasks, String description) {
+        Iterator<ScheduleItem> it = tasks.iterator();
         ScheduleItem previous = null;
         if (it.hasNext())
             previous = it.next();
@@ -152,10 +154,12 @@ public class DailySchedule {
             // within the max window
             if (timeTaken + item.getDuration() + item.getPrepTime() > 60) {
                 timeTaken = 0;
-                for (ScheduleItem task : scheduledTasks.get(item.getStartHour() + addHour)) {
-                    timeTaken += task.getDuration() + task.getPrepTime();
+                if (scheduledTasks.containsKey(item.getStartHour() + addHour)) {
+                    for (ScheduleItem task : scheduledTasks.get(item.getStartHour() + addHour)) {
+                        timeTaken += task.getDuration() + task.getPrepTime();
+                    }
+                    addHour++;
                 }
-                addHour++;
             }
             // If the time taken for any start hour within the max window is <= 60 minutes
             // then return false to the treatment at that start hour with no extra volunteer
@@ -172,10 +176,12 @@ public class DailySchedule {
         while (addHour < maxWindow) {
             if (timeTaken + item.getDuration() + item.getPrepTime() > 120) {
                 timeTaken = 0;
-                for (ScheduleItem task : scheduledTasks.get(item.getStartHour())) {
-                    timeTaken += task.getDuration() + task.getPrepTime();
+                if (scheduledTasks.containsKey(item.getStartHour() + addHour)) {
+                    for (ScheduleItem task : scheduledTasks.get(item.getStartHour())) {
+                        timeTaken += task.getDuration() + task.getPrepTime();
+                    }
+                    addHour++;
                 }
-                addHour++;
             }
             if (timeTaken + item.getDuration() + item.getPrepTime() > 60 &&
                     timeTaken + item.getDuration() + item.getPrepTime() <= 120) {
@@ -229,6 +235,34 @@ public class DailySchedule {
         scheduleItems.remove(item);
         scheduleItems.add(item1);
         scheduleItems.add(item2);
+    }
+
+    /**
+     * groups all like tasks in scheduledTasks
+     * 
+     * @param none
+     * @return void
+     */
+    private void groupLikeTasks() {
+        for (int i = 0; i < 24; i++) {
+            if (scheduledTasks.containsKey(i)) {
+                Iterator<ScheduleItem> it = scheduledTasks.get(i).iterator();
+                ScheduleItem previous = null;
+                if (it.hasNext())
+                    previous = it.next();
+                while (it.hasNext()) {
+                    ScheduleItem current = it.next();
+                    if (previous.getDescription().equals(current.getDescription())) {
+                        previous.addName(current.getName());
+                        previous.addQuantity(current.getQuantity());
+                        previous.addDuration(current.getDuration());
+                        it.remove();
+
+                    } else
+                        previous = current;
+                }
+            }
+        }
     }
 
     /**
@@ -321,8 +355,9 @@ public class DailySchedule {
                     bw.write(LocalTime.of(i, 0).toString() + "[+ Backup Volunteer]\n");
                 else
                     bw.write(LocalTime.of(i, 0).toString() + "\n");
-                for (ScheduleItem item : scheduledTasks.get(i)) {
-                    combineTasks(scheduledTasks.get(i), item.getDescription());
+                Iterator<ScheduleItem> it = scheduledTasks.get(i).iterator();
+                while (it.hasNext()) {
+                    ScheduleItem item = it.next();
                     bw.write(String.format("* %s (%d: %s)\n",
                             item.getDescription(), item.getQuantity(),
                             String.join(", ", item.getName())));
