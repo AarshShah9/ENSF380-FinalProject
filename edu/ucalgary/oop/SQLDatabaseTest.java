@@ -1,9 +1,13 @@
 package edu.ucalgary.oop;
 
 import org.junit.Test;
+
+import com.mysql.cj.protocol.a.TracingPacketReader;
+
 import static org.junit.Assert.*;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class SQLDatabaseTest {
@@ -174,4 +178,5 @@ public class SQLDatabaseTest {
     public void testGetTreatments() {
         //
     }
+
 }
