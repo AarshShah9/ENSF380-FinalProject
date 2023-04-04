@@ -3,8 +3,15 @@ package edu.ucalgary.oop;
 import org.junit.*;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
-import java.beans.Transient;
 
+/**
+ * The ScheduleItemTest class is a JUnit test class that tests the ScheduleItem
+ * clas
+ * 
+ * @author Sarim
+ * @version 1.0
+ * @date 2023-04-04
+ */
 public class ScheduleItemTest {
     // Test the ScheduleItem constructor with valid data
     @Test
@@ -21,7 +28,7 @@ public class ScheduleItemTest {
         assertEquals(0, temp.getStartHour());
         assertEquals(0, temp.getMaxWindow());
         assertEquals(0, temp.getDuration());
-        assertEquals(0, temp.getPrepTime()); 
+        assertEquals(0, temp.getPrepTime());
     }
 
     // Test the ScheduleItem constructor with invalid data
@@ -246,7 +253,6 @@ public class ScheduleItemTest {
         testArr.set(0, test);
         temp.addName(testArr);
         ArrayList<String> result = temp.getName();
-        
 
         System.out.println("setPrepTime");
         assertEquals("setPrepTime() value was incorrect: ", testArr, result);
