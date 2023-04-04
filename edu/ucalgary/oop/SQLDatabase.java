@@ -34,6 +34,7 @@ public class SQLDatabase {
             addAnimalsSQL();
             addTasksSQL();
             addTreatmentSQL();
+            checkOrphans();
         } catch (SQLException e) {
             throw new SQLException(e);
         } catch (Exception e) {
@@ -195,5 +196,18 @@ public class SQLDatabase {
      */
     public Connection getDBConnect() {
         return this.DB_CONNECT;
+    }
+
+    /**
+     * Determines if any of the animals are orphans
+     * 
+     * @return void
+     */
+    private void checkOrphans() {
+        for (Treatment treatment : this.treatments) {
+            if (treatment.getTaskID() == 1) {
+                this.animals.get(treatment.getAnimalID() - 1).setOrphaned(true);
+            }
+        }
     }
 }

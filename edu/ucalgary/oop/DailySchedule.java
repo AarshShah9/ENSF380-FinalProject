@@ -22,7 +22,9 @@ public class DailySchedule {
     private ArrayList<Animal> animals;
     private ArrayList<Task> tasks;
     private ArrayList<Treatment> treatments;
+
     private boolean[] bonusVolunteers = new boolean[24];
+    
     private ArrayList<ScheduleItem> scheduleItems = new ArrayList<ScheduleItem>();
 
     /**
@@ -59,7 +61,13 @@ public class DailySchedule {
         groupLikeTasks();
 
         // creates a text file containing the schedule
-        printSchedule();
+        try {
+            printSchedule();
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+        
     }
 
     public boolean[] getVolunteersNeeded() {
@@ -143,11 +151,13 @@ public class DailySchedule {
         int timeTaken = 0;
         int addHour = 1;
         int maxWindow = item.getMaxWindow();
+
         // If the start hour is not in the scheduledTasks HashMap, return false
         if (!scheduledTasks.containsKey(item.getStartHour()))
             return false;
         // If the start hour is in the scheduledTasks HashMap, check if the time taken
         // of that hour
+
         for (ScheduleItem task : scheduledTasks.get(item.getStartHour())) {
             timeTaken += task.getDuration() + task.getPrepTime();
         }
@@ -318,6 +328,7 @@ public class DailySchedule {
                             }
                         } catch (ImpossibleScheduleException e) {
                             splitFeeding(item);
+                            e.printStackTrace();
                             continue;
                         }
                     }
@@ -371,9 +382,11 @@ public class DailySchedule {
                     bw.write(LocalTime.of(i, 0).toString() + "[+ Backup Volunteer]\n");
                 else
                     bw.write(LocalTime.of(i, 0).toString() + "\n");
+
                 Iterator<ScheduleItem> it = scheduledTasks.get(i).iterator();
                 while (it.hasNext()) {
                     ScheduleItem item = it.next();
+
                     bw.write(String.format("* %s (%d: %s)\n",
                             item.getDescription(), item.getQuantity(),
                             String.join(", ", item.getName())));
@@ -382,6 +395,25 @@ public class DailySchedule {
             }
         }
         bw.close();
+        System.out.println("Sucess");
+    }
+
+    public static void main(String[] args) {
+        ArrayList<Animal> animals = new ArrayList<Animal>();
+        ArrayList<Task> tasks = new ArrayList<Task>();
+        ArrayList<Treatment> treatments = new ArrayList<Treatment>();
+        animals.add(new Coyote(1, "fox"));
+        tasks.add(new Task(1, "medical", 5, 3));
+        treatments.add(new Treatment(1, 1, 5));
+        DailySchedule schedule;
+        try {
+            schedule = new DailySchedule(animals, tasks, treatments, LocalDate.now());
+
+        } catch (ImpossibleScheduleException e) {
+            System.out.println(e.getMessage());
+        } catch (IOException e) {
+            System.out.println("IOError");
+        }
     }
 
     public static void main(String[] args) {

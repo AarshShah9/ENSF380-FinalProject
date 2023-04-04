@@ -39,10 +39,12 @@ public class Scheduler {
 
     public String calculateSchedule() {
         try {
+
             this.dailySchedule = new DailySchedule(animals, tasks, treatments, DATE);
             return "Success";
         } catch (ImpossibleScheduleException e) {
             return e.getMessage();
+
         } catch (Exception e) {
             return "IOException caught: " + e.getMessage();
         }
