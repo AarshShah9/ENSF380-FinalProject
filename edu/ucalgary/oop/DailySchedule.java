@@ -24,7 +24,7 @@ public class DailySchedule {
     private ArrayList<Treatment> treatments;
 
     private boolean[] bonusVolunteers = new boolean[24];
-    
+
     private ArrayList<ScheduleItem> scheduleItems = new ArrayList<ScheduleItem>();
 
     /**
@@ -67,7 +67,7 @@ public class DailySchedule {
             // TODO: handle exception
             e.printStackTrace();
         }
-        
+
     }
 
     public boolean[] getVolunteersNeeded() {
@@ -396,24 +396,6 @@ public class DailySchedule {
         }
         bw.close();
         System.out.println("Sucess");
-    }
-
-    public static void main(String[] args) {
-        ArrayList<Animal> animals = new ArrayList<Animal>();
-        ArrayList<Task> tasks = new ArrayList<Task>();
-        ArrayList<Treatment> treatments = new ArrayList<Treatment>();
-        animals.add(new Coyote(1, "fox"));
-        tasks.add(new Task(1, "medical", 5, 3));
-        treatments.add(new Treatment(1, 1, 5));
-        DailySchedule schedule;
-        try {
-            schedule = new DailySchedule(animals, tasks, treatments, LocalDate.now());
-
-        } catch (ImpossibleScheduleException e) {
-            System.out.println(e.getMessage());
-        } catch (IOException e) {
-            System.out.println("IOError");
-        }
     }
 
     public static void main(String[] args) {
