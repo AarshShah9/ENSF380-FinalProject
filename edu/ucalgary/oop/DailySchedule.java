@@ -55,7 +55,13 @@ public class DailySchedule {
         scheduleTasks();
 
         // creates a text file containing the schedule
-        printSchedule();
+        try {
+            printSchedule();
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+        
     }
 
     /**
@@ -260,6 +266,7 @@ public class DailySchedule {
                             }
                         } catch (ImpossibleScheduleException e) {
                             splitFeeding(item);
+                            e.printStackTrace();
                             continue;
                         }
                     }
@@ -323,5 +330,6 @@ public class DailySchedule {
             }
         }
         bw.close();
+        System.out.println("Sucess");
     }
 }

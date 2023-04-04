@@ -19,6 +19,9 @@ public class Scheduler {
         this.treatments = new ArrayList<Treatment>();
         try {
             SQLDatabase db = new SQLDatabase("EWR", user, password, animals, tasks, treatments);
+            db.addAnimalsSQL();
+            db.addTasksSQL();
+            db.addTreatmentSQL();
         } catch (Exception e) {
             System.out.println("SQLDatabaseException caught: " + e.getMessage());
             throw new IllegalArgumentException(e);
@@ -27,7 +30,7 @@ public class Scheduler {
 
     public void calculateSchedule() {
         try {
-            this.dailySchedule = new DailySchedule(animals, tasks, treatments, DATE);
+            this.dailySchedule = new DailySchedule(this.animals, this.tasks, this.treatments, this.DATE);
         } catch (Exception e) {
             System.out.println("ImpossibleScheduleException caught: " + e.getMessage());
         }
