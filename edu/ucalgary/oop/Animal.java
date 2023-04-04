@@ -14,6 +14,11 @@ public abstract class Animal {
     public Animal(int id, String animalName, AnimalType animalType, Integer feedTime, Integer feedPrepTime,
             Integer cleanTime, FeedingType feedingType)
             throws IllegalArgumentException {
+        if (animalName == null || animalName.equals("") || animalType == null || feedTime == null
+                || feedPrepTime == null
+                || cleanTime == null || feedingType == null)
+            throw new IllegalArgumentException("Invalid input to Animal constructor");
+
         this.ANIMAL_ID = id;
         this.ANIMAL_NAME = animalName;
         this.ANIMAL_TYPE = animalType;

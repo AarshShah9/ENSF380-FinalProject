@@ -14,7 +14,7 @@ public class PorcupineTest {
     @Test
     public void testConstructorGoodData() {
         // Test valid input
-        Porcupine porcupine = new Porcupine(1, "Tony", "PORCUPINE");
+        Porcupine porcupine = new Porcupine(1, "Tony");
         assertEquals(1, porcupine.getAnimalID());
         assertEquals("Tony", porcupine.getAnimalName());
         assertEquals(AnimalType.PORCUPINE, porcupine.getAnimalType());
@@ -25,7 +25,6 @@ public class PorcupineTest {
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorBadData() {
         // Test invalid input - feeding type not capitalized
-        Porcupine invalidPorcupine = new Porcupine(2, "Bobby", "PORCUPINE");
-
+        Porcupine invalidPorcupine = new Porcupine(2, "");
     }
 }
