@@ -142,6 +142,8 @@ public class DailySchedule {
         for (ScheduleItem task : scheduledTasks.get(item.getStartHour())) {
             timeTaken += task.getDuration() + task.getPrepTime();
         }
+        if (timeTaken + item.getDuration() + item.getPrepTime() <= 60)
+            return false;
         int firstTimeTaken = timeTaken;
         // loop tries to find a start hour within the max window that will not require
         // an extra volunteer
