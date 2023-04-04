@@ -23,8 +23,7 @@ public class CoyoteTest {
 
     @Test
     public void testConstructorBadInput() {
-        // Test invalid input - orphaned cannot be null, and incorrect feeding type
-        Coyote invalidBeaver = new Coyote(2, "Bobby", "COYOTE");
+        Coyote invalidBeaver = new Coyote(2, "");
 
     }
 }
