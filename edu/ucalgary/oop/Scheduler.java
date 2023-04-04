@@ -3,6 +3,7 @@ package edu.ucalgary.oop;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Scheduler {
     private ArrayList<Task> tasks;
@@ -11,26 +12,61 @@ public class Scheduler {
     private final LocalDate DATE;
     private DailySchedule dailySchedule;
 
-    public Scheduler(LocalDate day) {
+    public static void main(String[] args) {
+        Scheduler newSceduleObj = new Scheduler(LocalDate.now(), new ArrayList<Task>(),
+                new ArrayList<Treatment>(), new ArrayList<Animal>());
+        newSceduleObj.getFromSQL();
+
+        // System.out.println(newSceduleObj.getAnimals().get(0).getAnimalName());
+        newSceduleObj.calculateSchedule();
+    }
+
+    public Scheduler(LocalDate day, ArrayList<Task> tasks, ArrayList<Treatment> treatments, ArrayList<Animal> animals) {
         this.DATE = day;
-        this.animals = new ArrayList<Animal>();
-        this.tasks = new ArrayList<Task>();
-        this.treatments = new ArrayList<Treatment>();
+        this.animals = animals;
+        this.tasks = tasks;
+        this.treatments = treatments;
+    }
+
+    public void getFromSQL() throws IllegalArgumentException {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", animals, tasks, treatments);
+            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", animals, tasks, treatments);
         } catch (Exception e) {
             System.out.println("SQLDatabaseException caught: " + e.getMessage());
             throw new IllegalArgumentException(e);
         }
     }
 
-    public void calculateSchedule() {
+    public String calculateSchedule() {
         try {
+
             this.dailySchedule = new DailySchedule(animals, tasks, treatments, DATE);
+            return "Success";
         } catch (ImpossibleScheduleException e) {
-            System.out.println("ImpossibleScheduleException caught: " + e.getMessage());
-        } catch (IOException e) {
+            return e.getMessage();
+
+        } catch (Exception e) {
+            return "IOException caught: " + e.getMessage();
+        }
+    }
+
+    public void changeTreatmentStart(int animalID, int taskID, int newStartHour) {
+        try {
+            for (Treatment treatment : treatments) {
+                if (treatment.getAnimalID() == animalID && treatment.getTaskID() == taskID) {
+                    treatment.setStartHour(newStartHour);
+                }
+            }
+        } catch (Exception e) {
             System.out.println("IOException caught: " + e.getMessage());
+        }
+    }
+
+    public boolean[] getVoluneersNeded() {
+        if (dailySchedule != null) {
+            return dailySchedule.getVolunteersNeeded();
+        } else {
+            return null;
         }
     }
 

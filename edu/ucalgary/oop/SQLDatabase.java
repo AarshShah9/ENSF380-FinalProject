@@ -17,29 +17,39 @@ public class SQLDatabase {
      * and 'ensf' for username and password
      * 
      * @param dbName the name of the database to connect to
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException if any the database inputs are invalid
      * @throws SQLException             if there is an error connecting to the
      *                                  database
      */
-    public SQLDatabase(String dbName, ArrayList<Animal> animaList, ArrayList<Task> taskList,
-            ArrayList<Treatment> treatmentList) throws IllegalArgumentException {
+    public SQLDatabase(String dbName, String user, String password, ArrayList<Animal> animaList,
+            ArrayList<Task> taskList,
+            ArrayList<Treatment> treatmentList) throws IllegalArgumentException, SQLException {
         this.animals = animaList;
         this.tasks = taskList;
         this.treatments = treatmentList;
 
         try {
-            this.DB_CONNECT = DriverManager.getConnection(String.format("jdbc:mysql://localhost/%s", dbName), "student",
-                    "ensf");
+            this.DB_CONNECT = DriverManager.getConnection(String.format("jdbc:mysql://localhost/%s", dbName), user,
+                    password);
             addAnimalsSQL();
             addTasksSQL();
-
+            addTreatmentSQL();
+            checkOrphans();
         } catch (SQLException e) {
+            throw new SQLException(e);
+        } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalArgumentException("Invalid Database Input");
         }
     }
 
-    public void addAnimalsSQL() throws IllegalArgumentException {
+    /**
+     * addAnimalsSQL adds the animals from the database to the ArrayList of animals
+     * in the SQLDatabase object
+     * 
+     * @throws SQLException
+     */
+    private void addAnimalsSQL() throws SQLException {
 
         try {
             Statement stmt1 = this.DB_CONNECT.createStatement();
@@ -51,40 +61,38 @@ public class SQLDatabase {
                 try {
                     switch (name) {
                         case "coyote":
-                            animals.add(new Coyote(rs.getInt("AnimalID"), rs.getString("AnimalNickname"),
-                                    rs.getString("AnimalSpecies")));
+                            animals.add(new Coyote(rs.getInt("AnimalID"), rs.getString("AnimalNickname")));
                             break;
                         case "fox":
-                            animals.add(new Fox(rs.getInt("AnimalID"), rs.getString("AnimalNickname"),
-                                    rs.getString("AnimalSpecies")));
+                            animals.add(new Fox(rs.getInt("AnimalID"), rs.getString("AnimalNickname")));
                             break;
                         case "porcupine":
-                            animals.add(new Porcupine(rs.getInt("AnimalID"), rs.getString("AnimalNickname"),
-                                    rs.getString("AnimalSpecies")));
+                            animals.add(new Porcupine(rs.getInt("AnimalID"), rs.getString("AnimalNickname")));
                             break;
                         case "beaver":
-                            animals.add(new Beaver(rs.getInt("AnimalID"), rs.getString("AnimalNickname"),
-                                    rs.getString("AnimalSpecies")));
+                            animals.add(new Beaver(rs.getInt("AnimalID"), rs.getString("AnimalNickname")));
                             break;
                         default:
                             System.out.println("Unknown animal: " + name);
                     }
-                    // Class<?> cls = Class.forName(name.substring(0, 1).toUpperCase() +
-                    // name.substring(1));
-                    // Animal animal = (Animal) cls.newInstance();
-                    // animals.add(animal);
                 } catch (Exception e) {
-                    throw new IllegalArgumentException("Invalid Animal Input");
+                    throw new IllegalArgumentException("Issue parsing animal info from SQL Database" + e.getMessage());
                 }
 
             }
-        } catch (SQLException e) {
-            throw new IllegalArgumentException("Invalid Animal Input");
+        } catch (Exception e) {
+            throw new SQLException("Invalid Animal Input");
 
         }
     }
 
-    public void addTasksSQL() throws IllegalArgumentException {
+    /**
+     * addTasksSQL adds the tasks from the database to the ArrayList of tasks in
+     * the SQLDatabase object
+     * 
+     * @throws SQLException
+     */
+    private void addTasksSQL() throws SQLException {
         try {
             Statement stmt2 = this.DB_CONNECT.createStatement();
             String query2 = "SELECT * FROM TASKS";
@@ -95,13 +103,19 @@ public class SQLDatabase {
                         rs.getInt("Duration"), rs.getInt("MaxWindow"));
                 tasks.add(newTask);
             }
-        } catch (SQLException e) {
-            throw new IllegalArgumentException("Invalid Task Input");
+        } catch (Exception e) {
+            throw new SQLException("Issue parsing task info from SQL Database" + e.getMessage());
         }
 
     }
 
-    public void addTreatmentSQL() {
+    /**
+     * addTreatmentSQL adds the treatments from the database to the ArrayList of
+     * treatments in the SQLDatabase object
+     * 
+     * @throws SQLException
+     */
+    private void addTreatmentSQL() throws SQLException {
         try {
             Statement stmt3 = this.DB_CONNECT.createStatement();
             String query3 = "SELECT * FROM TREATMENTS";
@@ -112,8 +126,8 @@ public class SQLDatabase {
                         rs.getInt("StartHour"));
                 treatments.add(newTreatment);
             }
-        } catch (SQLException e) {
-            throw new IllegalArgumentException("Invalid Treatment Input");
+        } catch (Exception e) {
+            throw new SQLException("Issue parsing treatment info from SQL Database" + e.getMessage());
         }
     }
 
@@ -124,6 +138,16 @@ public class SQLDatabase {
      */
     public ArrayList<Treatment> getTreatments() {
         return this.treatments;
+    }
+
+    /**
+     * Sets the list of treatments in teh SQLDatabase object to the argument passed
+     * through
+     * 
+     * @param newTreatments the new ArrayList of treatments to set in the Database
+     */
+    public void setTreatments(ArrayList<Treatment> newTreatments) {
+        this.treatments = newTreatments;
     }
 
     /**
@@ -170,7 +194,20 @@ public class SQLDatabase {
      * 
      * @return the connection object for the current database connection
      */
-    public Connection getConnection() {
+    public Connection getDBConnect() {
         return this.DB_CONNECT;
+    }
+
+    /**
+     * Determines if any of the animals are orphans
+     * 
+     * @return void
+     */
+    private void checkOrphans() {
+        for (Treatment treatment : this.treatments) {
+            if (treatment.getTaskID() == 1) {
+                this.animals.get(treatment.getAnimalID() - 1).setOrphaned(true);
+            }
+        }
     }
 }
