@@ -3,13 +3,13 @@ package edu.ucalgary.oop;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Scheduler {
     private ArrayList<Task> tasks;
     private ArrayList<Animal> animals;
     private ArrayList<Treatment> treatments;
-
-    private final LocalDate DATE;
+    private LocalDate date;
     private DailySchedule dailySchedule;
 
     public static void main(String[] args) {
@@ -19,8 +19,15 @@ public class Scheduler {
         newSceduleObj.calculateSchedule();
     }
 
-    public Scheduler(LocalDate day, String user, String password) throws IllegalArgumentException {
-        this.DATE = day;
+    public Scheduler(LocalDate day, ArrayList<Task> tasks, ArrayList<Treatment> treatments, ArrayList<Animal> animals) {
+        this.date = day;
+        this.animals = animals;
+        this.tasks = tasks;
+        this.treatments = treatments;
+    }
+
+    public void getFromSQL(LocalDate day, String user, String password) throws IllegalArgumentException {
+        this.date = day;
         this.animals = new ArrayList<Animal>();
         this.tasks = new ArrayList<Task>();
         this.treatments = new ArrayList<Treatment>();
@@ -32,13 +39,14 @@ public class Scheduler {
         }
     }
 
-    public void calculateSchedule() {
+    public String calculateSchedule() {
         try {
             this.dailySchedule = new DailySchedule(animals, tasks, treatments, DATE);
+            return "Success";
         } catch (ImpossibleScheduleException e) {
-            System.out.println("ImpossibleScheduleException caught: " + e);
-        } catch (IOException e) {
-            System.out.println("IOException caught: " + e);
+            return e.getMessage();
+        } catch (Exception e) {
+            return "IOException caught: " + e.getMessage();
         }
     }
 
@@ -51,6 +59,14 @@ public class Scheduler {
             }
         } catch (Exception e) {
             System.out.println("IOException caught: " + e.getMessage());
+        }
+    }
+
+    public boolean[] getVoluneersNeded() {
+        if (dailySchedule != null) {
+            return dailySchedule.getVolunteersNeeded();
+        } else {
+            return null;
         }
     }
 
