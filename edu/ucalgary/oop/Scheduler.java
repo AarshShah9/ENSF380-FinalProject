@@ -9,27 +9,26 @@ public class Scheduler {
     private ArrayList<Task> tasks;
     private ArrayList<Animal> animals;
     private ArrayList<Treatment> treatments;
-    private LocalDate date;
+    private final LocalDate DATE;
     private DailySchedule dailySchedule;
 
     public static void main(String[] args) {
         Scheduler newSceduleObj = new Scheduler(LocalDate.now(), new ArrayList<Task>(),
                 new ArrayList<Treatment>(), new ArrayList<Animal>());
-        newSceduleObj.getFromSQL(LocalDate.now(), "root", "password");
+        newSceduleObj.getFromSQL("root", "password");
 
         // System.out.println(newSceduleObj.getAnimals().get(0).getAnimalName());
         newSceduleObj.calculateSchedule();
     }
 
     public Scheduler(LocalDate day, ArrayList<Task> tasks, ArrayList<Treatment> treatments, ArrayList<Animal> animals) {
-        this.date = day;
+        this.DATE = day;
         this.animals = animals;
         this.tasks = tasks;
         this.treatments = treatments;
     }
 
-    public void getFromSQL(LocalDate day, String user, String password) throws IllegalArgumentException {
-        this.date = day;
+    public void getFromSQL(String user, String password) throws IllegalArgumentException {
         this.animals = new ArrayList<Animal>();
         this.tasks = new ArrayList<Task>();
         this.treatments = new ArrayList<Treatment>();
