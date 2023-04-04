@@ -34,6 +34,9 @@ public class Scheduler {
         this.treatments = new ArrayList<Treatment>();
         try {
             SQLDatabase db = new SQLDatabase("EWR", user, password, animals, tasks, treatments);
+            db.addAnimalsSQL();
+            db.addTasksSQL();
+            db.addTreatmentSQL();
         } catch (Exception e) {
             System.out.println("SQLDatabaseException caught: " + e.getMessage());
             throw new IllegalArgumentException(e);
@@ -42,10 +45,12 @@ public class Scheduler {
 
     public String calculateSchedule() {
         try {
+
             this.dailySchedule = new DailySchedule(animals, tasks, treatments, DATE);
             return "Success";
         } catch (ImpossibleScheduleException e) {
             return e.getMessage();
+
         } catch (Exception e) {
             return "IOException caught: " + e.getMessage();
         }
