@@ -1,18 +1,15 @@
 package edu.ucalgary.oop;
 
-import java.time.LocalTime;
-
 public abstract class Animal {
-    protected final int ANIMAL_ID;
+    protected final Integer ANIMAL_ID;
     protected final String ANIMAL_NAME;
     protected final AnimalType ANIMAL_TYPE;
     protected final FeedingType ANIMAL_FEEDING_TYPE;
     protected final Boolean ORPHANED;
-    public static final int FEED_WINDOW = 3;
+    public static final Integer FEED_WINDOW = 3;
     protected final Integer FEED_TIME;
     protected final Integer FEED_PREP_TIME;
     protected final Integer CLEAN_TIME;
-
 
     public Animal(int id, String animalName, AnimalType animalType, Integer feedTime, Integer feedPrepTime,
             Integer cleanTime, FeedingType feedingType)
@@ -33,7 +30,7 @@ public abstract class Animal {
 
     }
 
-    public int getAnimalID() {
+    public Integer getAnimalID() {
         return this.ANIMAL_ID;
     }
 

@@ -24,10 +24,8 @@ public class Task {
      * @param description Brief description of the task
      * @param duration    Duration of the task in minutes
      * @param maxWindow   Maximum time window for completing the task in minutes
-     * @throws IllegalArgumentException If the specified task type is invalid
      */
-    public Task(int taskID, String description, int duration, int maxWindow)
-            throws IllegalArgumentException {
+    public Task(int taskID, String description, int duration, int maxWindow) {
         // Initialize the instance variables with the provided values
         this.TASK_ID = taskID;
         this.DESCRIPTION = description;
