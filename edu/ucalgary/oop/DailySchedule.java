@@ -22,7 +22,7 @@ public class DailySchedule {
     private ArrayList<Animal> animals;
     private ArrayList<Task> tasks;
     private ArrayList<Treatment> treatments;
-    boolean[] bonusVolunteers = new boolean[24];
+    private boolean[] bonusVolunteers = new boolean[24];
     private ArrayList<ScheduleItem> scheduleItems = new ArrayList<ScheduleItem>();
 
     /**
@@ -60,6 +60,10 @@ public class DailySchedule {
 
         // creates a text file containing the schedule
         printSchedule();
+    }
+
+    public boolean[] getVolunteersNeeded() {
+        return bonusVolunteers;
     }
 
     /**
@@ -238,7 +242,7 @@ public class DailySchedule {
     }
 
     /**
-     * groups all like tasks in scheduledTasks
+     * Groups all like tasks in scheduledTasks
      * 
      * @param none
      * @return void
