@@ -15,7 +15,7 @@ public class RaccoonTest {
     public void testConstructorGoodData() {
         // Test valid input
         Raccoon raccoon = new Raccoon(1, "Tony");
-        assertEquals(1, raccoon.getAnimalID());
+        assertEquals(1, (int) raccoon.getAnimalID());
         assertEquals("Tony", raccoon.getAnimalName());
         assertEquals(AnimalType.RACCOON, raccoon.getAnimalType());
         assertEquals(FeedingType.NOCTURNAL, raccoon.getAnimalFeedingType());

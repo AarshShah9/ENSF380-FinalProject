@@ -15,7 +15,7 @@ public class PorcupineTest {
     public void testConstructorGoodData() {
         // Test valid input
         Porcupine porcupine = new Porcupine(1, "Tony");
-        assertEquals(1, porcupine.getAnimalID());
+        assertEquals(1, (int) porcupine.getAnimalID());
         assertEquals("Tony", porcupine.getAnimalName());
         assertEquals(AnimalType.PORCUPINE, porcupine.getAnimalType());
         assertEquals(FeedingType.CREPUSCULAR, porcupine.getAnimalFeedingType());
