@@ -5,7 +5,7 @@ public abstract class Animal {
     protected final String ANIMAL_NAME;
     protected final AnimalType ANIMAL_TYPE;
     protected final FeedingType ANIMAL_FEEDING_TYPE;
-    protected final Boolean ORPHANED;
+    protected Boolean orphaned;
     public static final Integer FEED_WINDOW = 3;
     protected final Integer FEED_TIME;
     protected final Integer FEED_PREP_TIME;
@@ -21,13 +21,7 @@ public abstract class Animal {
         this.FEED_TIME = feedTime;
         this.FEED_PREP_TIME = feedPrepTime;
         this.CLEAN_TIME = cleanTime;
-
-        // TODO - add a regex check to see if the animal is orphaned or not
-        if (animalName.contains("Annie")) {
-            this.ORPHANED = true;
-        } else
-            this.ORPHANED = false;
-
+        this.orphaned = false;
     }
 
     public Integer getAnimalID() {
@@ -47,7 +41,7 @@ public abstract class Animal {
     }
 
     public Boolean getOrphaned() {
-        return this.ORPHANED;
+        return this.orphaned;
     }
 
     public Integer getFeedTime() {
@@ -60,6 +54,10 @@ public abstract class Animal {
 
     public Integer getCleanTime() {
         return this.CLEAN_TIME;
+    }
+
+    public void setOrphaned(Boolean orphaned) {
+        this.orphaned = orphaned;
     }
 
 }
