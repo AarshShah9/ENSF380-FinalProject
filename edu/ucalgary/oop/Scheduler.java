@@ -11,15 +11,17 @@ public class Scheduler {
     private ArrayList<Treatment> treatments;
     private final LocalDate DATE;
     private DailySchedule dailySchedule;
+    private String user;
+    private String password;
 
-    public static void main(String[] args) {
-        Scheduler newSceduleObj = new Scheduler(LocalDate.now(), new ArrayList<Task>(),
-                new ArrayList<Treatment>(), new ArrayList<Animal>());
-        newSceduleObj.getFromSQL("root", "password");
+    // public static void main(String[] args) {
+    //     Scheduler newSceduleObj = new Scheduler(LocalDate.now(), new ArrayList<Task>(),
+    //             new ArrayList<Treatment>(), new ArrayList<Animal>());
+    //     newSceduleObj.getFromSQL("root", "password");
 
-        // System.out.println(newSceduleObj.getAnimals().get(0).getAnimalName());
-        newSceduleObj.calculateSchedule();
-    }
+    //     // System.out.println(newSceduleObj.getAnimals().get(0).getAnimalName());
+    //     newSceduleObj.calculateSchedule();
+    // }
 
     public Scheduler(LocalDate day, ArrayList<Task> tasks, ArrayList<Treatment> treatments, ArrayList<Animal> animals) {
         this.DATE = day;
@@ -29,14 +31,10 @@ public class Scheduler {
     }
 
     public void getFromSQL(String user, String password) throws IllegalArgumentException {
-        this.animals = new ArrayList<Animal>();
-        this.tasks = new ArrayList<Task>();
-        this.treatments = new ArrayList<Treatment>();
+        
         try {
             SQLDatabase db = new SQLDatabase("EWR", user, password, animals, tasks, treatments);
-            db.addAnimalsSQL();
-            db.addTasksSQL();
-            db.addTreatmentSQL();
+            
         } catch (Exception e) {
             System.out.println("SQLDatabaseException caught: " + e.getMessage());
             throw new IllegalArgumentException(e);
@@ -68,7 +66,7 @@ public class Scheduler {
         }
     }
 
-    public boolean[] getVoluneersNeded() {
+    public boolean[] getVolunteersNeeded() {
         if (dailySchedule != null) {
             return dailySchedule.getVolunteersNeeded();
         } else {

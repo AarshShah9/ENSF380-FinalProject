@@ -75,11 +75,11 @@ INSERT INTO TREATMENTS (AnimalID, TaskID, StartHour) VALUES
 (6, 1, 14),
 (6, 1, 16),
 (6, 1, 18),
-(6, 1, 20),
+(6, 5, 20),
 (6, 1, 22),
-(1, 9, 22),
+(1, 5, 22),
 (2, 10, 13),
-(2, 9, 13),
+(2, 5, 13),
 (3, 7, 13),
 (4, 7, 13),
 (5, 7, 13),
@@ -95,3 +95,4 @@ INSERT INTO TREATMENTS (AnimalID, TaskID, StartHour) VALUES
 (14, 10, 13),
 (14, 8, 13),
 (15, 8, 13);
+
