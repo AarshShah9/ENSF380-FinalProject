@@ -6,12 +6,16 @@ import javax.sound.sampled.AudioSystem;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+import com.mysql.cj.result.LocalDateTimeValueFactory;
+
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDate;
 
 /**
  * @name GUI
@@ -39,6 +43,8 @@ public class GUI extends JFrame {
     private JPanel buttonsPanel;
 
     private JMenuBar menuBar;
+
+    private Scheduler scheduler;
 
     JCheckBoxMenuItem volunteerCheck;
 
@@ -102,6 +108,10 @@ public class GUI extends JFrame {
             String password = new String(passwordField.getText());
             if (authenticate(username, password)) {
                 loginFrame.dispose();
+                scheduler = new Scheduler(LocalDate.of(2023, 02, 27), username, password);
+                scheduler.calculateSchedule();
+           
+                
                 this.setVisible(true);
             }
             else {
@@ -121,6 +131,15 @@ public class GUI extends JFrame {
     }
 
         private boolean authenticate(String username, String password) {
+            try {
+                System.out.print(LocalDate.of(2023, 02, 27));
+
+                scheduler = new Scheduler(LocalDate.of(2023, 02, 27), username, password);
+                scheduler.calculateSchedule();
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+                return false;
+            }
             
             return true;
         }
