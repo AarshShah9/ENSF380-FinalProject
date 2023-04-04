@@ -15,7 +15,7 @@ public class FoxTest {
     public void testConstructorGoodData() {
         // Test valid input
         Fox fox = new Fox(1, "Tony");
-        assertEquals(1, fox.getAnimalID());
+        assertEquals(1, (int) fox.getAnimalID());
         assertEquals("Tony", fox.getAnimalName());
         assertEquals(AnimalType.FOX, fox.getAnimalType());
         assertEquals(FeedingType.NOCTURNAL, fox.getAnimalFeedingType());
@@ -33,7 +33,7 @@ public class FoxTest {
         // Test getAnimalID getter method by creating a new fox object and checking if
         // the ID is correct
         Fox fox = new Fox(1, "Tony");
-        assertEquals(1, fox.getAnimalID());
+        assertEquals(1, (int) fox.getAnimalID());
     }
 
     @Test

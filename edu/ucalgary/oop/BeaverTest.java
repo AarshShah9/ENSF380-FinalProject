@@ -14,7 +14,7 @@ public class BeaverTest {
     public void testConstructor() {
         // Test valid input
         Beaver beaver = new Beaver(1, "Benny");
-        assertEquals(1, beaver.getAnimalID());
+        assertEquals(1, (int) beaver.getAnimalID());
         assertEquals("Benny", beaver.getAnimalName());
         assertEquals(AnimalType.BEAVER, beaver.getAnimalType());
         assertEquals(FeedingType.DIURNAL, beaver.getAnimalFeedingType());
