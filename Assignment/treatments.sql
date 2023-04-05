@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS ANIMALS;
 CREATE TABLE ANIMALS (
 	AnimalID		int not null AUTO_INCREMENT,
         AnimalNickname		varchar(25),
-	AnimalSpecies		varchar(25),animalsanimals
+	AnimalSpecies		varchar(25),
 	primary key (AnimalID)
 );
 
