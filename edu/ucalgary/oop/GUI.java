@@ -1,28 +1,18 @@
 package edu.ucalgary.oop;
 
-import javax.sound.midi.Soundbank;
-import javax.sound.midi.SoundbankResource;
-import javax.sound.sampled.AudioSystem;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 
-import com.mysql.cj.result.LocalDateTimeValueFactory;
 
 import java.awt.*;
 import java.awt.TrayIcon.MessageType;
-import java.awt.desktop.SystemSleepEvent;
-import java.awt.event.ItemEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.TimerTask;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
