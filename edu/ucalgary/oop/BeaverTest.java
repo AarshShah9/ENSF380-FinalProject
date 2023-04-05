@@ -13,8 +13,8 @@ public class BeaverTest {
     @Test
     public void testConstructor() {
         // Test valid input
-        Beaver beaver = new Beaver(1, "Benny", "BEAVER");
-        assertEquals(1, beaver.getAnimalID());
+        Beaver beaver = new Beaver(1, "Benny");
+        assertEquals(1, (int) beaver.getAnimalID());
         assertEquals("Benny", beaver.getAnimalName());
         assertEquals(AnimalType.BEAVER, beaver.getAnimalType());
         assertEquals(FeedingType.DIURNAL, beaver.getAnimalFeedingType());
@@ -24,7 +24,7 @@ public class BeaverTest {
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorBadInput() {
         // Test invalid input - orphaned cannot be null, and incorrect feeding type
-        Beaver invalidBeaver = new Beaver(2, "", "Beaver");
+        Beaver invalidBeaver = new Beaver(2, "");
 
     }
 }

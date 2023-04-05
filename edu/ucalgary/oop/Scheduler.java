@@ -19,6 +19,7 @@ public class Scheduler {
     //             new ArrayList<Treatment>(), new ArrayList<Animal>());
     //     newSceduleObj.getFromSQL("root", "password");
 
+
     //     // System.out.println(newSceduleObj.getAnimals().get(0).getAnimalName());
     //     newSceduleObj.calculateSchedule();
     // }
@@ -29,6 +30,7 @@ public class Scheduler {
         this.tasks = tasks;
         this.treatments = treatments;
     }
+
 
     public void getFromSQL(String user, String password) throws IllegalArgumentException {
         
