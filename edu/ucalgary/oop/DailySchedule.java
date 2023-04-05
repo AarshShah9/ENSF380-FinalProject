@@ -398,6 +398,7 @@ public class DailySchedule {
         System.out.println("Sucess");
     }
 
+
     public static void main(String[] args) {
         ArrayList<Animal> animals = new ArrayList<Animal>();
         ArrayList<Task> tasks = new ArrayList<Task>();
@@ -415,4 +416,5 @@ public class DailySchedule {
             System.out.println("IOError");
         }
     }
+
 }
