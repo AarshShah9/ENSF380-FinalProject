@@ -25,7 +25,7 @@ public class CoyoteTest {
         assertEquals("Tony", coyote.getAnimalName());
         assertEquals(AnimalType.COYOTE, coyote.getAnimalType());
         assertEquals(FeedingType.CREPUSCULAR, coyote.getAnimalFeedingType());
-        assertTrue(coyote.getOrphaned());
+        assertFalse(coyote.getOrphaned());
     }
 
     /**

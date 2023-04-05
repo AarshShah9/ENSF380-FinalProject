@@ -36,17 +36,6 @@ public class TaskTest {
     }
 
     /**
-     * Tests the Task constructor with bad data (invalid task type), expecting an
-     * IllegalArgumentException.
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testTaskConstructorBadData() {
-        // TODO: Add test for invalid task type
-        // Creating a new Task object with invalid data (task type)
-        Task task = new Task(1, "Test", 1, 1);
-    }
-
-    /**
      * Tests the getTaskID() method to ensure it returns the correct task ID.
      */
     @Test

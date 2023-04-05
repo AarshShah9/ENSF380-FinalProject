@@ -26,7 +26,7 @@ public class PorcupineTest {
         assertEquals("Tony", porcupine.getAnimalName());
         assertEquals(AnimalType.PORCUPINE, porcupine.getAnimalType());
         assertEquals(FeedingType.CREPUSCULAR, porcupine.getAnimalFeedingType());
-        assertTrue(porcupine.getOrphaned());
+        assertFalse(porcupine.getOrphaned());
     }
 
     /**

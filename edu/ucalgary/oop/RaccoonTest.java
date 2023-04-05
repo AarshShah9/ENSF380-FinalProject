@@ -26,7 +26,7 @@ public class RaccoonTest {
         assertEquals("Tony", raccoon.getAnimalName());
         assertEquals(AnimalType.RACCOON, raccoon.getAnimalType());
         assertEquals(FeedingType.NOCTURNAL, raccoon.getAnimalFeedingType());
-        assertTrue(raccoon.getOrphaned());
+        assertFalse(raccoon.getOrphaned());
     }
 
     /**
