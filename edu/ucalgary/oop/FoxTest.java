@@ -4,16 +4,22 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * Define a class called "FoxTest" that tests the "Fox" class as well as all the
+ * inherited methods from the abstract class "Animal"
+ * 
+ * @version 2.0
+ * @author Aarsh
+ * @date 2023-04-05
+ */
 public class FoxTest {
-    /**
-     * @version 1.0
-     * @author Aarsh @ Nick
-     * @date 2023-03-22
-     */
 
+    /**
+     * Test the constructor of the "Fox" class
+     */
     @Test
     public void testConstructorGoodData() {
-        // Test valid input
+        // Create a new fox object and check if the attributes are correct
         Fox fox = new Fox(1, "Tony");
         assertEquals(1, (int) fox.getAnimalID());
         assertEquals("Tony", fox.getAnimalName());
@@ -22,12 +28,18 @@ public class FoxTest {
         assertTrue(fox.getOrphaned());
     }
 
+    /**
+     * Test the constructor of the "Fox" class with invalid input
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorBadData() {
         Fox invalidCoyote = new Fox(2, "");
 
     }
 
+    /**
+     * Test the getAnimalID method from the Animal class
+     */
     @Test
     public void testGetAnimalID() {
         // Test getAnimalID getter method by creating a new fox object and checking if
@@ -36,6 +48,9 @@ public class FoxTest {
         assertEquals(1, (int) fox.getAnimalID());
     }
 
+    /**
+     * Test the getAnimalName method from the Animal class
+     */
     @Test
     public void testGetAnimalName() {
         // Test getAnimalName getter method by creating a new fox object and checking if
@@ -44,6 +59,9 @@ public class FoxTest {
         assertEquals("Tony", fox.getAnimalName());
     }
 
+    /**
+     * Test the getAnimalType method from the Animal class
+     */
     @Test
     public void testGetAnimalType() {
         // Test getAnimalType getter method by creating a new fox object and checking if
@@ -52,6 +70,9 @@ public class FoxTest {
         assertEquals(AnimalType.FOX, fox.getAnimalType());
     }
 
+    /**
+     * Test the getAnimalFeedingType method from the Animal class
+     */
     @Test
     public void testGetAnimalFeedingType() {
         // Test getAnimalFeedingType getter method by creating a new fox object and
@@ -60,6 +81,9 @@ public class FoxTest {
         assertEquals(FeedingType.NOCTURNAL, fox.getAnimalFeedingType());
     }
 
+    /**
+     * Test the getOrphaned method from the Animal class
+     */
     @Test
     public void testGetOrphaned() {
         // Test getOrphaned getter method by creating a new fox object and checking if

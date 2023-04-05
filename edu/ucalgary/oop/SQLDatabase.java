@@ -3,6 +3,14 @@ package edu.ucalgary.oop;
 import java.util.ArrayList;
 import java.sql.*;
 
+/**
+ * Define a class called "SQLDatabase" that connects to the database and adds
+ * the animals, tasks, and treatments to the ArrayLists in the Scedular class
+ * 
+ * @version 2.0
+ * @author Aarsh
+ * @date 2023-04-05
+ */
 public class SQLDatabase {
     private ArrayList<Animal> animals;
     private ArrayList<Task> tasks;
@@ -10,12 +18,15 @@ public class SQLDatabase {
     final private Connection DB_CONNECT;
 
     /**
-     * Constructs a new SQLDatabase object with the given database name
-     * initializes the animals and tasks ArrayLists
-     * Attempts to connect to the specified database using JDBC and the 'student'
-     * and 'ensf' for username and password
+     * Constructs a new SQLDatabase object with the given params
      * 
-     * @param dbName the name of the database to connect to
+     * @param dbName        the name of the database to connect to
+     * @param user          the username to connect to the database
+     * @param password      the password to connect to the database
+     * @param animaList     the ArrayList of animals
+     * @param taskList      the ArrayList of tasks
+     * @param treatmentList the ArrayList of treatments
+     * 
      * @throws SQLException if there is an error connecting to the
      *                      database
      */
@@ -23,16 +34,22 @@ public class SQLDatabase {
             ArrayList<Task> taskList,
             ArrayList<Treatment> treatmentList) throws SQLException {
 
+        // set the ArrayLists to the given ArrayLists memory locations
         this.animals = animaList;
         this.tasks = taskList;
         this.treatments = treatmentList;
 
         try {
+            // connect to the database
             this.DB_CONNECT = DriverManager.getConnection(String.format("jdbc:mysql://localhost/%s", dbName), user,
                     password);
+
+            // add the animals, tasks, and treatments to the ArrayLists
             addAnimalsSQL();
             addTasksSQL();
             addTreatmentSQL();
+
+            // check if any animals are orphaned
             checkOrphans();
         } catch (SQLException e) {
             throw new SQLException(e);
@@ -48,10 +65,15 @@ public class SQLDatabase {
     private void addAnimalsSQL() throws SQLException {
 
         try {
+            // Create a statement object
             Statement stmt1 = this.DB_CONNECT.createStatement();
+            // select all the animals from the database ANIMALS table
             String query1 = "SELECT * FROM ANIMALS";
+            // execute the query and store the result in a ResultSet object
             ResultSet rs = stmt1.executeQuery(query1);
 
+            // loop through the ResultSet object and add the animals to the ArrayList
+            // depennding on the animal type
             while (rs.next()) {
                 String name = rs.getString("AnimalSpecies");
                 try {
@@ -90,10 +112,14 @@ public class SQLDatabase {
      */
     private void addTasksSQL() throws SQLException {
         try {
+            // Create a statement object
             Statement stmt2 = this.DB_CONNECT.createStatement();
+            // select all the tasks from the database TASKS table
             String query2 = "SELECT * FROM TASKS";
+            // execute the query and store the result in a ResultSet object
             ResultSet rs = stmt2.executeQuery(query2);
 
+            // loop through the ResultSet object and add the tasks to the ArrayList
             while (rs.next()) {
                 Task newTask = new Task(rs.getInt("TaskID"), rs.getString("Description"),
                         rs.getInt("Duration"), rs.getInt("MaxWindow"));
@@ -113,10 +139,14 @@ public class SQLDatabase {
      */
     private void addTreatmentSQL() throws SQLException {
         try {
+            // Create a statement object
             Statement stmt3 = this.DB_CONNECT.createStatement();
+            // select all the treatments from the database TREATMENTS table
             String query3 = "SELECT * FROM TREATMENTS";
+            // execute the query and store the result in a ResultSet object
             ResultSet rs = stmt3.executeQuery(query3);
 
+            // loop through the ResultSet object and add the treatments to the ArrayList
             while (rs.next()) {
                 Treatment newTreatment = new Treatment(rs.getInt("AnimalID"), rs.getInt("TaskID"),
                         rs.getInt("StartHour"));
@@ -199,9 +229,9 @@ public class SQLDatabase {
     /**
      * Determines if any of the animals are orphans
      * 
-     * @return void
      */
     private void checkOrphans() {
+        // loops through and checks if any of the animals are orphans
         for (Treatment treatment : this.treatments) {
             if (treatment.getTaskID() == 1) {
                 this.animals.get(treatment.getAnimalID() - 1).setOrphaned(true);

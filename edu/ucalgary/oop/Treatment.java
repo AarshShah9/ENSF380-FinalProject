@@ -3,6 +3,13 @@ A class representing a treatment for an animal at a specific start hour
 */
 package edu.ucalgary.oop;
 
+/**
+ * A class representing a treatment for an animal at a specific start hour
+ * 
+ * @version 2.0
+ * @author Aarsh
+ * @date 2023-04-05
+ */
 public class Treatment {
     private final int ANIMAL_ID; // the ID of the animal being treated
     private final int TASK_ID; // the ID of the task to be performed during the treatment
