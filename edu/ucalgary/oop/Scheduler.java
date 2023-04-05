@@ -11,15 +11,17 @@ public class Scheduler {
     private ArrayList<Treatment> treatments;
     private final LocalDate DATE;
     private DailySchedule dailySchedule;
+ 
 
-    public static void main(String[] args) {
-        Scheduler newSceduleObj = new Scheduler(LocalDate.now(), new ArrayList<Task>(),
-                new ArrayList<Treatment>(), new ArrayList<Animal>());
-        newSceduleObj.getFromSQL();
+    // public static void main(String[] args) {
+    // Scheduler newSceduleObj = new Scheduler(LocalDate.now(), new
+    // ArrayList<Task>(),
+    // new ArrayList<Treatment>(), new ArrayList<Animal>());
+    // newSceduleObj.getFromSQL("root", "password");
 
-        // System.out.println(newSceduleObj.getAnimals().get(0).getAnimalName());
-        newSceduleObj.calculateSchedule();
-    }
+    // // System.out.println(newSceduleObj.getAnimals().get(0).getAnimalName());
+    // newSceduleObj.calculateSchedule();
+    // }
 
     public Scheduler(LocalDate day, ArrayList<Task> tasks, ArrayList<Treatment> treatments, ArrayList<Animal> animals) {
         this.DATE = day;
@@ -28,14 +30,19 @@ public class Scheduler {
         this.treatments = treatments;
     }
 
-    public void getFromSQL() throws IllegalArgumentException {
+    public void getFromSQL(String user, String password) throws IllegalArgumentException {
+
+    
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", animals, tasks, treatments);
+            SQLDatabase db = new SQLDatabase("EWR", user, password, animals, tasks, treatments);
+
         } catch (Exception e) {
             System.out.println("SQLDatabaseException caught: " + e.getMessage());
             throw new IllegalArgumentException(e);
         }
     }
+
+
 
     public String calculateSchedule() {
         try {
@@ -50,10 +57,10 @@ public class Scheduler {
         }
     }
 
-    public void changeTreatmentStart(int animalID, int taskID, int newStartHour) {
+    public void changeTreatmentStart(int currentStartHour, int taskID, int newStartHour) {
         try {
             for (Treatment treatment : treatments) {
-                if (treatment.getAnimalID() == animalID && treatment.getTaskID() == taskID) {
+                if (treatment.getTaskID() == taskID && treatment.getStartHour() == currentStartHour) {
                     treatment.setStartHour(newStartHour);
                 }
             }
@@ -64,7 +71,7 @@ public class Scheduler {
         }
     }
 
-    public boolean[] getVoluneersNeded() {
+    public boolean[] getVolunteersNeeded() {
         if (dailySchedule != null) {
             return dailySchedule.getVolunteersNeeded();
         } else {
