@@ -38,22 +38,24 @@ public class SQLDatabaseTest {
 
     /**
      * Test case for the SQLDatabase constructor with invalid input.
-     * Creates an instance of the SQLDatabase class with an invalid database name
+     * Creates an instance of the SQLDatabase class with an invalid username name
      * and asserts that the connection is null.
      */
-    // @Test(expected = SQLException.class)
-    // public void testConstructorBadInput() {
-    // try {
-    // this.db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(),
-    // new ArrayList<Task>(),
-    // new ArrayList<Treatment>());
-    // assertNull("Database should be null", db.getDBConnect());
-    // } catch (IllegalArgumentException e) {
+    @Test
+    public void testConstructorBadInput() {
+        boolean thrown = false;
+        try {
+            this.db = new SQLDatabase("ewr", "wronguser", "password", new ArrayList<Animal>(),
+                    new ArrayList<Task>(),
+                    new ArrayList<Treatment>());
+        } catch (SQLException e) {
+            thrown = true;
 
-    // } catch (Exception e) {
-    // throw new SQLException("Database does not exist");
-    // }
-    // }
+        } catch (Exception e) {
+
+        }
+        assertTrue(thrown);
+    }
 
     /**
      * Test case for the getDBConnect() method of the SQLDatabase class.
@@ -176,7 +178,79 @@ public class SQLDatabaseTest {
      */
     @Test
     public void testGetTreatments() {
-        //
+        try {
+            this.db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(), new ArrayList<Task>(),
+                    new ArrayList<Treatment>());
+        } catch (Exception e) {
+            assertEquals("Database does not exist", e.getMessage());
+        }
+        ArrayList<Treatment> treatments = new ArrayList<Treatment>();
+        Treatment treatment1 = new Treatment(1, 1, 12);
+        Treatment treatment2 = new Treatment(2, 2, 20);
+        treatments.add(treatment1);
+        treatments.add(treatment2);
+        db.setTreatments(treatments);
+        assertNotNull(treatments);
+        assertEquals(2, db.getTreatments().size());
+        assertTrue(db.getTreatments().contains(treatment1));
+        assertTrue(db.getTreatments().contains(treatment2));
+    }
+
+    /**
+     * Test case for the setTreatments() method of the SQLDatabase class.
+     * Creates an instance of the SQLDatabase class, sets the list of treatments,
+     * and
+     * asserts that the list of treatments contains the correct values.
+     */
+    @Test
+    public void testSetTreatments() {
+        try {
+            this.db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(), new ArrayList<Task>(),
+                    new ArrayList<Treatment>());
+        } catch (Exception e) {
+            assertEquals("Database does not exist", e.getMessage());
+        }
+
+        ArrayList<Treatment> treatments = new ArrayList<Treatment>();
+        Treatment treatment1 = new Treatment(1, 1, 12);
+        Treatment treatment2 = new Treatment(2, 2, 20);
+        treatments.add(treatment1);
+        treatments.add(treatment2);
+        db.setTreatments(treatments);
+        assertNotNull(treatments);
+        assertEquals(2, db.getTreatments().size());
+        assertTrue(db.getTreatments().contains(treatment1));
+        assertTrue(db.getTreatments().contains(treatment2));
+    }
+
+    /*
+     * Test case for testing the setStartHour() method of the Treatment class.
+     * Creates an instance of the Treatment class, sets the start hour, and
+     * asserts that the start hour throws the required exceptions.
+     */
+    @Test
+    public void testSetStartHour() {
+        try {
+            this.db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(), new ArrayList<Task>(),
+                    new ArrayList<Treatment>());
+        } catch (Exception e) {
+            assertEquals("Database does not exist", e.getMessage());
+        }
+
+        ArrayList<Treatment> treatments = new ArrayList<Treatment>();
+        Treatment treatment1 = new Treatment(1, 1, 12);
+        Treatment treatment2 = new Treatment(2, 2, 20);
+        treatments.add(treatment1);
+        treatments.add(treatment2);
+        db.setTreatments(treatments);
+
+        boolean thrown = false;
+        try {
+            db.getTreatments().get(0).setStartHour(25);
+        } catch (IllegalArgumentException e) {
+            thrown = true;
+        }
+        assertTrue("setStartHour didn't throw the required exceptions", thrown);
     }
 
 }

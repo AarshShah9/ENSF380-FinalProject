@@ -7,7 +7,6 @@ public class SQLDatabase {
     private ArrayList<Animal> animals;
     private ArrayList<Task> tasks;
     private ArrayList<Treatment> treatments;
-
     final private Connection DB_CONNECT;
 
     /**
@@ -17,13 +16,13 @@ public class SQLDatabase {
      * and 'ensf' for username and password
      * 
      * @param dbName the name of the database to connect to
-     * @throws IllegalArgumentException if any the database inputs are invalid
-     * @throws SQLException             if there is an error connecting to the
-     *                                  database
+     * @throws SQLException if there is an error connecting to the
+     *                      database
      */
     public SQLDatabase(String dbName, String user, String password, ArrayList<Animal> animaList,
             ArrayList<Task> taskList,
-            ArrayList<Treatment> treatmentList) throws IllegalArgumentException, SQLException {
+            ArrayList<Treatment> treatmentList) throws SQLException {
+
         this.animals = animaList;
         this.tasks = taskList;
         this.treatments = treatmentList;
@@ -37,9 +36,6 @@ public class SQLDatabase {
             checkOrphans();
         } catch (SQLException e) {
             throw new SQLException(e);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException("Invalid Database Input");
         }
     }
 
@@ -126,6 +122,8 @@ public class SQLDatabase {
                         rs.getInt("StartHour"));
                 treatments.add(newTreatment);
             }
+        } catch (IllegalArgumentException e) {
+            throw new SQLException("Invalid Start Hour Treatment Input from the SQL Database" + e.getMessage());
         } catch (Exception e) {
             throw new SQLException("Issue parsing treatment info from SQL Database" + e.getMessage());
         }

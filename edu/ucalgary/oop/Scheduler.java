@@ -57,6 +57,8 @@ public class Scheduler {
                     treatment.setStartHour(newStartHour);
                 }
             }
+        } catch (IllegalArgumentException e) {
+            System.out.println("newStartHour must be between 0 and 23 it was " + newStartHour);
         } catch (Exception e) {
             System.out.println("IOException caught: " + e.getMessage());
         }

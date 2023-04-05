@@ -229,34 +229,55 @@ public class SchedulerTest {
         }
     }
 
+    /**
+     * Creates an instances of the Scheduler class and tests the getFromSQL method
+     * which retrieves data from an SQL database
+     */
     @Test
     public void testGetFromSQL() {
+        // Create empty lists of tasks, treatments, and animals
         ArrayList<Task> tasks = new ArrayList<Task>();
         ArrayList<Treatment> treatments = new ArrayList<Treatment>();
         ArrayList<Animal> animals = new ArrayList<Animal>();
+
+        // Create a new scheduler with today's date and the empty lists
         Scheduler scheduler = new Scheduler(LocalDate.now(), tasks, treatments, animals);
+
+        // Retrieve data from an SQL database
         scheduler.getFromSQL();
 
+        // Ensure that the scheduler's lists are not null
         assertNotNull(scheduler.getAnimals());
         assertNotNull(scheduler.getTasks());
         assertNotNull(scheduler.getTreatments());
     }
 
+    /**
+     * Creates an instances of the Scheduler class and tests the
+     * changeTreatmentStart method
+     */
     @Test
     public void testChangeTreatmentStart() {
+        // Create an empty list of tasks and animals, and a list of treatments with a
+        // single treatment at hour 3
         ArrayList<Task> tasks = new ArrayList<Task>();
         ArrayList<Treatment> treatments = new ArrayList<Treatment>();
         treatments.add(new Treatment(1, 1, 3));
         ArrayList<Animal> animals = new ArrayList<Animal>();
+
+        // Create a new scheduler with today's date and the treatments and animals lists
         Scheduler scheduler = new Scheduler(LocalDate.now(), tasks, treatments, animals);
 
+        // Get the treatment and change its start hour to 2
         Treatment treatment = scheduler.getTreatments().get(0);
-
         scheduler.changeTreatmentStart(1, 1, 2);
+
+        // Ensure that the treatment's start hour was changed to 2
         assertEquals(2, scheduler.getTreatments().get(0).getStartHour());
 
+        // Attempt to change the start hour of a non-existent treatment and ensure that
+        // it was not changed
         scheduler.changeTreatmentStart(1, 2, 10);
         assertEquals(2, scheduler.getTreatments().get(0).getStartHour());
-
     }
 }
