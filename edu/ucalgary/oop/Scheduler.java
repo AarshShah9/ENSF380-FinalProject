@@ -54,10 +54,10 @@ public class Scheduler {
         }
     }
 
-    public void changeTreatmentStart(int animalID, int taskID, int newStartHour) {
+    public void changeTreatmentStart(int currentStartHour, int taskID, int newStartHour) {
         try {
             for (Treatment treatment : treatments) {
-                if (treatment.getAnimalID() == animalID && treatment.getTaskID() == taskID) {
+                if (treatment.getTaskID() == taskID && treatment.getStartHour() == currentStartHour) {
                     treatment.setStartHour(newStartHour);
                 }
             }

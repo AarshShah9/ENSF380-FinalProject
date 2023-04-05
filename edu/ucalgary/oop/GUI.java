@@ -5,11 +5,13 @@ import javax.sound.midi.SoundbankResource;
 import javax.sound.sampled.AudioSystem;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 
 import com.mysql.cj.result.LocalDateTimeValueFactory;
 
 import java.awt.*;
 import java.awt.TrayIcon.MessageType;
+import java.awt.desktop.SystemSleepEvent;
 import java.awt.event.ItemEvent;
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,6 +21,10 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TimerTask;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * @name GUI
@@ -50,7 +56,9 @@ public class GUI extends JFrame {
 
     private Scheduler scheduler;
 
-    JCheckBoxMenuItem volunteerCheck;
+
+
+    JTextArea scheduleText = new JTextArea();
 
     /**
      * @version 1.0.0
@@ -141,15 +149,7 @@ public class GUI extends JFrame {
                 scheduler.getFromSQL(username, password);
                 
                 
-                String status = scheduler.calculateSchedule();
-                neededVolunteers = scheduler.getVolunteersNeeded();
-                if (status.equals("Success")) {
-                    JOptionPane.showMessageDialog(this, "Schedule Generated Successfully", status, MessageType.INFO.ordinal());
-                }
-                else {
-                    System.out.println("Error calculating schedule: " + status);
-                    JOptionPane.showMessageDialog(this, "Error calculating schedule: " + status, status, MessageType.ERROR.ordinal());
-                }
+                
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
                 return false;
@@ -191,31 +191,24 @@ public class GUI extends JFrame {
         //options buttons
         //create schedule
         JButton createButton = new JButton();
-        createButton.setText("Create Schedule");
+        createButton.setText("Generate Schedule");
         createButton.addActionListener(createButtonEvent -> getSchedule());
 
         //manage schedule
         JButton manageButton = new JButton();
-        manageButton.setText("Manage Schedule");
+        manageButton.setText("Change Schedule");
         manageButton.addActionListener(manageButtonEvent -> manageSchedule());
 
         //print schedule
         JButton printButton = new JButton();
-        printButton.setText("Print Schedule");
-        printButton.addActionListener(printButtonEvent -> printSchedule());
-
-        JPanel volunteerPanel = new JPanel();
-        JLabel volunteerLabel = new JLabel("Volunteer requested:");
-        volunteerCheck = new JCheckBoxMenuItem();
-
-        volunteerPanel.add(volunteerLabel);
-        volunteerPanel.add(volunteerCheck);
+        printButton.setText("Save Schedule");
+        printButton.addActionListener(printButtonEvent -> saveSchedule());
 
 
         buttonsPanel.add(createButton);
         buttonsPanel.add(manageButton);
         buttonsPanel.add(printButton);
-        buttonsPanel.add(volunteerPanel);
+        
 
         schedulePanel = new JPanel();
 
@@ -248,10 +241,10 @@ public class GUI extends JFrame {
 
         //construct file menu
         JMenu fileMenu = new JMenu ("File");
-        JMenuItem print_scheduleItem = new JMenuItem ("Print Schedule");
-        print_scheduleItem.addActionListener(printButtonEvent -> printSchedule());
+        JMenuItem print_scheduleItem = new JMenuItem ("Save Schedule");
+        print_scheduleItem.addActionListener(printButtonEvent -> saveSchedule());
         fileMenu.add(print_scheduleItem);
-        JMenuItem create_scheduleItem = new JMenuItem("Create Schedule");
+        JMenuItem create_scheduleItem = new JMenuItem("New Schedule");
         create_scheduleItem.addActionListener(createButtonEvent -> getSchedule());
         fileMenu.add(create_scheduleItem);
         JMenuItem exitItem = new JMenuItem("Exit");
@@ -301,7 +294,21 @@ public class GUI extends JFrame {
      */
     public void getSchedule() {
 
-        JTextArea scheduleText = new JTextArea();
+        //Create the schedule
+        String status = scheduler.calculateSchedule();
+        neededVolunteers = scheduler.getVolunteersNeeded();
+        if (status.equals("Success")) {
+            JOptionPane.showMessageDialog(this, "Schedule Generated Successfully", status, MessageType.INFO.ordinal());
+        }
+        else {
+            System.out.println("Error calculating schedule: " + status);
+            JOptionPane.showMessageDialog(this, "Error calculating schedule: " + status, status, MessageType.ERROR.ordinal());
+        }
+
+        if (scheduleText.getText() != "") {
+            scheduleText.selectAll();
+            scheduleText.replaceSelection("");
+        }
 
         try {
             File file = new File("schedule.txt");
@@ -318,13 +325,19 @@ public class GUI extends JFrame {
         }
 
         JScrollPane scrollPane = new JScrollPane(scheduleText);
+        
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setMaximumSize(new Dimension((int) (schedulePanel.getWidth() * ((double) 0.5)),
                 (int) (schedulePanel.getHeight() * ((double) 0.6))));
         scrollPane.setPreferredSize(new Dimension((int) (WIDTH * ((double) 0.8)), (int) (HEIGHT * ((double) 0.6))));
 
+        if (schedulePanel.getComponentCount() > 0) {
+            schedulePanel.remove(0);
+        }
+        
         schedulePanel.add(scrollPane);
+        
 
         // Update the GUI
         this.revalidate();
@@ -342,7 +355,19 @@ public class GUI extends JFrame {
      *        it will display a popup window asking the user to confirm that a
      *        volunteer is present.
      */
-    public void printSchedule() {
+    public void saveSchedule() {
+        boolean volunteersNeeded = false;
+        System.out.println(neededVolunteers.length);
+        for (int i = 0; i < neededVolunteers.length; i++) {
+            if (neededVolunteers[i] == true) {
+                volunteersNeeded = true;
+                break;
+            }
+        }
+        if (volunteersNeeded == false) {
+            getSchedule();
+            return;
+        }
 
         JDialog confirmVolunteers = new JDialog(this, this.getTitle() + " - Confirm Volunteers", true);
         
@@ -373,13 +398,14 @@ public class GUI extends JFrame {
                     return;
                 }
             }
+            scheduler.calculateSchedule();
+            scheduler.getVolunteersNeeded();
             confirmVolunteers.dispose();
         });
 
         confirmVolunteers.add(confirmButton, BorderLayout.SOUTH);
         confirmVolunteers.pack();
         confirmVolunteers.setVisible(true);
-
 
     }
 
@@ -401,40 +427,66 @@ public class GUI extends JFrame {
         manageFrame.setLocationRelativeTo(this);
         
 
-        JComboBox selectedTime = new JComboBox();
+        JComboBox<String> selectedTime = new JComboBox<String>();
         
         ArrayList<Treatment> treatments = scheduler.getTreatments();
+        ArrayList<Task> tasks = scheduler.getTasks();
+
+        // create a mew hashmap to store the taskID as the key and a TreeSet containing the start times as the value
+        HashMap<Integer, TreeSet<Integer>> taskHashMap = new HashMap<>();
+        
+        
+        // adds treatment start times to hashmap with taskID as key
         for (Treatment treatment : treatments) {
-            selectedTime.addItem(Integer.toString(treatment.getStartHour()));
+            int id = treatment.getTaskID();
+            if (taskHashMap.containsKey(id)) {
+                
+                taskHashMap.get(id).add(treatment.getStartHour());
+            }
+            else {
+                taskHashMap.put(id, new TreeSet<>());
+                taskHashMap.get(id).add(treatment.getStartHour());
+            }
         }
 
+        
+        // creates a new dictionary that stores the sorted start times as key and their corresponding taskID
+        TreeMap<Integer, ArrayList<Integer>> sortedTaskTreeMap = new TreeMap<>();
+        for (int id : taskHashMap.keySet()) {
+            for (int time : taskHashMap.get(id)) {
+                if (sortedTaskTreeMap.containsKey(time)) {
+                    sortedTaskTreeMap.get(time).add(id);
+                }
+                else {
+                    sortedTaskTreeMap.put(time, new ArrayList<>());
+                    sortedTaskTreeMap.get(time).add(id);
+                }
+            }
+        }
 
-        JComboBox newTime = new JComboBox();
-        newTime.addItem("8:00 AM");
-        newTime.addItem("9:00 AM");
-        newTime.addItem("10:00 AM");
-        newTime.addItem("11:00 AM");
-        newTime.addItem("12:00 PM");
-        newTime.addItem("1:00 PM");
-        newTime.addItem("2:00 PM");
+        HashMap<Integer, String> taskDescriptions = new HashMap<>();
+        for (Task task : tasks) {
+            taskDescriptions.put(task.getTaskID(), task.getDescription());
+        }
 
+        // iterates through the sorted TreeMap and adds the start times along with their respective task descriptions to the selectedTime JComboBox
+        for (int time : sortedTaskTreeMap.keySet()) {
+       
+            ArrayList<Integer> taskIDs = sortedTaskTreeMap.get(time);
+            for (int id : taskIDs) {
+                selectedTime.addItem(LocalTime.of(time, 0).toString() + " - " + taskDescriptions.get(id) + " - " + id);
+            }
+        }
         
-        // selectedTime.addItemListener(e -> {
-        //     if (e.getStateChange() == ItemEvent.SELECTED) {
-        //         System.out.println(selectedTime.getSelectedItem());
-        //     }
-        // });
 
-        
-        // newTime.addItemListener(e -> {
-        //     if (e.getStateChange() == ItemEvent.SELECTED) {
-        //         System.out.println(newTime.getSelectedItem());
-        //     }
-        // });
+        //creates an arraylist of LocalTimes to store each hour in the day
+        JComboBox<LocalTime> newTime = new JComboBox<LocalTime>();
+        ArrayList<LocalTime> hours = new ArrayList<>();
+        for (int i = 0; i < 24; i++) {
+            hours.add(LocalTime.of(i, 0));
+            newTime.addItem(hours.get(i));
+        }
 
-        
-        
-        
 
         JPanel managePanel = new JPanel();
        
@@ -460,8 +512,20 @@ public class GUI extends JFrame {
         JButton confirmButton = new JButton("Confirm");
         confirmButton.addActionListener(confirmButtonEvent -> {
             // TODO Auto-generated method stub
-            System.out.println(selectedTime.getSelectedItem());
-            System.out.println(newTime.getSelectedItem());
+            // get selected time
+            String selectedTask = (String) selectedTime.getSelectedItem();
+            System.out.println(selectedTask);
+            int selectedStartTime = Integer.parseInt(selectedTask.substring(0, 2));
+            System.out.println(selectedStartTime);
+            
+            // get taskID for selected time
+            int selectedTaskID = Integer.parseInt(selectedTask.substring(selectedTask.length() - 1));
+            System.out.println(selectedTaskID);
+            // get new start time
+            int newStartTime = Integer.parseInt(newTime.getSelectedItem().toString().substring(0, 2));
+            System.out.println(newStartTime);
+            
+            scheduler.changeTreatmentStart(selectedStartTime, selectedTaskID, newStartTime);
             manageFrame.dispose();
         });
         manageFrame.add(confirmButton, BorderLayout.SOUTH);
@@ -469,10 +533,8 @@ public class GUI extends JFrame {
         manageFrame.add(managePanel, BorderLayout.CENTER);
 
         manageFrame.pack();
-        
 
         manageFrame.setVisible(true);
-
     }
 
 
