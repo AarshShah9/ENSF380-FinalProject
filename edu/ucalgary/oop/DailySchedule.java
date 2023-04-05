@@ -25,8 +25,6 @@ public class DailySchedule {
     private final ArrayList<Treatment> TREATMENTS;
     private boolean[] volunteersNeeded = new boolean[24];
 
-    
-
     /**
      * Constructs a new DailySchedule object with the given ArrayLists of animals,
      * tasks, and treatments
@@ -308,10 +306,8 @@ public class DailySchedule {
      */
     private void scheduleTasks(ArrayList<ScheduleItem> scheduleItems) throws ImpossibleScheduleException {
         ArrayList<Integer> maxWindowArr = getMaxWindows(scheduleItems);
-        int i = 0;
-        while (scheduleItems.size() > 0) {
-            int maxWindow = maxWindowArr.get(i);
-            ListIterator<ScheduleItem> it = scheduleItems.listIterator();
+        for (Integer maxWindow : maxWindowArr) {
+            Iterator<ScheduleItem> it = scheduleItems.iterator();
             while (it.hasNext()) {
                 ScheduleItem item = it.next();
                 if (item.getMaxWindow() == maxWindow) {
@@ -324,8 +320,8 @@ public class DailySchedule {
                                 } else if (validateAddition(splitItems.get(1))) {
                                     volunteersNeeded[splitItems.get(1).getStartHour()] = true;
                                 }
-                                addSplitItems(splitItems);
                                 it.remove();
+                                addSplitItems(splitItems);
                             } else {
                                 if (scheduledTasks.get(item.getStartHour()) == null) {
                                     scheduledTasks.put(item.getStartHour(), new ArrayList<ScheduleItem>());
@@ -353,10 +349,8 @@ public class DailySchedule {
                         scheduledTasks.get(item.getStartHour()).add(item);
                         it.remove();
                     }
-                } else
-                    continue;
+                }
             }
-            i++;
         }
 
     }
@@ -510,21 +504,21 @@ public class DailySchedule {
     }
 
     // public static void main(String[] args) {
-    //     ArrayList<Animal> animals = new ArrayList<Animal>();
-    //     ArrayList<Task> tasks = new ArrayList<Task>();
-    //     ArrayList<Treatment> treatments = new ArrayList<Treatment>();
-    //     animals.add(new Coyote(1, "fox"));
-    //     tasks.add(new Task(1, "medical", 5, 3));
-    //     treatments.add(new Treatment(1, 1, 5));
-    //     DailySchedule schedule;
-    //     try {
-    //         schedule = new DailySchedule(animals, tasks, treatments, LocalDate.now());
+    // ArrayList<Animal> animals = new ArrayList<Animal>();
+    // ArrayList<Task> tasks = new ArrayList<Task>();
+    // ArrayList<Treatment> treatments = new ArrayList<Treatment>();
+    // animals.add(new Coyote(1, "fox"));
+    // tasks.add(new Task(1, "medical", 5, 3));
+    // treatments.add(new Treatment(1, 1, 5));
+    // DailySchedule schedule;
+    // try {
+    // schedule = new DailySchedule(animals, tasks, treatments, LocalDate.now());
 
-    //     } catch (ImpossibleScheduleException e) {
-    //         System.out.println(e.getMessage());
-    //     } catch (IOException e) {
-    //         System.out.println("IOError");
-    //     }
+    // } catch (ImpossibleScheduleException e) {
+    // System.out.println(e.getMessage());
+    // } catch (IOException e) {
+    // System.out.println("IOError");
+    // }
     // }
 
 }
