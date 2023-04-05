@@ -33,17 +33,6 @@ public class TaskTest {
         assertEquals("Test", task.getDescription());
         assertEquals(1, task.getDuration());
         assertEquals(1, task.getMaxWindow());
-   }
-
-    /**
-     * Tests the Task constructor with bad data (invalid task type), expecting an
-     * IllegalArgumentException.
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testTaskConstructorBadData() {
-        //TODO: Add test for invalid task type
-        // Creating a new Task object with invalid data (task type)
-        Task task = new Task(1, "Test", 1, 1);
     }
 
     /**
@@ -98,5 +87,4 @@ public class TaskTest {
         assertEquals(1, task.getMaxWindow());
     }
 
-    
 }

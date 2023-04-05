@@ -4,17 +4,67 @@ package edu.ucalgary.oop;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ * Create a class called "TreatmentTest" that tests the "Treatment" class
+ * 
+ * @version 1.0
+ * @author Aarsh
+ * @date 2023-04-04
+ */
+
 public class TreatmentTest {
 
     /**
-     * @version 1.0
-     * @author Aarsh
-     * @date 2023-04-04
+     * Tests the constructor of the Treatment class.
+     * It should set the correct values for animal ID, task ID, and start hour.
      */
-
     @Test
-    public void testConstructorGoodData() {
-        // Test valid input
-
+    public void testConstructor() {
+        Treatment treatment = new Treatment(1, 2, 3);
+        assertEquals(1, treatment.getAnimalID());
+        assertEquals(2, treatment.getTaskID());
+        assertEquals(3, treatment.getStartHour());
     }
+
+    /**
+     * Tests the getAnimalID method of the Treatment class.
+     * It should return the correct animal ID.
+     */
+    @Test
+    public void testGetAnimalID() {
+        Treatment treatment = new Treatment(1, 2, 3);
+        assertEquals(1, treatment.getAnimalID());
+    }
+
+    /**
+     * Tests the getTaskID method of the Treatment class.
+     * It should return the correct task ID.
+     */
+    @Test
+    public void testGetTaskID() {
+        Treatment treatment = new Treatment(1, 2, 3);
+        assertEquals(2, treatment.getTaskID());
+    }
+
+    /**
+     * Tests the setStartHour method of the Treatment class.
+     * It should set the start hour to the correct value.
+     */
+    @Test
+    public void testSetStartHour() {
+        Treatment treatment = new Treatment(1, 2, 3);
+        treatment.setStartHour(4);
+        assertEquals(4, treatment.getStartHour());
+    }
+
+    /**
+     * Tests the getStartHour method of the Treatment class.
+     * It should return the correct start hour.
+     */
+    @Test
+    public void testGetStartHour() {
+        Treatment treatment = new Treatment(1, 2, 3);
+        assertEquals(3, treatment.getStartHour());
+    }
+
 }
