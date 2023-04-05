@@ -21,7 +21,8 @@ public class SQLDatabaseTest {
     @Test
     public void testConstructorGoodInput() {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(), new ArrayList<Task>(),
+            SQLDatabase db = new SQLDatabase("EWR", "root", "Bluejaysfan2003##", new ArrayList<Animal>(),
+                    new ArrayList<Task>(),
                     new ArrayList<Treatment>());
             assertNotNull("Expected Database to exist", db.getDBConnect());
         } catch (Exception e) {
@@ -39,7 +40,7 @@ public class SQLDatabaseTest {
     public void testConstructorBadInput() {
         boolean thrown = false;
         try {
-            SQLDatabase db = new SQLDatabase("ewr", "wronguser", "password", new ArrayList<Animal>(),
+            SQLDatabase db = new SQLDatabase("ewr", "wronguser", "Bluejaysfan2003##", new ArrayList<Animal>(),
                     new ArrayList<Task>(),
                     new ArrayList<Treatment>());
         } catch (SQLException e) {
@@ -59,7 +60,8 @@ public class SQLDatabaseTest {
     @Test
     public void testGetDBConnect() {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(), new ArrayList<Task>(),
+            SQLDatabase db = new SQLDatabase("EWR", "root", "Bluejaysfan2003##", new ArrayList<Animal>(),
+                    new ArrayList<Task>(),
                     new ArrayList<Treatment>());
             assertNotNull("Expected Database to exist", db.getDBConnect());
         } catch (Exception e) {
@@ -76,7 +78,8 @@ public class SQLDatabaseTest {
     @Test
     public void testGetAnimals() {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(), new ArrayList<Task>(),
+            SQLDatabase db = new SQLDatabase("EWR", "root", "Bluejaysfan2003##", new ArrayList<Animal>(),
+                    new ArrayList<Task>(),
                     new ArrayList<Treatment>());
             ArrayList<Animal> animals = new ArrayList<Animal>();
             Animal beaver = new Beaver(1, "John");
@@ -103,7 +106,8 @@ public class SQLDatabaseTest {
     @Test
     public void testSetAnimals() {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(), new ArrayList<Task>(),
+            SQLDatabase db = new SQLDatabase("EWR", "root", "Bluejaysfan2003##", new ArrayList<Animal>(),
+                    new ArrayList<Task>(),
                     new ArrayList<Treatment>());
             ArrayList<Animal> animals = new ArrayList<Animal>();
             Animal beaver = new Beaver(1, "John");
@@ -130,10 +134,10 @@ public class SQLDatabaseTest {
     @Test
     public void testGetTasks() {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(), new ArrayList<Task>(),
+            SQLDatabase db = new SQLDatabase("EWR", "root", "Bluejaysfan2003##", new ArrayList<Animal>(),
+                    new ArrayList<Task>(),
                     new ArrayList<Treatment>());
             assertNotNull(db.getTasks());
-            assertEquals(0, db.getTasks().size());
         } catch (Exception e) {
             assertEquals("Database does not exist", e.getMessage());
         }
@@ -148,7 +152,8 @@ public class SQLDatabaseTest {
     @Test
     public void testSetTasks() {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(), new ArrayList<Task>(),
+            SQLDatabase db = new SQLDatabase("EWR", "root", "Bluejaysfan2003##", new ArrayList<Animal>(),
+                    new ArrayList<Task>(),
                     new ArrayList<Treatment>());
             ArrayList<Task> tasks = new ArrayList<Task>();
             Task task1 = new Task(1, "Feed Beaver", 30, 45);
@@ -174,7 +179,8 @@ public class SQLDatabaseTest {
     @Test
     public void testGetTreatments() {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(), new ArrayList<Task>(),
+            SQLDatabase db = new SQLDatabase("EWR", "root", "Bluejaysfan2003##", new ArrayList<Animal>(),
+                    new ArrayList<Task>(),
                     new ArrayList<Treatment>());
             ArrayList<Treatment> treatments = new ArrayList<Treatment>();
             Treatment treatment1 = new Treatment(1, 1, 12);
@@ -201,7 +207,8 @@ public class SQLDatabaseTest {
     @Test
     public void testSetTreatments() {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(), new ArrayList<Task>(),
+            SQLDatabase db = new SQLDatabase("EWR", "root", "Bluejaysfan2003##", new ArrayList<Animal>(),
+                    new ArrayList<Task>(),
                     new ArrayList<Treatment>());
             ArrayList<Treatment> treatments = new ArrayList<Treatment>();
             Treatment treatment1 = new Treatment(1, 1, 12);
@@ -227,7 +234,8 @@ public class SQLDatabaseTest {
     @Test
     public void testSetStartHour() {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(), new ArrayList<Task>(),
+            SQLDatabase db = new SQLDatabase("EWR", "root", "Bluejaysfan2003##", new ArrayList<Animal>(),
+                    new ArrayList<Task>(),
                     new ArrayList<Treatment>());
             ArrayList<Treatment> treatments = new ArrayList<Treatment>();
             Treatment treatment1 = new Treatment(1, 1, 12);

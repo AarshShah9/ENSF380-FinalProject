@@ -25,7 +25,7 @@ public class FoxTest {
         assertEquals("Tony", fox.getAnimalName());
         assertEquals(AnimalType.FOX, fox.getAnimalType());
         assertEquals(FeedingType.NOCTURNAL, fox.getAnimalFeedingType());
-        assertTrue(fox.getOrphaned());
+        assertFalse(fox.getOrphaned());
     }
 
     /**
@@ -89,7 +89,48 @@ public class FoxTest {
         // Test getOrphaned getter method by creating a new fox object and checking if
         // the orphaned status is correct
         Fox fox = new Fox(1, "Tony");
-        assertTrue(fox.getOrphaned());
+        assertFalse(fox.getOrphaned());
     }
 
+    /**
+     * Test the getFeedTime method from the Animal class
+     */
+    @Test
+    public void testGetFeedTime() {
+        // Test getFeedTime getter method by creating a new fox object and checking if
+        // the feed time is correct
+        Fox fox = new Fox(1, "Tony");
+        assertEquals(5, (int) fox.getFeedTime());
+    }
+
+    /**
+     * Test the getFeedPrepTime method from the Animal class
+     */
+    @Test
+    public void testGetFeedPrepTime() {
+        // Test getFeedPrepTime getter method by creating a new fox object and checking
+        // if the feed prep time is correct
+        Fox fox = new Fox(1, "Tony");
+        assertEquals(5, (int) fox.getFeedPrepTime());
+    }
+
+    /**
+     * Test the getCleanTime method from the Animal class
+     */
+    @Test
+    public void testGetCleanTime() {
+        // Test getCleanTime getter method by creating a new fox object and checking if
+        // the clean time is correct
+        Fox fox = new Fox(1, "Tony");
+        assertEquals(5, (int) fox.getCleanTime());
+    }
+
+    @Test
+    public void testSetOrphaned() {
+        // Test setOrphaned setter method by creating a new fox object and checking if
+        // the orphaned status is correct
+        Fox fox = new Fox(1, "Tony");
+        fox.setOrphaned(true);
+        assertTrue(fox.getOrphaned());
+    }
 }
