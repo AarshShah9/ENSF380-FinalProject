@@ -36,6 +36,9 @@ public class ScheduleItem {
      */
     public ScheduleItem(ArrayList<String> name, int quantity, String description, int startHour, int maxWindow,
             int duration, int prepTime) {
+        if (name.isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
         this.name = name;
         this.quantity = quantity;
         this.DESCRIPTION = description;

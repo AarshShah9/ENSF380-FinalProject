@@ -34,8 +34,8 @@ public class ScheduleItemTest {
     // Test the ScheduleItem constructor with invalid data
     @Test(expected = IllegalArgumentException.class)
     public void testTaskConstructorBadData() {
-        ArrayList<Integer> test = new ArrayList<>();
-        ScheduleItem temp = new ScheduleItem(null, 0, null, 0, 0, 0, 0);
+        ArrayList<String> test = new ArrayList<>();
+        ScheduleItem temp = new ScheduleItem(test, 0, "test", 0, 0, 0, 0);
     }
 
     // Test the getName function
@@ -65,7 +65,6 @@ public class ScheduleItemTest {
         System.out.println("getQuantity");
         assertEquals("getQuantity() value was incorrect: ", 0, result);
     }
-
 
     // Test the getDescription function
     @Test
@@ -237,7 +236,7 @@ public class ScheduleItemTest {
 
         ArrayList<String> testArr = new ArrayList<>();
         String test = "Sarim";
-        testArr.set(0, test);
+        testArr.add(test);
         temp.addName(testArr);
         ArrayList<String> result = temp.getName();
 
