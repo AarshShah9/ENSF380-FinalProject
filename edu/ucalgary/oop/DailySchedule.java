@@ -19,12 +19,10 @@ import java.util.Arrays;
 public class DailySchedule {
     private final LocalDate CURR_DATE;
     private HashMap<Integer, ArrayList<ScheduleItem>> scheduledTasks = new HashMap<Integer, ArrayList<ScheduleItem>>();
-    private ArrayList<Animal> animals;
-    private ArrayList<Task> tasks;
-    private ArrayList<Treatment> treatments;
-
+    private final ArrayList<Animal> ANIMALS;
+    private final ArrayList<Task> TASKS;
+    private final ArrayList<Treatment> TREATMENTS;
     private boolean[] bonusVolunteers = new boolean[24];
-
     private ArrayList<ScheduleItem> scheduleItems = new ArrayList<ScheduleItem>();
 
     /**
@@ -40,9 +38,9 @@ public class DailySchedule {
     public DailySchedule(ArrayList<Animal> animals, ArrayList<Task> tasks, ArrayList<Treatment> treatments,
             LocalDate date) throws ImpossibleScheduleException, IOException {
         this.CURR_DATE = date;
-        this.animals = animals;
-        this.treatments = treatments;
-        this.tasks = tasks;
+        this.ANIMALS = animals;
+        this.TREATMENTS = treatments;
+        this.TASKS = tasks;
 
         // Add treatments to the scheduledItems array
         addTreatments();
@@ -70,10 +68,6 @@ public class DailySchedule {
 
     }
 
-    public boolean[] getVolunteersNeeded() {
-        return bonusVolunteers;
-    }
-
     /**
      * adds all of the treatments to the scheduleItems array
      * 
@@ -81,14 +75,14 @@ public class DailySchedule {
      * @return void
      */
     private void addTreatments() {
-        for (Treatment treatment : treatments) {
+        for (Treatment treatment : TREATMENTS) {
             ArrayList<String> name = new ArrayList<String>();
-            name.add(animals.get(treatment.getAnimalID() - 1).getAnimalName());
+            name.add(ANIMALS.get(treatment.getAnimalID() - 1).getAnimalName());
             scheduleItems.add(new ScheduleItem(name, 1,
-                    tasks.get(treatment.getTaskID() - 1).getDescription(),
+                    TASKS.get(treatment.getTaskID() - 1).getDescription(),
                     treatment.getStartHour(),
-                    tasks.get(treatment.getTaskID() - 1).getMaxWindow(),
-                    tasks.get(treatment.getTaskID() - 1).getDuration(),
+                    TASKS.get(treatment.getTaskID() - 1).getMaxWindow(),
+                    TASKS.get(treatment.getTaskID() - 1).getDuration(),
                     0));
         }
     }
@@ -100,7 +94,7 @@ public class DailySchedule {
      * @return void
      */
     private void addInferredTasks() {
-        for (Animal animal : animals) {
+        for (Animal animal : ANIMALS) {
             scheduleItems.add(new ScheduleItem(new ArrayList<String>(Arrays.asList(animal.getAnimalName())),
                     1, "Cage cleaning - " + animal.getAnimalType().toString().toLowerCase(),
                     0, 24, animal.CLEAN_TIME, 0));
@@ -397,6 +391,107 @@ public class DailySchedule {
         bw.close();
     }
 
+    // Getters and Setters
+
+    /**
+     * gets bonusVolunteers array
+     * 
+     * @param none
+     * @return boolean[] bonusVolunteers
+     */
+    public boolean[] getVolunteersNeeded() {
+        return bonusVolunteers;
+    }
+
+    /**
+     * gets scheduledTasks hashmap
+     * 
+     * @param none
+     * @return HashMap<Integer, ArrayList<ScheduleItem>> scheduledTasks
+     */
+    public HashMap<Integer, ArrayList<ScheduleItem>> getScheduledTasks() {
+        return scheduledTasks;
+    }
+
+    /**
+     * gets scheduleItems arraylist
+     * 
+     * @param none
+     * @return ArrayList<ScheduleItem> scheduleItems
+     */
+    public ArrayList<ScheduleItem> getScheduleItems() {
+        return scheduleItems;
+    }
+
+    /**
+     * gets animals arraylist
+     * 
+     * @param none
+     * @return ArrayList<Animal> ANIMALS
+     */
+    public ArrayList<Animal> getAnimals() {
+        return ANIMALS;
+    }
+
+    /**
+     * gets tasks arraylist
+     * 
+     * @param none
+     * @return ArrayList<Task> TASKS
+     */
+    public ArrayList<Task> getTasks() {
+        return TASKS;
+    }
+
+    /**
+     * gets treatments arraylist
+     * 
+     * @param none
+     * @return ArrayList<Treatment> TREATMENTS
+     */
+    public ArrayList<Treatment> getTreatments() {
+        return TREATMENTS;
+    }
+
+    /**
+     * gets date
+     * 
+     * @param none
+     * @return LocalDate CURR_DATE
+     */
+    public LocalDate getDate() {
+        return CURR_DATE;
+    }
+
+    /**
+     * sets bonusVolunteers array
+     * 
+     * @param boolean[] bonusVolunteers
+     * @return void
+     */
+    public void setVolunteersNeeded(boolean[] bonusVolunteers) {
+        this.bonusVolunteers = bonusVolunteers;
+    }
+
+    /**
+     * sets scheduledTasks hashmap
+     * 
+     * @param HashMap<Integer, ArrayList<ScheduleItem>> scheduledTasks
+     * @return void
+     */
+    public void setScheduledTasks(HashMap<Integer, ArrayList<ScheduleItem>> scheduledTasks) {
+        this.scheduledTasks = scheduledTasks;
+    }
+
+    /**
+     * sets scheduleItems arraylist
+     * 
+     * @param ArrayList<ScheduleItem> scheduleItems
+     * @return void
+     */
+    public void setScheduleItems(ArrayList<ScheduleItem> scheduleItems) {
+        this.scheduleItems = scheduleItems;
+    }
 
     public static void main(String[] args) {
         ArrayList<Animal> animals = new ArrayList<Animal>();
