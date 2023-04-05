@@ -36,6 +36,9 @@ public class ScheduleItem {
      */
     public ScheduleItem(ArrayList<String> name, int quantity, String description, int startHour, int maxWindow,
             int duration, int prepTime) {
+        if (name.isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
         this.name = name;
         this.quantity = quantity;
         this.DESCRIPTION = description;
@@ -183,5 +186,26 @@ public class ScheduleItem {
      */
     public void addDuration(int duration) {
         this.duration += duration;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof ScheduleItem)) {
+            return false;
+        }
+        ScheduleItem other = (ScheduleItem) obj;
+        if (this.name.equals(other.name) && this.quantity == other.quantity
+                && this.DESCRIPTION.equals(other.DESCRIPTION)
+                && this.startHour == other.startHour && this.MAX_WINDOW == other.MAX_WINDOW
+                && this.duration == other.duration && this.prepTime == other.prepTime) {
+            return true;
+        }
+        return false;
     }
 }
