@@ -18,7 +18,7 @@ public class Scheduler {
         newSceduleObj.getFromSQL();
 
         // System.out.println(newSceduleObj.getAnimals().get(0).getAnimalName());
-        newSceduleObj.calculateSchedule();
+        System.out.println(newSceduleObj.calculateSchedule());
     }
 
     public Scheduler(LocalDate day, ArrayList<Task> tasks, ArrayList<Treatment> treatments, ArrayList<Animal> animals) {
