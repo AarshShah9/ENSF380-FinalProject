@@ -14,8 +14,8 @@ public class RaccoonTest {
     @Test
     public void testConstructorGoodData() {
         // Test valid input
-        Raccoon raccoon = new Raccoon(1, "Tony", "RACCOON");
-        assertEquals(1, raccoon.getAnimalID());
+        Raccoon raccoon = new Raccoon(1, "Tony");
+        assertEquals(1, (int) raccoon.getAnimalID());
         assertEquals("Tony", raccoon.getAnimalName());
         assertEquals(AnimalType.RACCOON, raccoon.getAnimalType());
         assertEquals(FeedingType.NOCTURNAL, raccoon.getAnimalFeedingType());
@@ -25,7 +25,7 @@ public class RaccoonTest {
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorBadData() {
         // Test invalid input - feeding type incorrect
-        Raccoon invalidRaccoon = new Raccoon(2, "Bobby", "RACCOON");
+        Raccoon invalidRaccoon = new Raccoon(2, "");
 
     }
 }
