@@ -1,28 +1,18 @@
 package edu.ucalgary.oop;
 
-import javax.sound.midi.Soundbank;
-import javax.sound.midi.SoundbankResource;
-import javax.sound.sampled.AudioSystem;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 
-import com.mysql.cj.result.LocalDateTimeValueFactory;
 
 import java.awt.*;
 import java.awt.TrayIcon.MessageType;
-import java.awt.desktop.SystemSleepEvent;
-import java.awt.event.ItemEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.TimerTask;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -50,13 +40,17 @@ public class GUI extends JFrame {
     private JPanel topPanel;
     private JPanel schedulePanel;
     private JPanel buttonsPanel;
+
     private boolean[] neededVolunteers = new boolean[24];
+    private boolean saveFlag = false;
+
 
     private JMenuBar menuBar;
 
     private Scheduler scheduler;
 
-
+    private String user;
+    private String password;
 
     JTextArea scheduleText = new JTextArea();
 
@@ -76,11 +70,10 @@ public class GUI extends JFrame {
         //setSize(WIDTH,HEIGHT);
         setMinimumSize(new Dimension(400, 400));
         pack();
-
+        scheduleText.setEditable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        System.out.println(getLayout());
 
     }
 
@@ -117,9 +110,9 @@ public class GUI extends JFrame {
 
         JButton loginButton = new JButton("Login");
         loginButton.addActionListener(e -> {
-            String username = usernameField.getText();
-            String password = new String(passwordField.getText());
-            if (authenticate(username, password)) {
+            this.user = new String(usernameField.getText());
+            this.password = new String(passwordField.getText());
+            if (authenticate(this.user, this.password)) {
                 loginFrame.dispose();
            
                 
@@ -146,7 +139,7 @@ public class GUI extends JFrame {
                 System.out.print(LocalDate.of(2023, 02, 27));
 
                 this.scheduler = new Scheduler(LocalDate.now(), new ArrayList<Task>(), new ArrayList<Treatment>(), new ArrayList<Animal>());
-                scheduler.getFromSQL(username, password);
+                //scheduler.getFromSQL(username, password);
                 
                 
                 
@@ -191,7 +184,7 @@ public class GUI extends JFrame {
         //options buttons
         //create schedule
         JButton createButton = new JButton();
-        createButton.setText("Generate Schedule");
+        createButton.setText("New Schedule");
         createButton.addActionListener(createButtonEvent -> getSchedule());
 
         //manage schedule
@@ -294,6 +287,10 @@ public class GUI extends JFrame {
      */
     public void getSchedule() {
 
+        if (this.saveFlag == false) {
+            scheduler = new Scheduler(LocalDate.now(), new ArrayList<Task>(), new ArrayList<Treatment>(), new ArrayList<Animal>());
+            scheduler.getFromSQL(this.user, this.password);
+        }
         //Create the schedule
         String status = scheduler.calculateSchedule();
         neededVolunteers = scheduler.getVolunteersNeeded();
@@ -342,6 +339,7 @@ public class GUI extends JFrame {
         // Update the GUI
         this.revalidate();
         this.repaint();
+        this.saveFlag = false;
     }
 
 
@@ -355,60 +353,6 @@ public class GUI extends JFrame {
      *        it will display a popup window asking the user to confirm that a
      *        volunteer is present.
      */
-    public void saveSchedule() {
-        boolean volunteersNeeded = false;
-        System.out.println(neededVolunteers.length);
-        for (int i = 0; i < neededVolunteers.length; i++) {
-            if (neededVolunteers[i] == true) {
-                volunteersNeeded = true;
-                break;
-            }
-        }
-        if (volunteersNeeded == false) {
-            getSchedule();
-            return;
-        }
-
-        JDialog confirmVolunteers = new JDialog(this, this.getTitle() + " - Confirm Volunteers", true);
-        
-        JLabel confirmLabel = new JLabel("Please confirm that the following volunteers are present:");
-        confirmVolunteers.add(confirmLabel, BorderLayout.NORTH);
-
-        ArrayList<JCheckBox> volunteerChecks = new ArrayList<JCheckBox>(); 
-        for (int i = 0; i < neededVolunteers.length; i++) {
-            if (neededVolunteers[i] == true) {
-                JPanel instancePanel = new JPanel();
-                JLabel volunteerLabel = new JLabel(LocalTime.of(i, 0).toString());
-                JCheckBox volunteerCheck = new JCheckBox();
-                volunteerChecks.add(volunteerCheck);
-                instancePanel.add(volunteerLabel);
-                instancePanel.add(volunteerCheck);
-                confirmVolunteers.add(instancePanel);
-                volunteerLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            }
-        }
-
-        JButton confirmButton = new JButton("Confirm");
-
-        
-        confirmButton.addActionListener(e -> {
-            for (int i = 0; i < volunteerChecks.size(); i++) {
-                if (volunteerChecks.get(i).isSelected() == false) {
-                    JOptionPane.showMessageDialog(this, "Please confirm that all volunteers are present.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-            }
-            scheduler.calculateSchedule();
-            scheduler.getVolunteersNeeded();
-            confirmVolunteers.dispose();
-        });
-
-        confirmVolunteers.add(confirmButton, BorderLayout.SOUTH);
-        confirmVolunteers.pack();
-        confirmVolunteers.setVisible(true);
-
-    }
-
 
 
     /**
@@ -420,7 +364,6 @@ public class GUI extends JFrame {
      * It will open a new window where the user can manage the schedule.
      */
     public void manageSchedule() {
-        // TODO Auto-generated method stub
 
         JDialog manageFrame = new JDialog(this, "Manage Schedule", true);
         manageFrame.setLayout(new BorderLayout());
@@ -436,6 +379,7 @@ public class GUI extends JFrame {
         HashMap<Integer, TreeSet<Integer>> taskHashMap = new HashMap<>();
         
         
+
         // adds treatment start times to hashmap with taskID as key
         for (Treatment treatment : treatments) {
             int id = treatment.getTaskID();
@@ -448,7 +392,7 @@ public class GUI extends JFrame {
                 taskHashMap.get(id).add(treatment.getStartHour());
             }
         }
-
+        
         
         // creates a new dictionary that stores the sorted start times as key and their corresponding taskID
         TreeMap<Integer, ArrayList<Integer>> sortedTaskTreeMap = new TreeMap<>();
@@ -469,6 +413,7 @@ public class GUI extends JFrame {
             taskDescriptions.put(task.getTaskID(), task.getDescription());
         }
 
+        
         // iterates through the sorted TreeMap and adds the start times along with their respective task descriptions to the selectedTime JComboBox
         for (int time : sortedTaskTreeMap.keySet()) {
        
@@ -535,6 +480,65 @@ public class GUI extends JFrame {
         manageFrame.pack();
 
         manageFrame.setVisible(true);
+    }
+
+    public void saveSchedule() {
+        if (scheduleText.isShowing() == false) {
+            JOptionPane.showMessageDialog(this, "There is no schedule to save. Please generate a schedule first", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        boolean volunteersNeeded = false;
+        System.out.println(neededVolunteers.length);
+        for (int i = 0; i < neededVolunteers.length; i++) {
+            if (neededVolunteers[i] == true) {
+                volunteersNeeded = true;
+                break;
+            }
+        }
+        if (volunteersNeeded == false) {
+            this.saveFlag = true;
+            getSchedule();
+            return;
+        }
+
+        JDialog confirmVolunteers = new JDialog(this, this.getTitle() + " - Confirm Volunteers", true);
+        
+        JLabel confirmLabel = new JLabel("Please confirm that the following volunteers are present:");
+        confirmVolunteers.add(confirmLabel, BorderLayout.NORTH);
+
+        ArrayList<JCheckBox> volunteerChecks = new ArrayList<JCheckBox>(); 
+        for (int i = 0; i < neededVolunteers.length; i++) {
+            if (neededVolunteers[i] == true) {
+                JPanel instancePanel = new JPanel();
+                JLabel volunteerLabel = new JLabel(LocalTime.of(i, 0).toString());
+                JCheckBox volunteerCheck = new JCheckBox();
+                volunteerChecks.add(volunteerCheck);
+                instancePanel.add(volunteerLabel);
+                instancePanel.add(volunteerCheck);
+                confirmVolunteers.add(instancePanel);
+                volunteerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            }
+        }
+
+        JButton confirmButton = new JButton("Confirm");
+
+        
+        confirmButton.addActionListener(e -> {
+            for (int i = 0; i < volunteerChecks.size(); i++) {
+                if (volunteerChecks.get(i).isSelected() == false) {
+                    JOptionPane.showMessageDialog(this, "Please confirm that all volunteers are present.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+            this.saveFlag = true;
+            getSchedule();
+            confirmVolunteers.dispose();
+        });
+
+        confirmVolunteers.add(confirmButton, BorderLayout.SOUTH);
+        confirmVolunteers.pack();
+        confirmVolunteers.setVisible(true);
+
     }
 
 
