@@ -395,7 +395,6 @@ public class DailySchedule {
             }
         }
         bw.close();
-        System.out.println("Sucess");
     }
 
 
