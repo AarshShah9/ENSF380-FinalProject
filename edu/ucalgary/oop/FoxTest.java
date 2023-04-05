@@ -68,4 +68,12 @@ public class FoxTest {
         assertTrue(fox.getOrphaned());
     }
 
+    @Test
+    public void testSetOrphaned() {
+        // Test setOrphaned setter method by creating a new fox object and checking if
+        // the orphaned status is correct
+        Fox fox = new Fox(1, "Tony");
+        fox.setOrphaned(true);
+        assertTrue(fox.getOrphaned());
+    }
 }
