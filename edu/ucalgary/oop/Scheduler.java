@@ -11,8 +11,7 @@ public class Scheduler {
     private ArrayList<Treatment> treatments;
     private final LocalDate DATE;
     private DailySchedule dailySchedule;
-    private String user;
-    private String password;
+ 
 
     // public static void main(String[] args) {
     // Scheduler newSceduleObj = new Scheduler(LocalDate.now(), new
@@ -33,6 +32,7 @@ public class Scheduler {
 
     public void getFromSQL(String user, String password) throws IllegalArgumentException {
 
+    
         try {
             SQLDatabase db = new SQLDatabase("EWR", user, password, animals, tasks, treatments);
 
@@ -41,6 +41,8 @@ public class Scheduler {
             throw new IllegalArgumentException(e);
         }
     }
+
+
 
     public String calculateSchedule() {
         try {
