@@ -269,7 +269,6 @@ public class SchedulerTest {
         Scheduler scheduler = new Scheduler(LocalDate.now(), tasks, treatments, animals);
 
         // Get the treatment and change its start hour to 2
-        Treatment treatment = scheduler.getTreatments().get(0);
         scheduler.changeTreatmentStart(1, 1, 2);
 
         // Ensure that the treatment's start hour was changed to 2

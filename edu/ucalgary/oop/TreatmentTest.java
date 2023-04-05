@@ -4,13 +4,15 @@ package edu.ucalgary.oop;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class TreatmentTest {
+/**
+ * Create a class called "TreatmentTest" that tests the "Treatment" class
+ * 
+ * @version 1.0
+ * @author Aarsh
+ * @date 2023-04-04
+ */
 
-    /**
-     * @version 1.0
-     * @author Aarsh
-     * @date 2023-04-04
-     */
+public class TreatmentTest {
 
     /**
      * Tests the constructor of the Treatment class.

@@ -4,17 +4,24 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * Define a class called "PorcupineTest" that tests the "Porcupine" class
+ * 
+ * @version 2.0
+ * @author Aarsh @ Nick
+ * @date 2023-04-05
+ */
 public class PorcupineTest {
-    /**
-     * @version 1.0
-     * @author Aarsh @ Nick
-     * @date 2023-03-22
-     */
 
+    /**
+     * Test the constructor of the "Porcupine" class
+     */
     @Test
     public void testConstructorGoodData() {
-        // Test valid input
+        // create a new porcupine object
         Porcupine porcupine = new Porcupine(1, "Tony");
+
+        // check all the attributes of the porcupine object to ensure they are correct
         assertEquals(1, (int) porcupine.getAnimalID());
         assertEquals("Tony", porcupine.getAnimalName());
         assertEquals(AnimalType.PORCUPINE, porcupine.getAnimalType());
@@ -22,6 +29,9 @@ public class PorcupineTest {
         assertTrue(porcupine.getOrphaned());
     }
 
+    /**
+     * Test the constructor of the "Porcupine" class with invalid input
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorBadData() {
         // Test invalid input - feeding type not capitalized

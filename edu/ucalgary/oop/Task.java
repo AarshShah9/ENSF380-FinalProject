@@ -6,6 +6,8 @@ package edu.ucalgary.oop;
  * type.
  * 
  * @author Aarsh
+ * @version 1.0
+ * @date 2023-04-05
  */
 public class Task {
     // Unique identifier for the task
