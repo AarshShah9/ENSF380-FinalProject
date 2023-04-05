@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.io.*;
 import java.util.Arrays;
+import java.util.ListIterator;
 
 /**
  * The DailySchedule class represents a schedule for a given day
@@ -71,7 +72,7 @@ public class DailySchedule {
     /**
      * adds all of the treatments to the scheduleItems array
      * 
-     * @param none
+     * @param scheduleItems the ArrayList of ScheduleItems
      * @return void
      */
     private void addTreatments(ArrayList<ScheduleItem> scheduleItems) {
@@ -90,7 +91,7 @@ public class DailySchedule {
     /**
      * adds all of the inferred tasks to the scheduleItems array
      * 
-     * @param none
+     * @param scheduleItems the ArrayList of ScheduleItems
      * @return void
      */
     private void addInferredTasks(ArrayList<ScheduleItem> scheduleItems) {
@@ -110,7 +111,8 @@ public class DailySchedule {
      * Groups the similar tasks together
      * 
      * @return void
-     * @params none
+     * @param tasks       the ArrayList of ScheduleItems
+     * @param description the description of the task we are looking to group
      */
     private void combineFeedings(ArrayList<ScheduleItem> tasks, String description) {
         Iterator<ScheduleItem> it = tasks.iterator();
@@ -137,7 +139,7 @@ public class DailySchedule {
      * Validates scheduling a treatment
      * 
      * @throws ImpossibleScheduleException if the treatment cannot be scheduled
-     * @params none
+     * @param ScheduleItem item the treatment to be scheduled
      * @return true if the treatment can be scheduled with an extra volunteer
      * @return false if the treatment can be scheduled without
      */
@@ -145,13 +147,16 @@ public class DailySchedule {
         int timeTaken = 0;
         int addHour = 1;
         int maxWindow = item.getMaxWindow();
-
-        // If the start hour is not in the scheduledTasks HashMap, return false
-        if (!scheduledTasks.containsKey(item.getStartHour()))
+        // If the start hour is not in the hash map and the time is less than 60 return
+        // false
+        if (!scheduledTasks.containsKey(item.getStartHour()) && (item.getDuration() + item.getPrepTime() <= 60))
             return false;
+        // If the start hour is not in the hash map and the time is less than 120 return
+        // true
+        else if (!scheduledTasks.containsKey(item.getStartHour()) && (item.getDuration() + item.getPrepTime() <= 120))
+            return true;
         // If the start hour is in the scheduledTasks HashMap, check if the time taken
         // of that hour
-
         for (ScheduleItem task : scheduledTasks.get(item.getStartHour())) {
             timeTaken += task.getDuration() + task.getPrepTime();
         }
@@ -227,13 +232,13 @@ public class DailySchedule {
     }
 
     /**
-     * Splits a feeding block into two feedings and appends them to the
-     * end of the scheduleItems list
+     * Splits a feeding into two feedings that are then to be scheduled
+     * at different times
      * 
      * @param ScheduleItem item
-     * @return void
+     * @return ArrayList<ScheduleItem> of the two feedings
      */
-    private void splitFeeding(ArrayList<ScheduleItem> scheduleItems, ScheduleItem item) {
+    private ArrayList<ScheduleItem> splitFeeding(ScheduleItem item) {
         int numOne = item.getQuantity() / 2;
         int numTwo = item.getQuantity() - numOne;
         ArrayList<String> name1 = new ArrayList<String>();
@@ -249,12 +254,13 @@ public class DailySchedule {
                 item.getDuration() / 2, item.getPrepTime());
 
         ScheduleItem item2 = new ScheduleItem(name2, numTwo,
-                item.getDescription(), item.getStartHour() + item.getDuration() / 2,
-                item.getMaxWindow(), item.getDuration() / 2 + item.getDuration() % 2,
+                item.getDescription(), item.getStartHour() + 1,
+                item.getMaxWindow() - 1, item.getDuration() / 2 + item.getDuration() % 2,
                 item.getPrepTime());
-        scheduleItems.remove(item);
-        scheduleItems.add(item1);
-        scheduleItems.add(item2);
+        ArrayList<ScheduleItem> temp = new ArrayList<ScheduleItem>();
+        temp.add(item1);
+        temp.add(item2);
+        return temp;
     }
 
     /**
@@ -294,6 +300,7 @@ public class DailySchedule {
      * If the grouped feedings (coyote and fox) are not able to be scheduled
      * they will be split and then retried.
      * 
+     * @param scheduleItems the arraylist of ScheduleItems to be scheduled
      * @throws ImpossibleScheduleException
      * @returns void
      */
@@ -302,36 +309,48 @@ public class DailySchedule {
         int i = 0;
         while (scheduleItems.size() > 0) {
             int maxWindow = maxWindowArr.get(i);
-            Iterator<ScheduleItem> it = scheduleItems.iterator();
+            ListIterator<ScheduleItem> it = scheduleItems.listIterator();
             while (it.hasNext()) {
                 ScheduleItem item = it.next();
                 if (item.getMaxWindow() == maxWindow) {
-                    if (item.getDescription() == "Feeding - coyote" ||
-                            item.getDescription() == "Feeding - fox") {
+                    if (item.getPrepTime() > 0) {
                         try {
-                            volunteersNeeded[item.getStartHour()] = validateAddition(item);
-                            if (volunteersNeeded[item.getStartHour()])
-                                splitFeeding(scheduleItems, item);
-                            else {
+                            if (validateAddition(item)) {
+                                ArrayList<ScheduleItem> splitItems = splitFeeding(item);
+                                if (validateAddition(splitItems.get(0))) {
+                                    volunteersNeeded[splitItems.get(0).getStartHour()] = true;
+                                } else if (validateAddition(splitItems.get(1))) {
+                                    volunteersNeeded[splitItems.get(1).getStartHour()] = true;
+                                }
+                                addSplitItems(splitItems);
+                                it.remove();
+                            } else {
                                 if (scheduledTasks.get(item.getStartHour()) == null) {
                                     scheduledTasks.put(item.getStartHour(), new ArrayList<ScheduleItem>());
                                 }
                                 scheduledTasks.get(item.getStartHour()).add(item);
                                 it.remove();
-                                continue;
                             }
                         } catch (ImpossibleScheduleException e) {
-                            splitFeeding(scheduleItems, item);
-                            e.printStackTrace();
-                            continue;
+                            ArrayList<ScheduleItem> splitItems = splitFeeding(item);
+                            if (validateAddition(splitItems.get(0))) {
+                                volunteersNeeded[splitItems.get(0).getStartHour()] = true;
+                            } else if (validateAddition(splitItems.get(1))) {
+                                volunteersNeeded[splitItems.get(1).getStartHour()] = true;
+                            }
+                            addSplitItems(splitItems);
+                            it.remove();
                         }
+                    } else {
+                        if (validateAddition(item)) {
+                            volunteersNeeded[item.getStartHour()] = true;
+                        }
+                        if (scheduledTasks.get(item.getStartHour()) == null) {
+                            scheduledTasks.put(item.getStartHour(), new ArrayList<ScheduleItem>());
+                        }
+                        scheduledTasks.get(item.getStartHour()).add(item);
+                        it.remove();
                     }
-                    volunteersNeeded[item.getStartHour()] = validateAddition(item);
-                    if (scheduledTasks.get(item.getStartHour()) == null) {
-                        scheduledTasks.put(item.getStartHour(), new ArrayList<ScheduleItem>());
-                    }
-                    scheduledTasks.get(item.getStartHour()).add(item);
-                    it.remove();
                 } else
                     continue;
             }
@@ -341,11 +360,26 @@ public class DailySchedule {
     }
 
     /**
+     * Adds the split items to the scheduledTasks hashmap
+     * 
+     * @return void
+     * @param splitItems The arraylist of split items to be added
+     */
+    private void addSplitItems(ArrayList<ScheduleItem> splitItems) {
+        for (int i = 0; i < splitItems.size(); i++) {
+            if (scheduledTasks.get(splitItems.get(i).getStartHour()) == null) {
+                scheduledTasks.put(splitItems.get(i).getStartHour(), new ArrayList<ScheduleItem>());
+            }
+            scheduledTasks.get(splitItems.get(i).getStartHour()).add(splitItems.get(i));
+        }
+    }
+
+    /**
      * Returns an arraylist that contains all of the max windows for the tasks
      * in ascending order
      * Used to scehdule lowest max window tasks first
      * 
-     * @params none
+     * @params scheduleItems the arraylist of ScheduleItems to be scheduled
      * @return ArrayList<ArrayList<Treatment>> scheduledTasks
      */
     private ArrayList<Integer> getMaxWindows(ArrayList<ScheduleItem> scheduleItems) {
