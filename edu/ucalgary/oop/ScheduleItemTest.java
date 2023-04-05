@@ -231,17 +231,18 @@ public class ScheduleItemTest {
     @Test
     public void testAddName() {
         ArrayList<String> names = new ArrayList<>();
-
+        names.add("Test");
         ScheduleItem temp = new ScheduleItem(names, 0, "Test", 0, 0, 0, 0);
 
         ArrayList<String> testArr = new ArrayList<>();
-        String test = "Sarim";
-        testArr.add(test);
-        temp.addName(testArr);
-        ArrayList<String> result = temp.getName();
+        testArr.add("Test");
+        testArr.add("Test2");
+        ArrayList<String> tempArr = new ArrayList<>();
+        tempArr.add("Test2");
+        temp.addName(tempArr);
 
         System.out.println("setPrepTime");
-        assertEquals("setPrepTime() value was incorrect: ", testArr, result);
+        assertEquals("setPrepTime() value was incorrect: ", testArr, temp.getName());
     }
 
     // Test the addQuantity function
