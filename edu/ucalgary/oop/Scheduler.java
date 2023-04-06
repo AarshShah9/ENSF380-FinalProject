@@ -62,6 +62,13 @@ public class Scheduler {
             for (Treatment treatment : treatments) {
                 if (treatment.getTaskID() == taskID && treatment.getStartHour() == currentStartHour) {
                     treatment.setStartHour(newStartHour);
+                    try {
+                        SQLDatabase db = new SQLDatabase("EWR", "oop", "password", animals, tasks, treatments);
+                        db.updateDatabase(animalID, taskID, newStartHour);
+
+                    } catch (Exception e) {
+                        System.out.println("SQLDatabaseException caught: " + e.getMessage());
+                    }
                 }
             }
         } catch (IllegalArgumentException e) {

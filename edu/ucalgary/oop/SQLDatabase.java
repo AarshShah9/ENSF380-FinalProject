@@ -160,6 +160,29 @@ public class SQLDatabase {
     }
 
     /**
+     * updates the database with the new start hour of the treatment
+     * 
+     * @param animalID     the animal ID of the treatment
+     * @param taskID       the task ID of the treatment
+     * @param newStartHour the new start hour of the treatment
+     * 
+     * @throws SQLException if there is an error updating the database
+     */
+    public void updateDatabase(int animalID, int taskID, int newStartHour) throws SQLException {
+        try {
+            // Create a statement object
+            Statement stmt = this.DB_CONNECT.createStatement();
+            // update the treatment in the database
+            String query = String.format("UPDATE TREATMENTS SET StartHour = %d WHERE AnimalID = %d AND TaskID = %d",
+                    newStartHour, animalID, taskID);
+            // execute the query
+            stmt.executeUpdate(query);
+        } catch (Exception e) {
+            throw new SQLException("Issue updating treatment info in SQL Database" + e.getMessage());
+        }
+    }
+
+    /**
      * Returns the list of treatments in the SQLDatabase object
      * 
      * @return Returns the list of treatments in the SQLDatabase object.
