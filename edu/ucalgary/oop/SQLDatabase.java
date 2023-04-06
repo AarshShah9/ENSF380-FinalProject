@@ -159,7 +159,14 @@ public class SQLDatabase {
         }
     }
 
-    public void updateDatabase(int animalID, int taskID, int newStartHour) {
+    /**
+     * updates the database with the new start hour of the treatment
+     * 
+     * @param animalID     the animal ID of the treatment
+     * @param taskID       the task ID of the treatment
+     * @param newStartHour the new start hour of the treatment
+     */
+    public void updateDatabase(int animalID, int taskID, int newStartHour) throws SQLException {
         try {
             // Create a statement object
             Statement stmt = this.DB_CONNECT.createStatement();
@@ -169,7 +176,7 @@ public class SQLDatabase {
             // execute the query
             stmt.executeUpdate(query);
         } catch (Exception e) {
-            System.out.println("Error updating the database");
+            throw new SQLException("Issue updating treatment info in SQL Database" + e.getMessage());
         }
     }
 
