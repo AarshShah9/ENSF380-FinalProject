@@ -13,6 +13,9 @@ import java.util.ArrayList;
  * @date 2023-03-22
  */
 public class SQLDatabaseTest {
+    String user = "oop";
+    String password = "password";
+
     /**
      * Test case for the SQLDatabase constructor with valid input.
      * Creates an instance of the SQLDatabase class with a valid database name and
@@ -21,7 +24,7 @@ public class SQLDatabaseTest {
     @Test
     public void testConstructorGoodInput() {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(),
+            SQLDatabase db = new SQLDatabase("EWR", this.user, this.password, new ArrayList<Animal>(),
                     new ArrayList<Task>(),
                     new ArrayList<Treatment>());
             assertNotNull("Expected Database to exist", db.getDBConnect());
@@ -40,7 +43,7 @@ public class SQLDatabaseTest {
     public void testConstructorBadInput() {
         boolean thrown = false;
         try {
-            SQLDatabase db = new SQLDatabase("ewr", "wronguser", "password", new ArrayList<Animal>(),
+            SQLDatabase db = new SQLDatabase("ewr", "wronguser", this.password, new ArrayList<Animal>(),
                     new ArrayList<Task>(),
                     new ArrayList<Treatment>());
         } catch (SQLException e) {
@@ -60,7 +63,7 @@ public class SQLDatabaseTest {
     @Test
     public void testGetDBConnect() {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(),
+            SQLDatabase db = new SQLDatabase("EWR", this.user, this.password, new ArrayList<Animal>(),
                     new ArrayList<Task>(),
                     new ArrayList<Treatment>());
             assertNotNull("Expected Database to exist", db.getDBConnect());
@@ -78,7 +81,7 @@ public class SQLDatabaseTest {
     @Test
     public void testGetAnimals() {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(),
+            SQLDatabase db = new SQLDatabase("EWR", this.user, this.password, new ArrayList<Animal>(),
                     new ArrayList<Task>(),
                     new ArrayList<Treatment>());
             ArrayList<Animal> animals = new ArrayList<Animal>();
@@ -106,7 +109,7 @@ public class SQLDatabaseTest {
     @Test
     public void testSetAnimals() {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(),
+            SQLDatabase db = new SQLDatabase("EWR", this.user, this.password, new ArrayList<Animal>(),
                     new ArrayList<Task>(),
                     new ArrayList<Treatment>());
             ArrayList<Animal> animals = new ArrayList<Animal>();
@@ -129,7 +132,7 @@ public class SQLDatabaseTest {
     @Test
     public void testUpdateDatabase() {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(),
+            SQLDatabase db = new SQLDatabase("EWR", this.user, this.password, new ArrayList<Animal>(),
                     new ArrayList<Task>(),
                     new ArrayList<Treatment>());
 
@@ -137,18 +140,17 @@ public class SQLDatabaseTest {
                 System.out.println("Database does not exist");
                 return;
             }
-            int animalID = db.getTreatments().get(0).getAnimalID();
-            int taskID = db.getTreatments().get(0).getTaskID();
+            int treatmentID = db.getTreatments().get(0).getTreatmentID();
             int startHour = db.getTreatments().get(0).getStartHour();
 
             if (startHour == 20) {
-                db.updateDatabase(animalID, taskID, 10);
+                db.updateDatabase(treatmentID, 10);
             } else {
-                db.updateDatabase(animalID, taskID, 20);
+                db.updateDatabase(treatmentID, 20);
             }
 
             // record should be updated
-            SQLDatabase db2 = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(),
+            SQLDatabase db2 = new SQLDatabase("EWR", this.user, this.password, new ArrayList<Animal>(),
                     new ArrayList<Task>(),
                     new ArrayList<Treatment>());
             int newStartHour = db2.getTreatments().get(0).getStartHour();
@@ -172,7 +174,7 @@ public class SQLDatabaseTest {
     @Test
     public void testGetTasks() {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(),
+            SQLDatabase db = new SQLDatabase("EWR", this.user, this.password, new ArrayList<Animal>(),
                     new ArrayList<Task>(),
                     new ArrayList<Treatment>());
             assertNotNull(db.getTasks());
@@ -190,7 +192,7 @@ public class SQLDatabaseTest {
     @Test
     public void testSetTasks() {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(),
+            SQLDatabase db = new SQLDatabase("EWR", this.user, this.password, new ArrayList<Animal>(),
                     new ArrayList<Task>(),
                     new ArrayList<Treatment>());
             ArrayList<Task> tasks = new ArrayList<Task>();
@@ -217,12 +219,12 @@ public class SQLDatabaseTest {
     @Test
     public void testGetTreatments() {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(),
+            SQLDatabase db = new SQLDatabase("EWR", this.user, this.password, new ArrayList<Animal>(),
                     new ArrayList<Task>(),
                     new ArrayList<Treatment>());
             ArrayList<Treatment> treatments = new ArrayList<Treatment>();
-            Treatment treatment1 = new Treatment(1, 1, 12);
-            Treatment treatment2 = new Treatment(2, 2, 20);
+            Treatment treatment1 = new Treatment(1, 1, 1, 12);
+            Treatment treatment2 = new Treatment(1, 2, 2, 20);
             treatments.add(treatment1);
             treatments.add(treatment2);
             db.setTreatments(treatments);
@@ -245,12 +247,12 @@ public class SQLDatabaseTest {
     @Test
     public void testSetTreatments() {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(),
+            SQLDatabase db = new SQLDatabase("EWR", this.user, this.password, new ArrayList<Animal>(),
                     new ArrayList<Task>(),
                     new ArrayList<Treatment>());
             ArrayList<Treatment> treatments = new ArrayList<Treatment>();
-            Treatment treatment1 = new Treatment(1, 1, 12);
-            Treatment treatment2 = new Treatment(2, 2, 20);
+            Treatment treatment1 = new Treatment(1, 1, 1, 12);
+            Treatment treatment2 = new Treatment(1, 2, 2, 20);
             treatments.add(treatment1);
             treatments.add(treatment2);
             db.setTreatments(treatments);
@@ -272,12 +274,12 @@ public class SQLDatabaseTest {
     @Test
     public void testSetStartHour() {
         try {
-            SQLDatabase db = new SQLDatabase("EWR", "oop", "password", new ArrayList<Animal>(),
+            SQLDatabase db = new SQLDatabase("EWR", this.user, this.password, new ArrayList<Animal>(),
                     new ArrayList<Task>(),
                     new ArrayList<Treatment>());
             ArrayList<Treatment> treatments = new ArrayList<Treatment>();
-            Treatment treatment1 = new Treatment(1, 1, 12);
-            Treatment treatment2 = new Treatment(2, 2, 20);
+            Treatment treatment1 = new Treatment(1, 1, 1, 12);
+            Treatment treatment2 = new Treatment(2, 2, 2, 20);
             treatments.add(treatment1);
             treatments.add(treatment2);
             db.setTreatments(treatments);

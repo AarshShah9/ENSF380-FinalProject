@@ -11,6 +11,7 @@ package edu.ucalgary.oop;
  * @date 2023-04-05
  */
 public class Treatment {
+    private final int TREATMENT_ID; // the ID of the animal being treated
     private final int ANIMAL_ID; // the ID of the animal being treated
     private final int TASK_ID; // the ID of the task to be performed during the treatment
     private int startHour; // the hour at which the treatment starts
@@ -23,13 +24,23 @@ public class Treatment {
      * @param startHour the hour at which the treatment starts
      * @throws IllegalArgumentException if the start hour is not between 0 and 23
      */
-    public Treatment(int animalID, int taskID, int startHour) throws IllegalArgumentException {
+    public Treatment(int TreatmentID, int animalID, int taskID, int startHour) throws IllegalArgumentException {
         if (startHour < 0 || startHour > 23)
             throw new IllegalArgumentException("Start hour must be between 0 and 23 it was " + startHour);
 
+        this.TREATMENT_ID = TreatmentID;
         this.ANIMAL_ID = animalID;
         this.TASK_ID = taskID;
         this.startHour = startHour;
+    }
+
+    /**
+     * Returns the ID of the treatment
+     * 
+     * @return the treatment ID
+     */
+    public int getTreatmentID() {
+        return TREATMENT_ID;
     }
 
     /**
