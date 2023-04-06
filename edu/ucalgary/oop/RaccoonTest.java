@@ -23,11 +23,12 @@ public class RaccoonTest {
         Raccoon raccoon = new Raccoon(1, "Tony");
 
         // check all the attributes of the raccoon object to ensure they are correct
-        assertEquals(1, (int) raccoon.getAnimalID());
-        assertEquals("Tony", raccoon.getAnimalName());
-        assertEquals(AnimalType.RACCOON, raccoon.getAnimalType());
-        assertEquals(FeedingType.NOCTURNAL, raccoon.getAnimalFeedingType());
-        assertFalse(raccoon.getOrphaned());
+        assertEquals("The wrong Animal ID was returned", 1, (int) raccoon.getAnimalID());
+        assertEquals("The wrong Animal Name was returned", "Tony", raccoon.getAnimalName());
+        assertEquals("The wrong Animal Type was returned", AnimalType.RACCOON, raccoon.getAnimalType());
+        assertEquals("The wrong Animal Feeding Type was returned", FeedingType.NOCTURNAL,
+                raccoon.getAnimalFeedingType());
+        assertFalse("The animal should not be set as Orphaned", raccoon.getOrphaned());
     }
 
     /**

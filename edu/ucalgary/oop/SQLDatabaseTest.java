@@ -53,7 +53,7 @@ public class SQLDatabaseTest {
         } catch (Exception e) {
 
         }
-        assertTrue(thrown);
+        assertTrue("The constructor doesn't throw a SQLExcpetion when given a invalid username", thrown);
     }
 
     /**
@@ -92,10 +92,13 @@ public class SQLDatabaseTest {
             animals.add(beaver);
             animals.add(coyote);
             db.setAnimals(animals);
-            assertNotNull(animals);
-            assertEquals(2, db.getAnimals().size());
-            assertTrue(db.getAnimals().contains(beaver));
-            assertTrue(db.getAnimals().contains(coyote));
+            assertNotNull("The animals list is empty", animals);
+            assertEquals("The animals list is the wrong size (an animal is likely not added properly)", 2,
+                    db.getAnimals().size());
+            assertTrue("The animals list doesn't include the beaver object that was added",
+                    db.getAnimals().contains(beaver));
+            assertTrue("The animals list doesn't include the coyote object that was added",
+                    db.getAnimals().contains(coyote));
         } catch (Exception e) {
             assertEquals("Database does not exist", e.getMessage());
         }
@@ -120,10 +123,14 @@ public class SQLDatabaseTest {
             animals.add(coyote);
             db.setAnimals(animals);
 
-            assertNotNull(animals);
-            assertEquals(2, db.getAnimals().size());
-            assertTrue(db.getAnimals().contains(beaver));
-            assertTrue(db.getAnimals().contains(coyote));
+            db.setAnimals(animals);
+            assertNotNull("The animals list is empty", animals);
+            assertEquals("The animals list is the wrong size (an animal is likely not added properly)", 2,
+                    db.getAnimals().size());
+            assertTrue("The animals list doesn't include the beaver object that was added",
+                    db.getAnimals().contains(beaver));
+            assertTrue("The animals list doesn't include the coyote object that was added",
+                    db.getAnimals().contains(coyote));
         } catch (Exception e) {
             assertEquals("Database does not exist", e.getMessage());
         }
@@ -178,7 +185,17 @@ public class SQLDatabaseTest {
             SQLDatabase db = new SQLDatabase("EWR", this.user, this.password, new ArrayList<Animal>(),
                     new ArrayList<Task>(),
                     new ArrayList<Treatment>());
-            assertNotNull(db.getTasks());
+            ArrayList<Task> tasks = new ArrayList<Task>();
+            Task task1 = new Task(1, "Feed Beaver", 30, 45);
+            Task task2 = new Task(2, "Treat Coyote", 60, 30);
+            tasks.add(task1);
+            tasks.add(task2);
+            db.setTasks(tasks);
+            assertNotNull("The tasks list is empty", tasks);
+            assertEquals("The tasks list is the wrong size (a task is likely not added properly)", 2,
+                    db.getTasks().size());
+            assertTrue("The task list doesn't include a task object that was added", db.getTasks().contains(task1));
+            assertTrue("The task list doesn't include a task object that was added", db.getTasks().contains(task2));
         } catch (Exception e) {
             assertEquals("Database does not exist", e.getMessage());
         }
@@ -202,10 +219,11 @@ public class SQLDatabaseTest {
             tasks.add(task1);
             tasks.add(task2);
             db.setTasks(tasks);
-            assertNotNull(tasks);
-            assertEquals(2, db.getTasks().size());
-            assertTrue(db.getTasks().contains(task1));
-            assertTrue(db.getTasks().contains(task2));
+            assertNotNull("The tasks list is empty", tasks);
+            assertEquals("The tasks list is the wrong size (a task is likely not added properly)", 2,
+                    db.getTasks().size());
+            assertTrue("The task list doesn't include a task object that was added", db.getTasks().contains(task1));
+            assertTrue("The task list doesn't include a task object that was added", db.getTasks().contains(task2));
         } catch (Exception e) {
             assertEquals("Database does not exist", e.getMessage());
         }
@@ -229,10 +247,13 @@ public class SQLDatabaseTest {
             treatments.add(treatment1);
             treatments.add(treatment2);
             db.setTreatments(treatments);
-            assertNotNull(treatments);
-            assertEquals(2, db.getTreatments().size());
-            assertTrue(db.getTreatments().contains(treatment1));
-            assertTrue(db.getTreatments().contains(treatment2));
+            assertNotNull("The treatments list is empty", treatments);
+            assertEquals("The treatments list is the wrong size (a treatment is likely not added properly)", 2,
+                    db.getTreatments().size());
+            assertTrue("The treatments list doesn't include a treatment object that was added",
+                    db.getTreatments().contains(treatment1));
+            assertTrue("The treatments list doesn't include a treatment object that was added",
+                    db.getTreatments().contains(treatment2));
         } catch (Exception e) {
             assertEquals("Database does not exist", e.getMessage());
         }
@@ -257,10 +278,13 @@ public class SQLDatabaseTest {
             treatments.add(treatment1);
             treatments.add(treatment2);
             db.setTreatments(treatments);
-            assertNotNull(treatments);
-            assertEquals(2, db.getTreatments().size());
-            assertTrue(db.getTreatments().contains(treatment1));
-            assertTrue(db.getTreatments().contains(treatment2));
+            assertNotNull("The treatments list is empty", treatments);
+            assertEquals("The treatments list is the wrong size (a treatment is likely not added properly)", 2,
+                    db.getTreatments().size());
+            assertTrue("The treatments list doesn't include a treatment object that was added",
+                    db.getTreatments().contains(treatment1));
+            assertTrue("The treatments list doesn't include a treatment object that was added",
+                    db.getTreatments().contains(treatment2));
         } catch (Exception e) {
             assertEquals("Database does not exist", e.getMessage());
         }

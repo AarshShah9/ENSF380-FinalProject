@@ -86,7 +86,6 @@ public class SchedulerTest {
         temp.setAnimals(animals);
         ArrayList<Animal> result = temp.getAnimals();
 
-        System.out.println("setAnimals");
         assertEquals("setAnimals() value was incorrect: ", animals, result);
     }
 
@@ -104,7 +103,6 @@ public class SchedulerTest {
 
         Scheduler temp = new Scheduler(date, tasks, treatments, animals);
         ArrayList<Task> result = temp.getTasks();
-        System.out.println("getTasks");
         assertEquals("getTasks() value was incorrect: ", tasks, result);
     }
 
@@ -127,7 +125,6 @@ public class SchedulerTest {
         temp.setTasks(tasks);
         ArrayList<Task> result = temp.getTasks();
 
-        System.out.println("setTasks");
         assertEquals("setTasks() value was incorrect: ", tasks, result);
     }
 
@@ -145,7 +142,6 @@ public class SchedulerTest {
 
         Scheduler temp = new Scheduler(date, tasks, treatments, animals);
         ArrayList<Treatment> result = temp.getTreatments();
-        System.out.println("getTreatments");
         assertEquals("getTreatments() value was incorrect: ", treatments, result);
     }
 
@@ -168,7 +164,6 @@ public class SchedulerTest {
         temp.setTreatments(treatments);
         ArrayList<Treatment> result = temp.getTreatments();
 
-        System.out.println("setTreatments");
         assertEquals("setTreatments() value was incorrect: ", treatments, result);
     }
 
@@ -214,9 +209,9 @@ public class SchedulerTest {
         scheduler.getFromSQL("oop", "password");
 
         // Ensure that the scheduler's lists are not null
-        assertNotNull(scheduler.getAnimals());
-        assertNotNull(scheduler.getTasks());
-        assertNotNull(scheduler.getTreatments());
+        assertNotNull("Scheduler pulls no animals from the database", scheduler.getAnimals());
+        assertNotNull("Scheduler pulls no tasks from the database", scheduler.getTasks());
+        assertNotNull("Scheduler pulls no treatments from the database", scheduler.getTreatments());
     }
 
     /**
@@ -239,11 +234,13 @@ public class SchedulerTest {
         scheduler.changeTreatmentStart(3, 1, 2);
 
         // Ensure that the treatment's start hour was changed to 2
-        assertEquals(2, scheduler.getTreatments().get(0).getStartHour());
+        assertEquals("The ChangeTreatmentStart method doesn't successfully change the start time", 2,
+                scheduler.getTreatments().get(0).getStartHour());
 
         // Attempt to change the start hour of a non-existent treatment and ensure that
         // it was not changed
         scheduler.changeTreatmentStart(1, 2, 10);
-        assertEquals(2, scheduler.getTreatments().get(0).getStartHour());
+        assertEquals("The ChangeTreatmentStart method doesn't successfully 'fail' to change the start time", 2,
+                scheduler.getTreatments().get(0).getStartHour());
     }
 }

@@ -23,11 +23,12 @@ public class PorcupineTest {
         Porcupine porcupine = new Porcupine(1, "Tony");
 
         // check all the attributes of the porcupine object to ensure they are correct
-        assertEquals(1, (int) porcupine.getAnimalID());
-        assertEquals("Tony", porcupine.getAnimalName());
-        assertEquals(AnimalType.PORCUPINE, porcupine.getAnimalType());
-        assertEquals(FeedingType.CREPUSCULAR, porcupine.getAnimalFeedingType());
-        assertFalse(porcupine.getOrphaned());
+        assertEquals("The wrong Animal ID was returned", 1, (int) porcupine.getAnimalID());
+        assertEquals("The wrong Animal Name was returned", "Tony", porcupine.getAnimalName());
+        assertEquals("The wrong Animal Type was returned", AnimalType.PORCUPINE, porcupine.getAnimalType());
+        assertEquals("The wrong Animal Feeding Type was returned", FeedingType.CREPUSCULAR,
+                porcupine.getAnimalFeedingType());
+        assertFalse("The animal should not be set as Orphaned", porcupine.getOrphaned());
     }
 
     /**

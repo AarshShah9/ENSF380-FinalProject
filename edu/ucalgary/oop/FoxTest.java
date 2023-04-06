@@ -22,11 +22,11 @@ public class FoxTest {
     public void testConstructorGoodData() {
         // Create a new fox object and check if the attributes are correct
         Fox fox = new Fox(1, "Tony");
-        assertEquals(1, (int) fox.getAnimalID());
-        assertEquals("Tony", fox.getAnimalName());
-        assertEquals(AnimalType.FOX, fox.getAnimalType());
-        assertEquals(FeedingType.NOCTURNAL, fox.getAnimalFeedingType());
-        assertFalse(fox.getOrphaned());
+        assertEquals("The wrong Animal ID was returned", 1, (int) fox.getAnimalID());
+        assertEquals("The wrong Animal Name was returned", "Tony", fox.getAnimalName());
+        assertEquals("The wrong Animal Type was returned", AnimalType.FOX, fox.getAnimalType());
+        assertEquals("The wrong Animal Feeding Type was returned", FeedingType.NOCTURNAL, fox.getAnimalFeedingType());
+        assertFalse("The animal should not be set as Orphaned", fox.getOrphaned());
     }
 
     /**
@@ -46,7 +46,7 @@ public class FoxTest {
         // Test getAnimalID getter method by creating a new fox object and checking if
         // the ID is correct
         Fox fox = new Fox(1, "Tony");
-        assertEquals(1, (int) fox.getAnimalID());
+        assertEquals("The getAnimalID method doesn't work as expected", 1, (int) fox.getAnimalID());
     }
 
     /**
@@ -57,7 +57,7 @@ public class FoxTest {
         // Test getAnimalName getter method by creating a new fox object and checking if
         // the name is correct
         Fox fox = new Fox(1, "Tony");
-        assertEquals("Tony", fox.getAnimalName());
+        assertEquals("The getAnimalName method doesn't work as expected", "Tony", fox.getAnimalName());
     }
 
     /**
@@ -68,7 +68,7 @@ public class FoxTest {
         // Test getAnimalType getter method by creating a new fox object and checking if
         // the type is correct
         Fox fox = new Fox(1, "Tony");
-        assertEquals(AnimalType.FOX, fox.getAnimalType());
+        assertEquals("The getAnimalType method doesn't work as expected", AnimalType.FOX, fox.getAnimalType());
     }
 
     /**
@@ -79,7 +79,8 @@ public class FoxTest {
         // Test getAnimalFeedingType getter method by creating a new fox object and
         // checking if the feeding type is correct
         Fox fox = new Fox(1, "Tony");
-        assertEquals(FeedingType.NOCTURNAL, fox.getAnimalFeedingType());
+        assertEquals("The getAnimalFeedingType method doesn't work as expected", FeedingType.NOCTURNAL,
+                fox.getAnimalFeedingType());
     }
 
     /**
@@ -90,7 +91,7 @@ public class FoxTest {
         // Test getOrphaned getter method by creating a new fox object and checking if
         // the orphaned status is correct
         Fox fox = new Fox(1, "Tony");
-        assertFalse(fox.getOrphaned());
+        assertFalse("The testGetOrphaned method doesn't work as expected", fox.getOrphaned());
     }
 
     /**
@@ -101,7 +102,7 @@ public class FoxTest {
         // Test getFeedTime getter method by creating a new fox object and checking if
         // the feed time is correct
         Fox fox = new Fox(1, "Tony");
-        assertEquals(5, (int) fox.getFeedTime());
+        assertEquals("The getFeedTime method doesn't work as expected", 5, (int) fox.getFeedTime());
     }
 
     /**
@@ -112,7 +113,7 @@ public class FoxTest {
         // Test getFeedPrepTime getter method by creating a new fox object and checking
         // if the feed prep time is correct
         Fox fox = new Fox(1, "Tony");
-        assertEquals(5, (int) fox.getFeedPrepTime());
+        assertEquals("The getFeedPrepTime method doesn't work as expected", 5, (int) fox.getFeedPrepTime());
     }
 
     /**
@@ -123,7 +124,7 @@ public class FoxTest {
         // Test getCleanTime getter method by creating a new fox object and checking if
         // the clean time is correct
         Fox fox = new Fox(1, "Tony");
-        assertEquals(5, (int) fox.getCleanTime());
+        assertEquals("The getCleanTime method doesn't work as expected", 5, (int) fox.getCleanTime());
     }
 
     @Test
@@ -132,6 +133,6 @@ public class FoxTest {
         // the orphaned status is correct
         Fox fox = new Fox(1, "Tony");
         fox.setOrphaned(true);
-        assertTrue(fox.getOrphaned());
+        assertTrue("The testSetOrphaned method doesn't work as expected", fox.getOrphaned());
     }
 }

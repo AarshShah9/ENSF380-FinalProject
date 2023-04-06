@@ -22,11 +22,11 @@ public class BeaverTest {
         Beaver beaver = new Beaver(1, "Benny");
 
         // check all the attributes of the beaver object to ensure they are correct
-        assertEquals(1, (int) beaver.getAnimalID());
-        assertEquals("Benny", beaver.getAnimalName());
-        assertEquals(AnimalType.BEAVER, beaver.getAnimalType());
-        assertEquals(FeedingType.DIURNAL, beaver.getAnimalFeedingType());
-        assertFalse(beaver.getOrphaned());
+        assertEquals("The wrong Animal ID was returned", 1, (int) beaver.getAnimalID());
+        assertEquals("The wrong Animal Name was returned", "Benny", beaver.getAnimalName());
+        assertEquals("The wrong Animal Type was returned", AnimalType.BEAVER, beaver.getAnimalType());
+        assertEquals("The wrong Animal Feeding Type was returned", FeedingType.DIURNAL, beaver.getAnimalFeedingType());
+        assertFalse("The animal should not be set as Orphaned", beaver.getOrphaned());
     }
 
     /**

@@ -16,7 +16,6 @@ import static org.junit.Assert.*;
  */
 public class TaskTest {
     // Array of valid task types for testing purposes
-    private static final String[] TASK_TYPES = { "Feeding", "Cleaning", "Medical" };
 
     /**
      * Tests the Task constructor with good data, ensuring that the Task object is
@@ -30,10 +29,10 @@ public class TaskTest {
 
         // Assertions to check if the Task object was created and the properties were
         // set correctly
-        assertEquals(1, task.getTaskID());
-        assertEquals("Test", task.getDescription());
-        assertEquals(1, task.getDuration());
-        assertEquals(1, task.getMaxWindow());
+        assertEquals("The TaskID isn't as expected", 1, task.getTaskID());
+        assertEquals("This wrong description is returned", "Test", task.getDescription());
+        assertEquals("The duration isn't as expected", 1, task.getDuration());
+        assertEquals("The max window isn't as expected", 1, task.getMaxWindow());
     }
 
     /**
@@ -45,7 +44,7 @@ public class TaskTest {
         Task task = new Task(1, "Test", 1, 1);
 
         // Asserting that the correct task ID is returned
-        assertEquals(1, task.getTaskID());
+        assertEquals("The TaskID isn't as expected", 1, task.getTaskID());
     }
 
     /**
@@ -58,7 +57,7 @@ public class TaskTest {
         Task task = new Task(1, "Test", 1, 1);
 
         // Asserting that the correct task description is returned
-        assertEquals("Test", task.getDescription());
+        assertEquals("This wrong description is returned", "Test", task.getDescription());
     }
 
     /**
@@ -71,7 +70,7 @@ public class TaskTest {
         Task task = new Task(1, "Test", 1, 1);
 
         // Asserting that the correct task duration is returned
-        assertEquals(1, task.getDuration());
+        assertEquals("The duration isn't as expected", 1, task.getDuration());
     }
 
     /**
@@ -85,7 +84,7 @@ public class TaskTest {
         Task task = new Task(1, "Test", 1, 1);
 
         // Asserting that the correct max window value is returned
-        assertEquals(1, task.getMaxWindow());
+        assertEquals("The max window isn't as expected", 1, task.getMaxWindow());
     }
 
 }

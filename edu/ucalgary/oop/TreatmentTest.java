@@ -22,10 +22,10 @@ public class TreatmentTest {
     @Test
     public void testConstructor() {
         Treatment treatment = new Treatment(1, 1, 2, 3);
-        assertEquals(1, treatment.getTreatmentID());
-        assertEquals(1, treatment.getAnimalID());
-        assertEquals(2, treatment.getTaskID());
-        assertEquals(3, treatment.getStartHour());
+        assertEquals("The wrong TreatmentID is returned", 1, treatment.getTreatmentID());
+        assertEquals("The wrong AnimalID is returned", 1, treatment.getAnimalID());
+        assertEquals("The wrong TaskID is returned", 2, treatment.getTaskID());
+        assertEquals("The wrong Start Hour is returned", 3, treatment.getStartHour());
     }
 
     /**
@@ -35,7 +35,7 @@ public class TreatmentTest {
     @Test
     public void testGetAnimalID() {
         Treatment treatment = new Treatment(1, 1, 2, 3);
-        assertEquals(1, treatment.getAnimalID());
+        assertEquals("The wrong AnimalID is returned", 1, treatment.getAnimalID());
     }
 
     /**
@@ -45,7 +45,7 @@ public class TreatmentTest {
     @Test
     public void testGetTaskID() {
         Treatment treatment = new Treatment(1, 1, 2, 3);
-        assertEquals(2, treatment.getTaskID());
+        assertEquals("The wrong TaskID is returned", 2, treatment.getTaskID());
     }
 
     /**
@@ -56,7 +56,7 @@ public class TreatmentTest {
     public void testSetStartHour() {
         Treatment treatment = new Treatment(1, 1, 2, 3);
         treatment.setStartHour(4);
-        assertEquals(4, treatment.getStartHour());
+        assertEquals("The wrong Start Hour is returned", 4, treatment.getStartHour());
     }
 
     /**
@@ -66,7 +66,7 @@ public class TreatmentTest {
     @Test
     public void testGetStartHour() {
         Treatment treatment = new Treatment(1, 1, 2, 3);
-        assertEquals(3, treatment.getStartHour());
+        assertEquals("The wrong Start Hour is returned", 3, treatment.getStartHour());
     }
 
     /**
@@ -76,7 +76,7 @@ public class TreatmentTest {
     @Test
     public void testGetTreatmentID() {
         Treatment treatment = new Treatment(1, 1, 2, 3);
-        assertEquals(1, treatment.getTreatmentID());
+        assertEquals("The wrong TreatmentID is returned", 1, treatment.getTreatmentID());
     }
 
 }
