@@ -165,6 +165,8 @@ public class SQLDatabase {
      * @param animalID     the animal ID of the treatment
      * @param taskID       the task ID of the treatment
      * @param newStartHour the new start hour of the treatment
+     * 
+     * @throws SQLException if there is an error updating the database
      */
     public void updateDatabase(int animalID, int taskID, int newStartHour) throws SQLException {
         try {
