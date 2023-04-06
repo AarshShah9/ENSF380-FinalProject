@@ -10,7 +10,8 @@ import static org.junit.Assert.*;
  * to check the validity and correctness of the class's functionality.
  * 
  * @version 1.1
- * @author Aarsh
+ * @author Aarsh Shah: (UCID: 30150079) - William Fraser: (UCID: 30158991) -
+ *         Sarim Sheikh: (UCID: 30143892) - Nicola Savino (UCID: 30129329)
  * @date 2023-03-22
  */
 public class TaskTest {

@@ -5,7 +5,8 @@ package edu.ucalgary.oop;
  * description, duration, maximum window, and task
  * type.
  * 
- * @author Aarsh
+ * @author Aarsh Shah: (UCID: 30150079) - William Fraser: (UCID: 30158991) -
+ *         Sarim Sheikh: (UCID: 30143892) - Nicola Savino (UCID: 30129329)
  * @version 1.0
  * @date 2023-04-05
  */

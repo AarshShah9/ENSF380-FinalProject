@@ -1,16 +1,22 @@
 package edu.ucalgary.oop;
 
 /**
- * The FeedingType enum represents a set of predefined feeding types,
- * specifically
- * indicating the time of day that the animals should be fed.
- * This enumeration is intended to be used in the context of the project
- * for modeling and categorizing different feeding schedules within the system.
+ * @version 1.0
+ * @author Aarsh Shah: (UCID: 30150079) - William Fraser: (UCID: 30158991) -
+ *         Sarim Sheikh: (UCID: 30143892) - Nicola Savino (UCID: 30129329)
+ * @date 2023-04-05
+ * 
+ *       The FeedingType enum represents a set of predefined feeding types,
+ *       specifically
+ *       indicating the time of day that the animals should be fed.
+ *       This enumeration is intended to be used in the context of the project
+ *       for modeling and categorizing different feeding schedules within the
+ *       system.
  *
- * The enum currently supports the following feeding types:
- * - CREPUSCULAR: Represents animals that are active during twilight hours
- * - NOCTURNAL: Represents animals that are active during the night
- * - DIURNAL: Represents animals that are active during the day
+ *       The enum currently supports the following feeding types:
+ *       - CREPUSCULAR: Represents animals that are active during twilight hours
+ *       - NOCTURNAL: Represents animals that are active during the night
+ *       - DIURNAL: Represents animals that are active during the day
  */
 public enum FeedingType {
     // Enumerated values representing different feeding types

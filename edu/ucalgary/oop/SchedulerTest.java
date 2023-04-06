@@ -5,12 +5,13 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.time.LocalDate;
 
+/**
+ * @version 1.0
+ * @author Aarsh Shah: (UCID: 30150079) - William Fraser: (UCID: 30158991) -
+ *         Sarim Sheikh: (UCID: 30143892) - Nicola Savino (UCID: 30129329)
+ * @date 2023-04-05
+ */
 public class SchedulerTest {
-    /**
-     * @version 1.0
-     * @author Sarim
-     * @date 2023-03-20
-     */
 
     // Test the Schedular constructor with valid data
     @Test

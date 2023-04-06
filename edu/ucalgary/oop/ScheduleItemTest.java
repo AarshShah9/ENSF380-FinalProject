@@ -8,7 +8,8 @@ import java.util.ArrayList;
  * The ScheduleItemTest class is a JUnit test class that tests the ScheduleItem
  * clas
  * 
- * @author Sarim
+ * @author Aarsh Shah: (UCID: 30150079) - William Fraser: (UCID: 30158991) -
+ *         Sarim Sheikh: (UCID: 30143892) - Nicola Savino (UCID: 30129329)
  * @version 1.0
  * @date 2023-04-04
  */

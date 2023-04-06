@@ -7,7 +7,8 @@ import static org.junit.Assert.*;
  * Define a class called "CoyoteTest" that tests the "Coyote" class
  * 
  * @version 2.0
- * @author Aarsh @ Nick
+ * @author Aarsh Shah: (UCID: 30150079) - William Fraser: (UCID: 30158991) -
+ *         Sarim Sheikh: (UCID: 30143892) - Nicola Savino (UCID: 30129329)
  * @date 2023-03-22
  */
 public class CoyoteTest {
