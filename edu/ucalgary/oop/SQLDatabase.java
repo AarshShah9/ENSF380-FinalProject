@@ -148,7 +148,8 @@ public class SQLDatabase {
 
             // loop through the ResultSet object and add the treatments to the ArrayList
             while (rs.next()) {
-                Treatment newTreatment = new Treatment(rs.getInt("AnimalID"), rs.getInt("TaskID"),
+                Treatment newTreatment = new Treatment(rs.getInt("TreatmentID"), rs.getInt("AnimalID"),
+                        rs.getInt("TaskID"),
                         rs.getInt("StartHour"));
                 treatments.add(newTreatment);
             }
@@ -168,13 +169,13 @@ public class SQLDatabase {
      * 
      * @throws SQLException if there is an error updating the database
      */
-    public void updateDatabase(int animalID, int taskID, int newStartHour) throws SQLException {
+    public void updateDatabase(int treatmentID, int newStartHour) throws SQLException {
         try {
             // Create a statement object
             Statement stmt = this.DB_CONNECT.createStatement();
             // update the treatment in the database
-            String query = String.format("UPDATE TREATMENTS SET StartHour = %d WHERE AnimalID = %d AND TaskID = %d",
-                    newStartHour, animalID, taskID);
+            String query = String.format("UPDATE TREATMENTS SET StartHour = %d WHERE TreatmentID = %d",
+                    newStartHour, treatmentID);
             // execute the query
             stmt.executeUpdate(query);
         } catch (Exception e) {

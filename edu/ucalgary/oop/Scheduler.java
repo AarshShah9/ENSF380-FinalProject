@@ -11,7 +11,7 @@ public class Scheduler {
     private ArrayList<Treatment> treatments;
     private final LocalDate DATE;
     private DailySchedule dailySchedule;
- 
+    private SQLDatabase db;
 
     // public static void main(String[] args) {
     // Scheduler newSceduleObj = new Scheduler(LocalDate.now(), new
@@ -31,18 +31,14 @@ public class Scheduler {
     }
 
     public void getFromSQL(String user, String password) throws IllegalArgumentException {
-
-    
         try {
-            SQLDatabase db = new SQLDatabase("EWR", user, password, animals, tasks, treatments);
+            this.db = new SQLDatabase("EWR", user, password, animals, tasks, treatments);
 
         } catch (Exception e) {
             System.out.println("SQLDatabaseException caught: " + e.getMessage());
             throw new IllegalArgumentException(e);
         }
     }
-
-
 
     public String calculateSchedule() {
         try {
@@ -57,14 +53,13 @@ public class Scheduler {
         }
     }
 
-    public void changeTreatmentStart(int currentStartHour, int taskID, int newStartHour) {
+    public void changeTreatmentStart(int currentStartHour, int treatmentID, int newStartHour) {
         try {
             for (Treatment treatment : treatments) {
-                if (treatment.getTaskID() == taskID && treatment.getStartHour() == currentStartHour) {
+                if (treatment.getTreatmentID() == treatmentID && treatment.getStartHour() == currentStartHour) {
                     treatment.setStartHour(newStartHour);
                     try {
-                        SQLDatabase db = new SQLDatabase("EWR", "oop", "password", animals, tasks, treatments);
-                        db.updateDatabase(animalID, taskID, newStartHour);
+                        this.db.updateDatabase(treatmentID, newStartHour);
 
                     } catch (Exception e) {
                         System.out.println("SQLDatabaseException caught: " + e.getMessage());
@@ -84,6 +79,10 @@ public class Scheduler {
         } else {
             return null;
         }
+    }
+
+    public SQLDatabase getDB() {
+        return db;
     }
 
     public LocalDate getDate() {
