@@ -159,6 +159,20 @@ public class SQLDatabase {
         }
     }
 
+    public void updateDatabase(int animalID, int taskID, int newStartHour) {
+        try {
+            // Create a statement object
+            Statement stmt = this.DB_CONNECT.createStatement();
+            // update the treatment in the database
+            String query = String.format("UPDATE TREATMENTS SET StartHour = %d WHERE AnimalID = %d AND TaskID = %d",
+                    newStartHour, animalID, taskID);
+            // execute the query
+            stmt.executeUpdate(query);
+        } catch (Exception e) {
+            System.out.println("Error updating the database");
+        }
+    }
+
     /**
      * Returns the list of treatments in the SQLDatabase object
      * 
