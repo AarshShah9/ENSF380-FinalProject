@@ -14,9 +14,12 @@ and provides a GUI that allows the user to create .txt file of the schedule for 
 
 ## Installation
 
-[Include instructions for installing any required dependencies or libraries for your project. Also, provide instructions on how to clone and set up the project locally.]
+### Setup
+- move into the desired folder ```cd dir```
+- run ```git clone [git link]```
+- refer to [usage](#usage) to use the code
 
-#### Dependencies
+### Dependencies
 
 - mysql-connector for connecting to a hosted MySQL database [Download Link](http://www.java2s.com/Code/Jar/m/Downloadmysqlconnectorjar.htm)
 - JUnit for testing [Download Link](https://sourceforge.net/projects/junit/files/junit/4.10/)
