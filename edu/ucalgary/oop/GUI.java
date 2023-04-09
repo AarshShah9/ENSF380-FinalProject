@@ -136,8 +136,7 @@ public class GUI extends JFrame {
             return true;
         }
 
-        return true;
-    }
+
 
     /**
      * @version 1.0.0
