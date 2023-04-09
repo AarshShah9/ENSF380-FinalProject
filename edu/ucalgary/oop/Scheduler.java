@@ -1,9 +1,7 @@
 package edu.ucalgary.oop;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Define a class called "Scheduler" that will be used to calculate the daily
