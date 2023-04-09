@@ -1,5 +1,6 @@
 package edu.ucalgary.oop;
 
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -58,7 +59,9 @@ public class Scheduler {
             // initialize the database and passes it the username, password, and member
             // lists
             this.db = new SQLDatabase("EWR", user, password, animals, tasks, treatments);
+
         } catch (Exception e) {
+
             System.out.println("SQLDatabaseException caught: " + e.getMessage());
             throw new IllegalArgumentException(e);
         }
