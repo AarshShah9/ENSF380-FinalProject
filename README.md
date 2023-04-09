@@ -32,15 +32,15 @@ The following sections explains how to use the code as a developer and a user
 ### Using the Program as a User
 
 - 1. Clone & cd into the repo in terminal (e.g. cmd for windows) 
-- 2. Run ```javac -cp .;lib/mysql-connector-java-8.0.23/mysql-connector-java-8.0.23.jar edu/ucalgary/oop/GUI.java```
-- 3. Run ```java -cp .;lib/mysql-connector-java-8.0.23/mysql-connector-java-8.0.23.jar edu.ucalgary.oop.GUI```
+- 2. Run ```javac -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/oop/GUI.java```
+- 3. Run ```java -cp .;lib/mysql-connector-java-8.0.23.jar edu.ucalgary.oop.GUI```
 
 ### Runnning Tests in Command Line
 
 - 1. Clone & cd into the repo in terminal (e.g. cmd for windows)
 - 2. Add the dependencies listed in [dependencies](#Dependencies) to the lib folder
-- 3. Run the compliation: ```javac -cp .;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar;lib/mysql-connector-java-8.0.23/mysql-connector-java-8.0.23.jar edu/ucalgary/oop/ExampleTest.java```
-- 4. Run the test file: ```java -cp .;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar;lib/mysql-connector-java-8.0.23/mysql-connector-java-8.0.23.jar org.junit.runner.JUnitCore edu.ucalgary.oop.ExampleTest```
+- 3. Run the compliation: ```javac -cp .;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/oop/ExampleTest.java```
+- 4. Run the test file: ```java -cp .;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar;lib/mysql-connector-java-8.0.23.jar org.junit.runner.JUnitCore edu.ucalgary.oop.ExampleTest```
 
 Note ensure you replace 'ExampleTest' with whatever test file you want to run.
 
