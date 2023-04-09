@@ -1,6 +1,5 @@
 package edu.ucalgary.oop;
 
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -196,5 +195,23 @@ public class Scheduler {
      */
     public void setTreatments(ArrayList<Treatment> newTreatments) {
         this.treatments = newTreatments;
+    }
+
+    /**
+     * This method gets the daily schedule
+     * 
+     * @return the daily schedule
+     */
+    public DailySchedule getDailySchedule() {
+        return dailySchedule;
+    }
+
+    /**
+     * This method sets the daily schedule
+     * 
+     * @param newDailySchedule the daily schedule to set
+     */
+    public void setDailySchedule(DailySchedule newDailySchedule) {
+        this.dailySchedule = newDailySchedule;
     }
 }
