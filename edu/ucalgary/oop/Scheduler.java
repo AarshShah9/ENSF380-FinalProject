@@ -1,6 +1,7 @@
 package edu.ucalgary.oop;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ public class Scheduler {
         try {
             this.db = new SQLDatabase("EWR", user, password, animals, tasks, treatments);
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("SQLDatabaseException caught: " + e.getMessage());
             throw new IllegalArgumentException(e);
         }

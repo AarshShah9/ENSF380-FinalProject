@@ -12,9 +12,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 /**
  * @name GUI
@@ -114,8 +111,7 @@ public class GUI extends JFrame {
             this.password = new String(passwordField.getText());
             if (authenticate(this.user, this.password)) {
                 loginFrame.dispose();
-           
-                
+
                 this.setVisible(true);
             }
             else {
@@ -136,15 +132,13 @@ public class GUI extends JFrame {
 
         private boolean authenticate(String username, String password) {
             try {
-                System.out.print(LocalDate.of(2023, 02, 27));
 
                 this.scheduler = new Scheduler(LocalDate.now(), new ArrayList<Task>(), new ArrayList<Treatment>(), new ArrayList<Animal>());
-                //scheduler.getFromSQL(username, password);
                 
-                
+                scheduler.getFromSQL(username, password);
                 
             } catch (IllegalArgumentException e) {
-                e.printStackTrace();
+                
                 return false;
             }
             
@@ -298,7 +292,6 @@ public class GUI extends JFrame {
             JOptionPane.showMessageDialog(this, "Schedule Generated Successfully", status, MessageType.INFO.ordinal());
         }
         else {
-            System.out.println("Error calculating schedule: " + status);
             JOptionPane.showMessageDialog(this, "Error calculating schedule: " + status, status, MessageType.ERROR.ordinal());
         }
 
@@ -364,65 +357,63 @@ public class GUI extends JFrame {
      * It will open a new window where the user can manage the schedule.
      */
     public void manageSchedule() {
+        if (scheduleText.isShowing() == false) {
+            JOptionPane.showMessageDialog(this, "There is no schedule to manage. Please generate a schedule first", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         JDialog manageFrame = new JDialog(this, "Manage Schedule", true);
         manageFrame.setLayout(new BorderLayout());
         manageFrame.setLocationRelativeTo(this);
         
 
-        JComboBox<String> selectedTime = new JComboBox<String>();
+        // This code finds the treatment start time for each animal and task at a specific time
+        // The user will be able to change the treatment start time for each animal and task at a specific time
+        // The time will be in order
+
+    JComboBox<String> selectedTime = new JComboBox<String>();
         
+     
+       
         ArrayList<Treatment> treatments = scheduler.getTreatments();
+        ArrayList<Animal> animals = scheduler.getAnimals();
         ArrayList<Task> tasks = scheduler.getTasks();
 
-        // create a mew hashmap to store the taskID as the key and a TreeSet containing the start times as the value
-        HashMap<Integer, TreeSet<Integer>> taskHashMap = new HashMap<>();
-        
-        
+        //Builds the list of times to select from
+        //  - Each ComboBox Item is a string of the format "HH:MM - Treatment Name - Animal Name"
+        //  - Each ComboBox Item is also stored in the arraylist "times"
+        //  - The user will be able to change the treatment start time for each animal and task at a specific time
+        //  - time will be in order
 
-        // adds treatment start times to hashmap with taskID as key
-        for (Treatment treatment : treatments) {
-            int id = treatment.getTaskID();
-            if (taskHashMap.containsKey(id)) {
-                
-                taskHashMap.get(id).add(treatment.getStartHour());
-            }
-            else {
-                taskHashMap.put(id, new TreeSet<>());
-                taskHashMap.get(id).add(treatment.getStartHour());
-            }
-        }
-        
-        
-        // creates a new dictionary that stores the sorted start times as key and their corresponding taskID
-        TreeMap<Integer, ArrayList<Integer>> sortedTaskTreeMap = new TreeMap<>();
-        for (int id : taskHashMap.keySet()) {
-            for (int time : taskHashMap.get(id)) {
-                if (sortedTaskTreeMap.containsKey(time)) {
-                    sortedTaskTreeMap.get(time).add(id);
-                }
-                else {
-                    sortedTaskTreeMap.put(time, new ArrayList<>());
-                    sortedTaskTreeMap.get(time).add(id);
+        ArrayList<String> currentTimes = new ArrayList<>();
+
+        // For each treatment, get the animal name and task name
+        for (Treatment t : treatments) {
+            int animalID = t.getAnimalID();
+            int taskID = t.getTaskID();
+            int treatmentID = t.getTreatmentID();
+            LocalTime startHour = LocalTime.of(t.getStartHour(), 0);
+
+            String animalName = "";
+            String taskName = "";
+
+            for (Animal a : animals) {
+                if (a.getAnimalID() == animalID) {
+                    animalName = a.getAnimalName();
                 }
             }
-        }
 
-        HashMap<Integer, String> taskDescriptions = new HashMap<>();
-        for (Task task : tasks) {
-            taskDescriptions.put(task.getTaskID(), task.getDescription());
-        }
-
-        
-        // iterates through the sorted TreeMap and adds the start times along with their respective task descriptions to the selectedTime JComboBox
-        for (int time : sortedTaskTreeMap.keySet()) {
-       
-            ArrayList<Integer> taskIDs = sortedTaskTreeMap.get(time);
-            for (int id : taskIDs) {
-                selectedTime.addItem(LocalTime.of(time, 0).toString() + " - " + taskDescriptions.get(id) + " - " + id);
+            for (Task task : tasks) {
+                if (task.getTaskID() == taskID) {
+                    taskName = task.getDescription();
+                }
             }
+
+            // Add the formatted string to the list of times
+            selectedTime.addItem(startHour.toString() + " - " + taskName + " - " + animalName + " - " + treatmentID);
+            
+
         }
-        
 
         //creates an arraylist of LocalTimes to store each hour in the day
         JComboBox<LocalTime> newTime = new JComboBox<LocalTime>();
@@ -431,7 +422,6 @@ public class GUI extends JFrame {
             hours.add(LocalTime.of(i, 0));
             newTime.addItem(hours.get(i));
         }
-
 
         JPanel managePanel = new JPanel();
        
@@ -452,28 +442,57 @@ public class GUI extends JFrame {
         managePanel.add(currentTimePanel);
         managePanel.add(newTimePanel);
 
+        JPanel buttonPanel = new JPanel();
 
+
+
+        JButton changeTimeButton = new JButton("Change Time");
+        changeTimeButton.addActionListener(confirmButtonEvent -> {
+            
+            // TODO Auto-generated method stub
+            // get the treatment
+            Object treatment = selectedTime.getSelectedItem();
+            // parse the start time
+            Object startTime = Integer.parseInt(treatment.toString().substring(0, 2));
+
+            // parse the treatment name
+            String treatmentName = treatment.toString().substring(8);
+
+            treatmentName = treatmentName.substring(0, treatmentName.indexOf("-") - 1);
+
+            
+            // parse the treatment ID
+            String treatmentID = treatment.toString().substring(treatment.toString().lastIndexOf("-") + 1).strip();
+
+            
+            int treatmentIDInt = Integer.parseInt(treatmentID);
+
+            // get new time
+            Object newTimeComboObject = newTime.getSelectedItem();
+            Object newTimeObject = Integer.parseInt(newTimeComboObject.toString().substring(0, 2));
+            
+
+            // update the schedule
+            scheduler.changeTreatmentStart(Integer.parseInt(startTime.toString()), treatmentIDInt, Integer.parseInt(newTimeObject.toString()));
+            
+            // close the window
+
+            selectedTime.removeItem(treatment);
+            if (selectedTime.getItemCount() == 0) {
+                buttonPanel.remove(changeTimeButton);
+                manageFrame.pack();
+            }
+            
+        });
 
         JButton confirmButton = new JButton("Confirm");
         confirmButton.addActionListener(confirmButtonEvent -> {
-            // TODO Auto-generated method stub
-            // get selected time
-            String selectedTask = (String) selectedTime.getSelectedItem();
-            System.out.println(selectedTask);
-            int selectedStartTime = Integer.parseInt(selectedTask.substring(0, 2));
-            System.out.println(selectedStartTime);
-            
-            // get taskID for selected time
-            int selectedTaskID = Integer.parseInt(selectedTask.substring(selectedTask.length() - 1));
-            System.out.println(selectedTaskID);
-            // get new start time
-            int newStartTime = Integer.parseInt(newTime.getSelectedItem().toString().substring(0, 2));
-            System.out.println(newStartTime);
-            
-            scheduler.changeTreatmentStart(selectedStartTime, selectedTaskID, newStartTime);
             manageFrame.dispose();
         });
-        manageFrame.add(confirmButton, BorderLayout.SOUTH);
+
+        buttonPanel.add(changeTimeButton);
+        buttonPanel.add(confirmButton);
+        manageFrame.add(buttonPanel, BorderLayout.SOUTH);
 
         manageFrame.add(managePanel, BorderLayout.CENTER);
 

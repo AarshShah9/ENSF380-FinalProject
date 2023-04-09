@@ -56,6 +56,7 @@ public class SQLDatabase {
         }
     }
 
+
     /**
      * addAnimalsSQL adds the animals from the database to the ArrayList of animals
      * in the SQLDatabase object
