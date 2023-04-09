@@ -7,7 +7,8 @@ import static org.junit.Assert.*;
  * Define a class called "BeaverTest" that tests the "Beaver" class
  * 
  * @version 2.0
- * @author Aarsh @ Nick
+ * @author Aarsh Shah: (UCID: 30150079) - William Fraser: (UCID: 30158991) -
+ *         Sarim Sheikh: (UCID: 30143892) - Nicola Savino (UCID: 30129329)
  * @date 2023-04-05
  */
 public class BeaverTest {
@@ -21,11 +22,11 @@ public class BeaverTest {
         Beaver beaver = new Beaver(1, "Benny");
 
         // check all the attributes of the beaver object to ensure they are correct
-        assertEquals(1, (int) beaver.getAnimalID());
-        assertEquals("Benny", beaver.getAnimalName());
-        assertEquals(AnimalType.BEAVER, beaver.getAnimalType());
-        assertEquals(FeedingType.DIURNAL, beaver.getAnimalFeedingType());
-        assertFalse(beaver.getOrphaned());
+        assertEquals("The wrong Animal ID was returned", 1, (int) beaver.getAnimalID());
+        assertEquals("The wrong Animal Name was returned", "Benny", beaver.getAnimalName());
+        assertEquals("The wrong Animal Type was returned", AnimalType.BEAVER, beaver.getAnimalType());
+        assertEquals("The wrong Animal Feeding Type was returned", FeedingType.DIURNAL, beaver.getAnimalFeedingType());
+        assertFalse("The animal should not be set as Orphaned", beaver.getOrphaned());
     }
 
     /**

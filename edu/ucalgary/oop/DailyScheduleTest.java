@@ -10,7 +10,8 @@ import java.util.HashMap;
 public class DailyScheduleTest {
     /**
      * @version 1.0
-     * @author Will
+     * @author Aarsh Shah: (UCID: 30150079) - William Fraser: (UCID: 30158991) -
+     *         Sarim Sheikh: (UCID: 30143892) - Nicola Savino (UCID: 30129329)
      * @date 2023-03-21
      * @Description Tests the DailySchedule class
      */

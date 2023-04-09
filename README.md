@@ -68,10 +68,10 @@ The same steps should be followed as in running tests, but the the junit and ham
 
 The Current Devs for this project are:
 
-- Aarsh Shah
-- William Fraser
-- Nick Savino
-- Sarim Sheikh
+- Aarsh Shah (UCID: 30150079)
+- William Fraser (UCID: 30158991)
+- Nicola Savino (UCID: 30129329)
+- Sarim Sheikh (UCID: 30143892)
 
 Feel free to fork this repo and submit a pull request with relevant details of any important additions to the code base.
 

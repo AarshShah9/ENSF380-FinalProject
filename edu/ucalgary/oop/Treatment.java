@@ -7,7 +7,8 @@ package edu.ucalgary.oop;
  * A class representing a treatment for an animal at a specific start hour
  * 
  * @version 2.0
- * @author Aarsh
+ * @author Aarsh Shah: (UCID: 30150079) - William Fraser: (UCID: 30158991) -
+ *         Sarim Sheikh: (UCID: 30143892) - Nicola Savino (UCID: 30129329)
  * @date 2023-04-05
  */
 public class Treatment {
