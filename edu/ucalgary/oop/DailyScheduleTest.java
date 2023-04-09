@@ -40,10 +40,14 @@ public class DailyScheduleTest {
         expected.put(8, expectedItem3);
         try {
             DailySchedule schedule = new DailySchedule(animals, tasks, treatments, date);
-            assertEquals(expected.size(), schedule.getScheduledTasks().size());
-            assertEquals(expectedItem1, schedule.getScheduledTasks().get(0));
-            assertEquals(expectedItem2, schedule.getScheduledTasks().get(3));
-            assertEquals(expectedItem3, schedule.getScheduledTasks().get(8));
+            assertEquals("The scheduledTasks hashmap is not the expected size",
+                    expected.size(), schedule.getScheduledTasks().size());
+            assertEquals("The schdeuled tasks at hour 0 are not the expected tasks",
+                    expectedItem1, schedule.getScheduledTasks().get(0));
+            assertEquals("The schdeuled tasks at hour 3 are not the expected tasks",
+                    expectedItem2, schedule.getScheduledTasks().get(3));
+            assertEquals("The schdeuled tasks at hour 8 are not the expected tasks",
+                    expectedItem3, schedule.getScheduledTasks().get(8));
         } catch (Exception e) {
             fail("Exception thrown: " + e.getMessage());
         }
@@ -73,7 +77,8 @@ public class DailyScheduleTest {
         try {
             DailySchedule schedule = new DailySchedule(animals, tasks, treatments, date);
         } catch (ImpossibleScheduleException e) {
-            assertEquals("Impossible schedule", e.getMessage());
+            assertEquals("The schedule failed to throw the exception",
+                    "Impossible schedule", e.getMessage());
         } catch (Exception e) {
         }
     }
@@ -90,7 +95,8 @@ public class DailyScheduleTest {
         tasks.add(new Task(11, "feed fox", 10, 3));
         try {
             DailySchedule schedule = new DailySchedule(animals, tasks, treatments, date);
-            assertEquals(date, schedule.getDate());
+            assertEquals("The date is not the expected date",
+                    date, schedule.getDate());
         } catch (Exception e) {
         }
     }
@@ -108,7 +114,8 @@ public class DailyScheduleTest {
         expected.add(fox);
         try {
             DailySchedule schedule = new DailySchedule(animals, tasks, treatments, date);
-            assertEquals(expected, schedule.getAnimals());
+            assertEquals("The animals arraylist is not the expected arraylist",
+                    expected, schedule.getAnimals());
         } catch (Exception e) {
         }
     }
@@ -126,7 +133,8 @@ public class DailyScheduleTest {
         expected.add(task);
         try {
             DailySchedule schedule = new DailySchedule(animals, tasks, treatments, date);
-            assertEquals(expected, schedule.getTasks());
+            assertEquals("The tasks arraylist is not the expected arraylist",
+                    expected, schedule.getTasks());
         } catch (Exception e) {
         }
     }
@@ -143,7 +151,8 @@ public class DailyScheduleTest {
         expected.add(new Treatment(1, 1, 1, 0));
         try {
             DailySchedule schedule = new DailySchedule(animals, tasks, treatments, date);
-            assertEquals(expected, schedule.getTreatments());
+            assertEquals("The treatments arraylist is not the expected arraylist",
+                    expected, schedule.getTreatments());
         } catch (Exception e) {
         }
     }
@@ -174,8 +183,10 @@ public class DailyScheduleTest {
         try {
             DailySchedule schedule = new DailySchedule(animals, tasks, treatments, date);
             DailySchedule schedule2 = new DailySchedule(animals, tasks2, treatments2, date);
-            assertArrayEquals(expected, schedule.getVolunteersNeeded());
-            assertArrayEquals(expected2, schedule2.getVolunteersNeeded());
+            assertArrayEquals("Array should have element at index 7 be true",
+                    expected, schedule.getVolunteersNeeded());
+            assertArrayEquals("Array should be all false",
+                    expected2, schedule2.getVolunteersNeeded());
         } catch (Exception e) {
         }
     }
@@ -195,7 +206,8 @@ public class DailyScheduleTest {
         try {
             DailySchedule schedule = new DailySchedule(animals, tasks, treatments, date);
             schedule.setVolunteersNeeded(expected);
-            assertEquals(expected, schedule.getVolunteersNeeded());
+            assertEquals("The volunteers needed array does not match the expected array",
+                    expected, schedule.getVolunteersNeeded());
         } catch (Exception e) {
         }
     }
@@ -218,16 +230,17 @@ public class DailyScheduleTest {
         try {
             DailySchedule schedule = new DailySchedule(animals, tasks, treatments, date);
             for (int i = 0; i < 2; i++) {
-                assertTrue(expected.get(0).get(i).getDescription()
-                        .equals(schedule.getScheduledTasks().get(0).get(i).getDescription())
-                        && expected.get(0).get(i).getDuration() == schedule.getScheduledTasks().get(0).get(i)
-                                .getDuration()
-                        && expected.get(0).get(i).getMaxWindow() == schedule.getScheduledTasks().get(0).get(i)
-                                .getMaxWindow()
-                        && expected.get(0).get(i).getPrepTime() == schedule.getScheduledTasks().get(0).get(i)
-                                .getPrepTime()
-                        && expected.get(0).get(i).getQuantity() == schedule.getScheduledTasks().get(0).get(i)
-                                .getQuantity());
+                assertTrue("Not all emelments of the expected Schedule Item match",
+                        expected.get(0).get(i).getDescription()
+                                .equals(schedule.getScheduledTasks().get(0).get(i).getDescription())
+                                && expected.get(0).get(i).getDuration() == schedule.getScheduledTasks().get(0).get(i)
+                                        .getDuration()
+                                && expected.get(0).get(i).getMaxWindow() == schedule.getScheduledTasks().get(0).get(i)
+                                        .getMaxWindow()
+                                && expected.get(0).get(i).getPrepTime() == schedule.getScheduledTasks().get(0).get(i)
+                                        .getPrepTime()
+                                && expected.get(0).get(i).getQuantity() == schedule.getScheduledTasks().get(0).get(i)
+                                        .getQuantity());
             }
         } catch (Exception e) {
         }
@@ -250,7 +263,8 @@ public class DailyScheduleTest {
         try {
             DailySchedule schedule = new DailySchedule(animals, tasks, treatments, date);
             schedule.setScheduledTasks(expected);
-            assertEquals(expected, schedule.getScheduledTasks());
+            assertEquals("The tasks after being set should equal with what they were" +
+                    " set with", expected, schedule.getScheduledTasks());
         } catch (Exception e) {
         }
     }
@@ -279,7 +293,9 @@ public class DailyScheduleTest {
         ArrayList<String> names = new ArrayList<String>();
         try {
             DailySchedule schedule = new DailySchedule(animals, tasks, treatments, date);
-            assertEquals(schedule.getScheduledTasks().get(19).size(),
+            assertEquals("The size of the tasks scheduled at hour 19 should be 6," +
+                    "and the size of the tasks scheduled at hour 20 should be 6.",
+                    schedule.getScheduledTasks().get(19).size(),
                     schedule.getScheduledTasks().get(20).size());
         } catch (Exception e) {
         }
