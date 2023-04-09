@@ -23,13 +23,13 @@ public class ScheduleItemTest {
         names.add(test);
 
         ScheduleItem temp = new ScheduleItem(names, 0, test, 0, 0, 0, 0);
-        assertEquals(names, temp.getName());
-        assertEquals(0, temp.getQuantity());
-        assertEquals(test, temp.getDescription());
-        assertEquals(0, temp.getStartHour());
-        assertEquals(0, temp.getMaxWindow());
-        assertEquals(0, temp.getDuration());
-        assertEquals(0, temp.getPrepTime());
+        assertEquals("The names arraylist does not match", names, temp.getName());
+        assertEquals("The quantity does not match", 0, temp.getQuantity());
+        assertEquals("The description does not match", test, temp.getDescription());
+        assertEquals("The start hour does not match", 0, temp.getStartHour());
+        assertEquals("The max window does not match", 0, temp.getMaxWindow());
+        assertEquals("The duration does not match", 0, temp.getDuration());
+        assertEquals("The prep time does not match", 0, temp.getPrepTime());
     }
 
     // Test the ScheduleItem constructor with invalid data
