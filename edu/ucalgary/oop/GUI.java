@@ -136,7 +136,6 @@ public class GUI extends JFrame {
 
         private boolean authenticate(String username, String password) {
             try {
-                System.out.print(LocalDate.of(2023, 02, 27));
 
                 this.scheduler = new Scheduler(LocalDate.now(), new ArrayList<Task>(), new ArrayList<Treatment>(), new ArrayList<Animal>());
                 //scheduler.getFromSQL(username, password);
@@ -377,8 +376,7 @@ public class GUI extends JFrame {
 
         // create a mew hashmap to store the taskID as the key and a TreeSet containing the start times as the value
         HashMap<Integer, TreeSet<Integer>> taskHashMap = new HashMap<>();
-        
-        
+                
 
         // adds treatment start times to hashmap with taskID as key
         for (Treatment treatment : treatments) {
@@ -393,6 +391,7 @@ public class GUI extends JFrame {
             }
         }
         
+        System.out.println(taskHashMap);
         
         // creates a new dictionary that stores the sorted start times as key and their corresponding taskID
         TreeMap<Integer, ArrayList<Integer>> sortedTaskTreeMap = new TreeMap<>();
@@ -408,6 +407,9 @@ public class GUI extends JFrame {
             }
         }
 
+        System.out.println(sortedTaskTreeMap);
+
+
         HashMap<Integer, String> taskDescriptions = new HashMap<>();
         for (Task task : tasks) {
             taskDescriptions.put(task.getTaskID(), task.getDescription());
@@ -422,6 +424,8 @@ public class GUI extends JFrame {
                 selectedTime.addItem(LocalTime.of(time, 0).toString() + " - " + taskDescriptions.get(id) + " - " + id);
             }
         }
+
+        System.out.println(taskDescriptions);
         
 
         //creates an arraylist of LocalTimes to store each hour in the day
