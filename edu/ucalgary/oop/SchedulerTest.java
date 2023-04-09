@@ -4,6 +4,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.time.LocalDate;
+import java.util.HashMap;
 
 /**
  * @version 1.0
@@ -167,29 +168,109 @@ public class SchedulerTest {
         assertEquals("setTreatments() value was incorrect: ", treatments, result);
     }
 
-    // Test the calculateSchedule function, checks if it is properly returned
-    // @Test
-    // public void testCalculateSchedule() {
-    // LocalDate date = LocalDate.now();
-    // ArrayList<Animal> animals = new ArrayList<>();
-    // ArrayList<Task> tasks = new ArrayList<>();
-    // ArrayList<Treatment> treatments = new ArrayList<>();
+    @Test
+    public void testCalculateSchedulePossible() {
+        LocalDate date = LocalDate.now();
+        ArrayList<Animal> animals = new ArrayList<Animal>();
+        ArrayList<Treatment> treatments = new ArrayList<Treatment>();
+        animals.add(new Beaver(1, "Beaver"));
+        ArrayList<Task> tasks = new ArrayList<Task>();
+        tasks.add(new Task(1, "Rebandage leg wound", 20, 1));
+        treatments.add(new Treatment(1, 1, 1, 3));
+        HashMap<Integer, ArrayList<ScheduleItem>> expected = new HashMap<Integer, ArrayList<ScheduleItem>>();
+        ArrayList<String> name = new ArrayList<String>();
+        name.add("Beaver");
+        ArrayList<ScheduleItem> expectedItem1 = new ArrayList<ScheduleItem>();
+        expectedItem1.add(new ScheduleItem(name, 1, "Cage cleaning - beaver", 0, 24, 5, 0));
+        ArrayList<ScheduleItem> expectedItem2 = new ArrayList<ScheduleItem>();
+        expectedItem2.add(new ScheduleItem(name, 1, "Rebandage leg wound", 3, 1, 20, 0));
+        ArrayList<ScheduleItem> expectedItem3 = new ArrayList<ScheduleItem>();
+        expectedItem3.add(new ScheduleItem(name, 1, "Feeding - beaver", 8, 3, 5, 0));
+        expected.put(0, expectedItem1);
+        expected.put(3, expectedItem2);
+        expected.put(8, expectedItem3);
+        Scheduler temp = new Scheduler(date, tasks, treatments, animals);
+        String message = temp.calculateSchedule();
+        assertEquals("The message returned is not 'Success'", "Success", message);
+        assertEquals("The scheduledTasks hashmap is not the expected size",
+                expected.size(), temp.getDailySchedule().getScheduledTasks().size());
+        assertEquals("The schdeuled tasks at hour 0 are not the expected tasks",
+                expectedItem1, temp.getDailySchedule().getScheduledTasks().get(0));
+        assertEquals("The schdeuled tasks at hour 3 are not the expected tasks",
+                expectedItem2, temp.getDailySchedule().getScheduledTasks().get(3));
+        assertEquals("The schdeuled tasks at hour 8 are not the expected tasks",
+                expectedItem3, temp.getDailySchedule().getScheduledTasks().get(8));
+    }
 
-    // Animal testAnimal = new Raccoon(0, "Raccoon");
-    // animals.add(testAnimal);
+    @Test
+    public void testCalculateScheduleImpossible() {
+        LocalDate date = LocalDate.now();
+        ArrayList<Animal> animals = new ArrayList<Animal>();
+        animals.add(new Coyote(1, "coyote1"));
+        animals.add(new Coyote(2, "coyote2"));
+        animals.add(new Coyote(3, "coyote3"));
+        animals.add(new Coyote(4, "coyote4"));
+        animals.add(new Coyote(5, "coyote5"));
+        ArrayList<Task> tasks = new ArrayList<Task>();
+        tasks.add(new Task(5, "Flush neck wound", 25, 1));
+        ArrayList<Treatment> treatments = new ArrayList<Treatment>();
+        treatments.add(new Treatment(1, 1, 5, 0));
+        treatments.add(new Treatment(1, 2, 5, 0));
+        treatments.add(new Treatment(1, 3, 5, 0));
+        treatments.add(new Treatment(1, 4, 5, 0));
+        treatments.add(new Treatment(1, 5, 5, 0));
+        Scheduler temp = new Scheduler(date, tasks, treatments, animals);
+        String message = temp.calculateSchedule();
+        assertNotEquals("The message should not be Success", "Success", message);
+        assertNull("The dailySchedule should be null", temp.getDailySchedule());
+    }
 
-    // Scheduler temp = new Scheduler(date, tasks, treatments, animals);
-    // Task testTask = new Task(1, "Test", 1, 1);
-    // tasks.add(testTask);
-    // temp.calculateSchedule();
-    // DailySchedule expected;
-    // try {
-    // expected = new DailySchedule(animals, tasks, treatments, date);
-    // assertEquals(expected, temp);
-    // } catch (Exception e) {
-    // System.out.println("Error: " + e.getLocalizedMessage());
-    // }
-    // }
+    // Tests the getDailySchedule method
+    @Test
+    public void testGetDailySchedule() {
+        LocalDate date = LocalDate.now();
+        ArrayList<Animal> animals = new ArrayList<>();
+        ArrayList<Task> tasks = new ArrayList<>();
+        ArrayList<Treatment> treatments = new ArrayList<>();
+
+        animals.add(new Raccoon(0, "Raccoon"));
+        tasks.add(new Task(1, "Test", 20, 1));
+        treatments.add(new Treatment(1, 1, 1, 1));
+
+        Scheduler temp = new Scheduler(date, tasks, treatments, animals);
+        temp.calculateSchedule();
+        DailySchedule result = temp.getDailySchedule();
+
+        ArrayList<String> expectedName = new ArrayList<>();
+        expectedName.add("Raccoon");
+        ScheduleItem expected = new ScheduleItem(expectedName, 1, "Test", 1, 1, 20, 0);
+        assertEquals("getDailySchedule should return a DailySchedule object with the correct ScheduleItem",
+                expected, result.getScheduledTasks().get(1).get(0));
+    }
+
+    // Tests the setDailySchedule method
+    @Test
+    public void testSetDailySchedule() {
+        LocalDate date = LocalDate.now();
+        ArrayList<Animal> animals = new ArrayList<>();
+        ArrayList<Task> tasks = new ArrayList<>();
+        ArrayList<Treatment> treatments = new ArrayList<>();
+
+        animals.add(new Raccoon(0, "Raccoon"));
+        tasks.add(new Task(1, "Test", 20, 5));
+        treatments.add(new Treatment(1, 1, 1, 1));
+
+        Scheduler temp = new Scheduler(date, tasks, treatments, animals);
+        try {
+            DailySchedule expected = new DailySchedule(animals, tasks, treatments, date);
+            temp.setDailySchedule(expected);
+            DailySchedule result = temp.getDailySchedule();
+            assertEquals("setDailySchedule should set the dailySchedule to the given DailySchedule object",
+                    expected, result);
+        } catch (Exception e) {
+            fail("DailySchedule constructor threw an exception");
+        }
+    }
 
     /**
      * Creates an instances of the Scheduler class and tests the getFromSQL method
