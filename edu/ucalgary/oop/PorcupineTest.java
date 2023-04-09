@@ -8,7 +8,8 @@ import static org.junit.Assert.*;
  * Define a class called "PorcupineTest" that tests the "Porcupine" class
  * 
  * @version 2.0
- * @author Aarsh @ Nick
+ * @author Aarsh Shah: (UCID: 30150079) - William Fraser: (UCID: 30158991) -
+ *         Sarim Sheikh: (UCID: 30143892) - Nicola Savino (UCID: 30129329)
  * @date 2023-04-05
  */
 public class PorcupineTest {
@@ -22,11 +23,12 @@ public class PorcupineTest {
         Porcupine porcupine = new Porcupine(1, "Tony");
 
         // check all the attributes of the porcupine object to ensure they are correct
-        assertEquals(1, (int) porcupine.getAnimalID());
-        assertEquals("Tony", porcupine.getAnimalName());
-        assertEquals(AnimalType.PORCUPINE, porcupine.getAnimalType());
-        assertEquals(FeedingType.CREPUSCULAR, porcupine.getAnimalFeedingType());
-        assertFalse(porcupine.getOrphaned());
+        assertEquals("The wrong Animal ID was returned", 1, (int) porcupine.getAnimalID());
+        assertEquals("The wrong Animal Name was returned", "Tony", porcupine.getAnimalName());
+        assertEquals("The wrong Animal Type was returned", AnimalType.PORCUPINE, porcupine.getAnimalType());
+        assertEquals("The wrong Animal Feeding Type was returned", FeedingType.CREPUSCULAR,
+                porcupine.getAnimalFeedingType());
+        assertFalse("The animal should not be set as Orphaned", porcupine.getOrphaned());
     }
 
     /**

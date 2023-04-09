@@ -2,7 +2,6 @@ package edu.ucalgary.oop;
 
 import javax.swing.*;
 
-
 import java.awt.*;
 import java.awt.TrayIcon.MessageType;
 import java.io.BufferedReader;
@@ -16,7 +15,8 @@ import java.util.ArrayList;
 /**
  * @name GUI
  * @version 1.0.0
- * @author Nicola Savino
+ * @author Aarsh Shah: (UCID: 30150079) - William Fraser: (UCID: 30158991) -
+ *         Sarim Sheikh: (UCID: 30143892) - Nicola Savino (UCID: 30129329)
  * @since 2020-11-20
  * 
  *        This class is the main GUI class for the EWR schedule manager. It
@@ -41,7 +41,6 @@ public class GUI extends JFrame {
     private boolean[] neededVolunteers = new boolean[24];
     private boolean saveFlag = false;
 
-
     private JMenuBar menuBar;
 
     private Scheduler scheduler;
@@ -64,13 +63,12 @@ public class GUI extends JFrame {
         super("EWR schedule manager");
         login();
         setupGUI();
-        //setSize(WIDTH,HEIGHT);
+        // setSize(WIDTH,HEIGHT);
         setMinimumSize(new Dimension(400, 400));
         pack();
         scheduleText.setEditable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
 
     }
 
@@ -85,16 +83,13 @@ public class GUI extends JFrame {
 
         loginPanel.setBorder(BorderFactory.createTitledBorder("Login"));
 
-        
-        
         JPanel usernamePanel = new JPanel();
         JLabel usernameLabel = new JLabel("Username:");
         JTextField usernameField = new JTextField("oop");
         usernameField.setPreferredSize(new Dimension(100, 20));
-        
+
         usernamePanel.add(usernameLabel);
         usernamePanel.add(usernameField);
-
 
         JPanel passwordPanel = new JPanel();
         JLabel passwordLabel = new JLabel("Password:");
@@ -102,8 +97,6 @@ public class GUI extends JFrame {
         passwordField.setPreferredSize(new Dimension(100, 20));
         passwordPanel.add(passwordLabel);
         passwordPanel.add(passwordField);
-
-
 
         JButton loginButton = new JButton("Login");
         loginButton.addActionListener(e -> {
@@ -113,22 +106,20 @@ public class GUI extends JFrame {
                 loginFrame.dispose();
 
                 this.setVisible(true);
-            }
-            else {
+            } else {
                 JOptionPane.showMessageDialog(loginFrame, "Invalid username or password");
             }
         });
 
-        
-
         loginPanel.add(usernamePanel, BorderLayout.NORTH);
         loginPanel.add(passwordPanel, BorderLayout.SOUTH);
-        
+
         loginFrame.add(loginButton, BorderLayout.SOUTH);
         loginFrame.add(loginPanel, BorderLayout.CENTER);
 
         loginFrame.pack();
     }
+
 
         private boolean authenticate(String username, String password) {
             try {
@@ -144,6 +135,10 @@ public class GUI extends JFrame {
             
             return true;
         }
+
+        return true;
+    }
+
     /**
      * @version 1.0.0
      * @author Nicola Savino
@@ -168,34 +163,30 @@ public class GUI extends JFrame {
         topPanel.add(menuBar, BorderLayout.NORTH);
         topPanel.add(topHeader, BorderLayout.CENTER);
 
-
         buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(4, 1));
         buttonsPanel.setBorder(BorderFactory.createTitledBorder("Options"));
         buttonsPanel.setPreferredSize(new Dimension((int) (WIDTH * ((double) 0.2)), (int) (HEIGHT * ((double) 0.8))));
 
-
-        //options buttons
-        //create schedule
+        // options buttons
+        // create schedule
         JButton createButton = new JButton();
         createButton.setText("New Schedule");
         createButton.addActionListener(createButtonEvent -> getSchedule());
 
-        //manage schedule
+        // manage schedule
         JButton manageButton = new JButton();
         manageButton.setText("Change Schedule");
         manageButton.addActionListener(manageButtonEvent -> manageSchedule());
 
-        //print schedule
+        // print schedule
         JButton printButton = new JButton();
         printButton.setText("Save Schedule");
         printButton.addActionListener(printButtonEvent -> saveSchedule());
 
-
         buttonsPanel.add(createButton);
         buttonsPanel.add(manageButton);
         buttonsPanel.add(printButton);
-        
 
         schedulePanel = new JPanel();
 
@@ -207,28 +198,26 @@ public class GUI extends JFrame {
         this.add(schedulePanel, BorderLayout.CENTER);
         this.add(buttonsPanel, BorderLayout.EAST);
 
-
         this.setBackground(Color.WHITE);
 
     }
-
 
     /**
      * @version 1.0.0
      * @author Nicola Savino
      * @since 2020-11-20
      * 
-
-     * This method builds the GUI menu bar
+     * 
+     *        This method builds the GUI menu bar
      * 
      * 
      */
     public void buildMenuBar() {
-        //construct menu bar items
+        // construct menu bar items
 
-        //construct file menu
-        JMenu fileMenu = new JMenu ("File");
-        JMenuItem print_scheduleItem = new JMenuItem ("Save Schedule");
+        // construct file menu
+        JMenu fileMenu = new JMenu("File");
+        JMenuItem print_scheduleItem = new JMenuItem("Save Schedule");
         print_scheduleItem.addActionListener(printButtonEvent -> saveSchedule());
         fileMenu.add(print_scheduleItem);
         JMenuItem create_scheduleItem = new JMenuItem("New Schedule");
@@ -238,20 +227,20 @@ public class GUI extends JFrame {
         exitItem.addActionListener(exitButtonEvent -> this.dispose());
         fileMenu.add(exitItem);
 
+        // Construct help menu
+        JMenu helpMenu = new JMenu("Help");
+        JMenuItem contentsItem = new JMenuItem("Contents");
+        helpMenu.add(contentsItem);
 
-        //Construct help menu
-        JMenu helpMenu = new JMenu ("Help");
-        JMenuItem contentsItem = new JMenuItem ("Contents");
-        helpMenu.add (contentsItem);
-        
-        //about menu
-        JMenuItem aboutItem = new JMenuItem ("About");
+        // about menu
+        JMenuItem aboutItem = new JMenuItem("About");
         aboutItem.addActionListener(aboutItemEvent -> {
             JPanel aboutPanel = new JPanel();
             aboutPanel.setLayout(new GridLayout(3, 1, 0, 10));
             JLabel aboutTitle = new JLabel("EWR Schedule Manager v1.0.0");
             JLabel aboutAuthors = new JLabel("Created by William Fraser, Nicola Savino, Aarsh Shah, Sarim Sheik");
-            JLabel aboutDescription = new JLabel("This program is used to create and manage the schedule for the EWR volunteer program.");
+            JLabel aboutDescription = new JLabel(
+                    "This program is used to create and manage the schedule for the EWR volunteer program.");
             aboutTitle.setHorizontalAlignment(SwingConstants.CENTER);
             aboutAuthors.setHorizontalAlignment(SwingConstants.CENTER);
             aboutDescription.setHorizontalAlignment(SwingConstants.CENTER);
@@ -260,7 +249,7 @@ public class GUI extends JFrame {
             aboutPanel.add(aboutDescription);
             JOptionPane.showMessageDialog(this, aboutPanel, getTitle() + " - About", JOptionPane.INFORMATION_MESSAGE);
         });
-        helpMenu.add (aboutItem);
+        helpMenu.add(aboutItem);
 
         // construct menubar
         menuBar = new JMenuBar();
@@ -269,10 +258,10 @@ public class GUI extends JFrame {
         menuBar.setLayout(new FlowLayout(FlowLayout.LEFT));
         menuBar.add(fileMenu);
         menuBar.add(helpMenu);
-        
+
     }
 
-        /**
+    /**
      * @version 1.0.0
      * @author Nicola Savino
      * @since 2020-11-20
@@ -282,17 +271,20 @@ public class GUI extends JFrame {
     public void getSchedule() {
 
         if (this.saveFlag == false) {
-            scheduler = new Scheduler(LocalDate.now(), new ArrayList<Task>(), new ArrayList<Treatment>(), new ArrayList<Animal>());
+            scheduler = new Scheduler(LocalDate.now(), new ArrayList<Task>(), new ArrayList<Treatment>(),
+                    new ArrayList<Animal>());
             scheduler.getFromSQL(this.user, this.password);
         }
-        //Create the schedule
+        // Create the schedule
         String status = scheduler.calculateSchedule();
         neededVolunteers = scheduler.getVolunteersNeeded();
         if (status.equals("Success")) {
             JOptionPane.showMessageDialog(this, "Schedule Generated Successfully", status, MessageType.INFO.ordinal());
+
         }
         else {
             JOptionPane.showMessageDialog(this, "Error calculating schedule: " + status, status, MessageType.ERROR.ordinal());
+
         }
 
         if (scheduleText.getText() != "") {
@@ -315,7 +307,7 @@ public class GUI extends JFrame {
         }
 
         JScrollPane scrollPane = new JScrollPane(scheduleText);
-        
+
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setMaximumSize(new Dimension((int) (schedulePanel.getWidth() * ((double) 0.5)),
@@ -325,16 +317,14 @@ public class GUI extends JFrame {
         if (schedulePanel.getComponentCount() > 0) {
             schedulePanel.remove(0);
         }
-        
+
         schedulePanel.add(scrollPane);
-        
 
         // Update the GUI
         this.revalidate();
         this.repaint();
         this.saveFlag = false;
     }
-
 
     /**
      * @version 1.0.0
@@ -347,14 +337,13 @@ public class GUI extends JFrame {
      *        volunteer is present.
      */
 
-
     /**
      * @version 1.0.0
      * @author Nicola Savino
      * @since 2020-11-20
      * 
-     * This method is called when the manage schedule button is pressed.
-     * It will open a new window where the user can manage the schedule.
+     *        This method is called when the manage schedule button is pressed.
+     *        It will open a new window where the user can manage the schedule.
      */
     public void manageSchedule() {
         if (scheduleText.isShowing() == false) {
@@ -365,7 +354,7 @@ public class GUI extends JFrame {
         JDialog manageFrame = new JDialog(this, "Manage Schedule", true);
         manageFrame.setLayout(new BorderLayout());
         manageFrame.setLocationRelativeTo(this);
-        
+
 
         // This code finds the treatment start time for each animal and task at a specific time
         // The user will be able to change the treatment start time for each animal and task at a specific time
@@ -375,9 +364,11 @@ public class GUI extends JFrame {
         
      
        
+
         ArrayList<Treatment> treatments = scheduler.getTreatments();
         ArrayList<Animal> animals = scheduler.getAnimals();
         ArrayList<Task> tasks = scheduler.getTasks();
+
 
         //Builds the list of times to select from
         //  - Each ComboBox Item is a string of the format "HH:MM - Treatment Name - Animal Name"
@@ -406,6 +397,7 @@ public class GUI extends JFrame {
             for (Task task : tasks) {
                 if (task.getTaskID() == taskID) {
                     taskName = task.getDescription();
+
                 }
             }
 
@@ -413,9 +405,11 @@ public class GUI extends JFrame {
             selectedTime.addItem(startHour.toString() + " - " + taskName + " - " + animalName + " - " + treatmentID);
             
 
+
+
         }
 
-        //creates an arraylist of LocalTimes to store each hour in the day
+        // creates an arraylist of LocalTimes to store each hour in the day
         JComboBox<LocalTime> newTime = new JComboBox<LocalTime>();
         ArrayList<LocalTime> hours = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
@@ -424,7 +418,7 @@ public class GUI extends JFrame {
         }
 
         JPanel managePanel = new JPanel();
-       
+
         JPanel currentTimePanel = new JPanel();
 
         JLabel currentTimeLabel = new JLabel("Current Time: ");
@@ -441,6 +435,7 @@ public class GUI extends JFrame {
 
         managePanel.add(currentTimePanel);
         managePanel.add(newTimePanel);
+
 
         JPanel buttonPanel = new JPanel();
 
@@ -487,6 +482,7 @@ public class GUI extends JFrame {
 
         JButton confirmButton = new JButton("Confirm");
         confirmButton.addActionListener(confirmButtonEvent -> {
+
             manageFrame.dispose();
         });
 
@@ -503,7 +499,8 @@ public class GUI extends JFrame {
 
     public void saveSchedule() {
         if (scheduleText.isShowing() == false) {
-            JOptionPane.showMessageDialog(this, "There is no schedule to save. Please generate a schedule first", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "There is no schedule to save. Please generate a schedule first",
+                    "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         boolean volunteersNeeded = false;
@@ -521,11 +518,11 @@ public class GUI extends JFrame {
         }
 
         JDialog confirmVolunteers = new JDialog(this, this.getTitle() + " - Confirm Volunteers", true);
-        
+
         JLabel confirmLabel = new JLabel("Please confirm that the following volunteers are present:");
         confirmVolunteers.add(confirmLabel, BorderLayout.NORTH);
 
-        ArrayList<JCheckBox> volunteerChecks = new ArrayList<JCheckBox>(); 
+        ArrayList<JCheckBox> volunteerChecks = new ArrayList<JCheckBox>();
         for (int i = 0; i < neededVolunteers.length; i++) {
             if (neededVolunteers[i] == true) {
                 JPanel instancePanel = new JPanel();
@@ -541,11 +538,11 @@ public class GUI extends JFrame {
 
         JButton confirmButton = new JButton("Confirm");
 
-        
         confirmButton.addActionListener(e -> {
             for (int i = 0; i < volunteerChecks.size(); i++) {
                 if (volunteerChecks.get(i).isSelected() == false) {
-                    JOptionPane.showMessageDialog(this, "Please confirm that all volunteers are present.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Please confirm that all volunteers are present.", "Error",
+                            JOptionPane.ERROR_MESSAGE);
                     return;
                 }
             }
@@ -559,7 +556,6 @@ public class GUI extends JFrame {
         confirmVolunteers.setVisible(true);
 
     }
-
 
     /**
      * @version 1.0.0

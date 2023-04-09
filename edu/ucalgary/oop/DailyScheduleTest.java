@@ -10,7 +10,8 @@ import java.util.HashMap;
 public class DailyScheduleTest {
     /**
      * @version 1.0
-     * @author Will
+     * @author Aarsh Shah: (UCID: 30150079) - William Fraser: (UCID: 30158991) -
+     *         Sarim Sheikh: (UCID: 30143892) - Nicola Savino (UCID: 30129329)
      * @date 2023-03-21
      * @Description Tests the DailySchedule class
      */
@@ -24,7 +25,7 @@ public class DailyScheduleTest {
         animals.add(new Beaver(1, "Beaver"));
         ArrayList<Task> tasks = new ArrayList<Task>();
         tasks.add(new Task(1, "Rebandage leg wound", 20, 1));
-        treatments.add(new Treatment(1, 1, 3));
+        treatments.add(new Treatment(1, 1, 1, 3));
         HashMap<Integer, ArrayList<ScheduleItem>> expected = new HashMap<Integer, ArrayList<ScheduleItem>>();
         ArrayList<String> name = new ArrayList<String>();
         name.add("Beaver");
@@ -64,11 +65,11 @@ public class DailyScheduleTest {
         ArrayList<Task> tasks = new ArrayList<Task>();
         tasks.add(new Task(5, "Flush neck wound", 25, 1));
         ArrayList<Treatment> treatments = new ArrayList<Treatment>();
-        treatments.add(new Treatment(1, 5, 0));
-        treatments.add(new Treatment(2, 5, 0));
-        treatments.add(new Treatment(3, 5, 0));
-        treatments.add(new Treatment(4, 5, 0));
-        treatments.add(new Treatment(5, 5, 0));
+        treatments.add(new Treatment(1, 1, 5, 0));
+        treatments.add(new Treatment(1, 2, 5, 0));
+        treatments.add(new Treatment(1, 3, 5, 0));
+        treatments.add(new Treatment(1, 4, 5, 0));
+        treatments.add(new Treatment(1, 5, 5, 0));
         try {
             DailySchedule schedule = new DailySchedule(animals, tasks, treatments, date);
         } catch (ImpossibleScheduleException e) {
@@ -138,8 +139,8 @@ public class DailyScheduleTest {
         ArrayList<Animal> animals = new ArrayList<Animal>();
         ArrayList<Task> tasks = new ArrayList<Task>();
         ArrayList<Treatment> treatments = new ArrayList<Treatment>();
-        treatments.add(new Treatment(1, 1, 0));
-        expected.add(new Treatment(1, 1, 0));
+        treatments.add(new Treatment(1, 1, 1, 0));
+        expected.add(new Treatment(1, 1, 1, 0));
         try {
             DailySchedule schedule = new DailySchedule(animals, tasks, treatments, date);
             assertEquals(expected, schedule.getTreatments());
@@ -164,9 +165,9 @@ public class DailyScheduleTest {
         tasks.add(new Task(1, "Rebandage leg wound", 40, 1));
         tasks.add(new Task(2, "Somethign else", 40, 1));
         tasks2.add(new Task(1, "Rebandage leg wound", 20, 1));
-        treatments.add(new Treatment(1, 1, 7));
-        treatments.add(new Treatment(1, 2, 7));
-        treatments2.add(new Treatment(1, 1, 7));
+        treatments.add(new Treatment(1, 1, 1, 7));
+        treatments.add(new Treatment(1, 1, 2, 7));
+        treatments2.add(new Treatment(1, 1, 1, 7));
         boolean[] expected = new boolean[24];
         expected[7] = true;
         boolean[] expected2 = new boolean[24];

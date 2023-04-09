@@ -8,12 +8,12 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.io.*;
 import java.util.Arrays;
-import java.util.ListIterator;
 
 /**
  * The DailySchedule class represents a schedule for a given day
  * 
- * @author William Fraser
+ * @author Aarsh Shah: (UCID: 30150079) - William Fraser: (UCID: 30158991) -
+ *         Sarim Sheikh: (UCID: 30143892) - Nicola Savino (UCID: 30129329)
  * @since 2023-03-30
  * @version 1.0
  */

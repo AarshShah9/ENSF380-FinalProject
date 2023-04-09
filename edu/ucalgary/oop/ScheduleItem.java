@@ -7,7 +7,8 @@ public class ScheduleItem {
      * The ScheduleItem class is an object that holds all the information
      * that is used to schedule all treatments and tasks for a given day
      * 
-     * @author Will
+     * @author Aarsh Shah: (UCID: 30150079) - William Fraser: (UCID: 30158991) -
+     *         Sarim Sheikh: (UCID: 30143892) - Nicola Savino (UCID: 30129329)
      * @version 1.0
      * @date 2023-04-02
      */
