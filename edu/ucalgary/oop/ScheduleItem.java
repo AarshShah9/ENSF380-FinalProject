@@ -36,7 +36,7 @@ public class ScheduleItem {
      *                    task/treatment
      */
     public ScheduleItem(ArrayList<String> name, int quantity, String description, int startHour, int maxWindow,
-            int duration, int prepTime) {
+            int duration, int prepTime) throws IllegalArgumentException {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty");
         }
