@@ -36,7 +36,7 @@ public class DailySchedule {
      * @throws ImpossibleScheduleException if the schedule is impossible to create
      */
     public DailySchedule(ArrayList<Animal> animals, ArrayList<Task> tasks, ArrayList<Treatment> treatments,
-            LocalDate date) throws ImpossibleScheduleException, IOException {
+            LocalDate date) throws ImpossibleScheduleException, IOException, IllegalArgumentException {
         this.CURR_DATE = date;
         this.ANIMALS = animals;
         this.TREATMENTS = treatments;

@@ -272,6 +272,9 @@ public class SchedulerTest {
         }
     }
 
+    private String user = "oop";
+    private String password = "password";
+
     /**
      * Creates an instances of the Scheduler class and tests the getFromSQL method
      * which retrieves data from an SQL database
@@ -287,7 +290,7 @@ public class SchedulerTest {
         Scheduler scheduler = new Scheduler(LocalDate.now(), tasks, treatments, animals);
 
         // Retrieve data from an SQL database
-        scheduler.getFromSQL("oop", "password");
+        scheduler.getFromSQL(this.user, this.password);
 
         // Ensure that the scheduler's lists are not null
         assertNotNull("Scheduler pulls no animals from the database", scheduler.getAnimals());
@@ -310,6 +313,7 @@ public class SchedulerTest {
 
         // Create a new scheduler with today's date and the treatments and animals lists
         Scheduler scheduler = new Scheduler(LocalDate.now(), tasks, treatments, animals);
+        scheduler.getFromSQL(this.user, this.password);
 
         // Get the treatment and change its start hour to 2
         scheduler.changeTreatmentStart(3, 1, 2);

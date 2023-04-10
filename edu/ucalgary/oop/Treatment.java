@@ -25,11 +25,11 @@ public class Treatment {
      * @param startHour the hour at which the treatment starts
      * @throws IllegalArgumentException if the start hour is not between 0 and 23
      */
-    public Treatment(int TreatmentID, int animalID, int taskID, int startHour) throws IllegalArgumentException {
+    public Treatment(int treatmentID, int animalID, int taskID, int startHour) throws IllegalArgumentException {
         if (startHour < 0 || startHour > 23)
             throw new IllegalArgumentException("Start hour must be between 0 and 23 it was " + startHour);
 
-        this.TREATMENT_ID = TreatmentID;
+        this.TREATMENT_ID = treatmentID;
         this.ANIMAL_ID = animalID;
         this.TASK_ID = taskID;
         this.startHour = startHour;
